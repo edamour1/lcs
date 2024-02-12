@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+
+    <saveAddress>
+        <![CDATA[
+             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id)
+             VALUES (?, ?, ?, ?, ?)
+        ]]>
+    </saveAddress>
+
+    <updateAddress>
+        <![CDATA[
+            SET
+                client_id = ?,
+                street = ?,
+                city_id = ?,
+                state_id = ?,
+                zipcode_id = ?
+                    WHERE
+                        id = ?
+        ]]>
+    </updateAddress>>
+
+    <getAddresses>
+        <![CDATA[
+            SELECT
+                ADDRESSES.id AS AddressID,
+                ADDRESSES.street AS Address,
+                CITIES.id AS CityID,
+                CITIES.city AS City,
+                STATES.id AS StateID,
+                STATES.state AS State,
+                ZIPCODES.id AS ZipCodeID,
+                ZIPCODES.zipcode AS ZipCode
+            FROM
+                ADDRESSES
+            JOIN
+                CITIES ON ADDRESSES.city_id = CITIES.id
+            JOIN
+                STATES ON ADDRESSES.state_id = STATES.id
+            JOIN
+                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+        ]]>
+    </getAddresses>
+
+    <getAddressesByClientId>
+        <![CDATA[
+            SELECT
+                ADDRESSES.id AS AddressID,
+                ADDRESSES.street AS Address,
+                CITIES.id AS CityID,
+                CITIES.city AS City,
+                STATES.id AS StateID,
+                STATES.state AS State,
+                ZIPCODES.id AS ZipCodeID,
+                ZIPCODES.zipcode AS ZipCode
+            FROM
+                ADDRESSES
+            JOIN
+                CITIES ON ADDRESSES.city_id = CITIES.id
+            JOIN
+                STATES ON ADDRESSES.state_id = STATES.id
+            JOIN
+                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+            WHERE
+                ADDRESSES.client_id = ?
+        ]]>
+    </getAddressesByClientId>
+
+    <getTreatmentById>
+        <![CDATA[
+            SELECT * FROM treatments
+            WHERE id = ?
+        ]]>
+    </getTreatmentById>
+
+    <getAllTreatments>
+        <![CDATA[
+            SELECT * FROM treatments
+        ]]>
+    </getAllTreatments>
+
+    <updateTreatment>
+        <![CDATA[
+                UPDATE TREATMENTS
+                    SET treatment_name = ?,
+                    treatment_description = ?,
+                    price = ?
+                    WHERE id = ?
+        ]]>
+    </updateTreatment>
+
+    <saveTreatment>
+        <![CDATA[
+            INSERT INTO TREATMENTS (treatment_name, treatment_description, price)
+            VALUES(?,?,?)
+        ]]>
+    </saveTreatment>
+
+    <getAllStates>
+        <![CDATA[
+            SELECT * FROM states
+        ]]>
+    </getAllStates>
+
+    <getCities>
+        <![CDATA[
+            SELECT * FROM cities
+        ]]>
+    </getCities>
+
+    <saveCity>
+        <![CDATA[
+            INSERT INTO cities (city) VALUES (?)
+        ]]>
+    </saveCity>
+
+    <getAllAdmin>
+        <![CDATA[
+            SELECT * FROM admin
+        ]]>
+    </getAllAdmin>
+
+    <getAdminById>
+        <![CDATA[
+            SELECT * FROM admin
+            WHERE id = ?
+        ]]>
+    </getAdminById>
+
+    <saveAdmin>
+        <![CDATA[
+            INSERT INTO `ADMIN` (`username`, `password`, `role`, `hint`)
+            VALUES(?, ?, ?, ?)
+        ]]>
+    </saveAdmin>
+
+    <saveClient>
+        <![CDATA[
+            INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`)
+            VALUES(?, ?, ?, ?, ?)
+        ]]>
+    </saveClient>
+
+    <updateClient>
+        <![CDATA[
+            UPDATE clients
+                SET
+                  first_name = ?,
+                  middle_name = ?,
+                  last_name = ?,
+                  email = ?,
+                  phone_number = ?
+                WHERE
+                  id = ?
+        ]]>
+    </updateClient>
+
+    <getClientById>
+        <![CDATA[
+            SELECT * FROM clients
+            where id = ?
+        ]]>
+    </getClientById>
+
+    <getClients>
+        <![CDATA[ SELECT * FROM clients ]]>
+    </getClients>
+
+    <getAllZipcodes>
+        <![CDATA[
+            SELECT * FROM zipcodes
+        ]]>
+    </getAllZipcodes>
+
+    <getZipcodesByCity>
+        <![CDATA[
+            SELECT zipcodes.id, ZIPCODES.zipcode
+                FROM CITIES
+                    JOIN ZIPCODES ON CITIES.id = ZIPCODES.city_id
+                WHERE CITIES.city = ?
+        ]]>
+    </getZipcodesByCity>
+
+    <getZipcodesById>
+        <![CDATA[
+            SELECT * FROM zipcodes
+            WHERE id = ?
+        ]]>
+    </getZipcodesById>
+
+    <saveZipcode>
+        <![CDATA[
+            INSERT INTO zipcodes (zipcode, city_id) VALUES (?, ?)
+        ]]>
+    </saveZipcode>
+</sql>
