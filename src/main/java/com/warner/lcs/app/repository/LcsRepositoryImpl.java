@@ -23,6 +23,102 @@ public class LcsRepositoryImpl implements LcsRepository {
     private JdbcTemplate lcsDataSourceTemplate;
 
     @Override
+    public Address updateAddress(Address address, Client client) throws Exception {
+
+        String sql = SQL.get("lcsSql","updateAddress");
+        int isActiveArgument = address.getIsActive() ? 1 : 0;
+        this.lcsDataSourceTemplate.update(sql,
+                address.getStreet(),
+                address.getCity().getId(),
+                address.getState().getId(),
+                address.getZipcode().getId(),
+                isActiveArgument,
+                address.getId());
+
+        List<Address> retrievedAddresses = this.getAddressesByClientId(client.getId());
+
+        return retrievedAddresses.get(0);
+    }
+
+    @Override
+    public Address saveAddress(Address address, Client client) throws Exception {
+
+        City city = this.getCity(address.getCity());
+        if(city == null) { address.setCity(this.saveCity(address.getCity())); }
+
+        Zipcode zipcode = address.getZipcode();
+        if(zipcode == null){ address.setZipcode(this.saveZipcode(zipcode,city)); }
+
+        String sql = SQL.get("lcsSql","saveAddress");
+
+        int id = this.lcsDataSourceTemplate.update(connection -> {
+
+            /* *******************************************************************************************************************************************************
+             *  PreparedStatement is not specific to the Spring JDBC Template;
+             *  it is part of the default Java Database Connectivity (JDBC) API,  which is a standard part of the Java Standard Edition (SE) platform.
+             *
+             * PreparedStatement is an interface in the java.sql package and is used to execute precompiled SQL statements.
+             *
+             * It extends the Statement interface and provides additional methods for setting parameters in a SQL statement.
+             *
+             * The primary advantage of using PreparedStatement over Statement is that it helps prevent SQL injection attacks.
+             *
+             * It also can improve performance by allowing the database to reuse previously compiled statements.
+             ********************************************************************************************************************************************************/
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, client.getId());
+            ps.setString(2, address.getStreet());
+            ps.setInt(3, address.getCity().getId());
+            ps.setInt(4, address.getState().getId());
+            ps.setInt(5, address.getZipcode().getId());
+            int isActive = address.getIsActive() ? 1 : 0;
+            ps.setInt(6,isActive);
+
+            return ps;
+
+        });
+
+        List<Address> retrievedAddress = this.getAddressesByClientId(client.getId());
+
+        return retrievedAddress.get(0);
+
+    }
+
+    @Override
+    public List<Address> getAddressesByClientId(int id) throws Exception {
+        RowMapper<Address> mapper = new RowMapper<Address>() {
+            public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Address address = new Address(rs);
+
+                return address;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAddressesByClientId");
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,id);
+
+        return addresses;
+    }
+
+    @Override
+    public List<Address> getAddresses() throws Exception {
+        RowMapper<Address> mapper = new RowMapper<Address>(){
+            public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Address address = new Address(rs);
+
+                return address;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAddresses");
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper);
+
+        return addresses;
+    }
+
+    @Override
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception {
         String sql = SQL.get("lcsSql","saveZipcode");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
@@ -55,7 +151,7 @@ public class LcsRepositoryImpl implements LcsRepository {
         RowMapper<Zipcode> mapper = new RowMapper<Zipcode>() {
             public Zipcode mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-                Zipcode zipcode = new Zipcode(rs);
+                Zipcode zipcode = new Zipcode(rs,false);
 
                 return zipcode;
             }
@@ -72,7 +168,7 @@ public class LcsRepositoryImpl implements LcsRepository {
         RowMapper<Zipcode> mapper = new RowMapper<Zipcode>() {
             public Zipcode mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-                Zipcode zipcode = new Zipcode(rs);
+                Zipcode zipcode = new Zipcode(rs,false);
 
                 return zipcode;
             }
@@ -89,7 +185,7 @@ public class LcsRepositoryImpl implements LcsRepository {
         RowMapper<Zipcode> mapper = new RowMapper<Zipcode>(){
             public Zipcode mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-                Zipcode zipcode = new Zipcode(rs);
+                Zipcode zipcode = new Zipcode(rs,false);
 
                 return zipcode;
             }
@@ -183,7 +279,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
             public State mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-                State state = new State(rs);
+                State state = new State(rs,false);
 
                 return state;
             }
@@ -229,7 +325,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
             public City mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-                City city = new City(rs);
+                City city = new City(rs,false);
 
                 return city;
             }
@@ -239,6 +335,23 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<City> cities = this.lcsDataSourceTemplate.query(sql,mapper);
 
         return cities;
+    }
+
+    @Override
+    public City getCity(City city) throws Exception {
+        RowMapper<City> mapper = new RowMapper<City>(){
+            public City mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                City city = new City(rs,false);
+
+                return city;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getCity");
+        List<City> cities = this.lcsDataSourceTemplate.query(sql,mapper,city.getCity());
+
+        return cities.get(0);
     }
 
     @Override

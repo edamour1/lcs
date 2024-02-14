@@ -1,4 +1,4 @@
-use lawncare_service;
+USE sample;
 
 CREATE TABLE `ZIPCODES`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -53,6 +53,7 @@ CREATE TABLE `ADDRESSES`(
     `city_id` BIGINT UNSIGNED NULL,
     `state_id` BIGINT UNSIGNED NULL,
     `zipcode_id` BIGINT UNSIGNED NULL,
+	`is_active` tinyint(1) NULL,
      PRIMARY KEY (`id`)
 );
 

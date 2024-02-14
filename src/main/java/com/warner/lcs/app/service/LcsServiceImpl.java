@@ -13,6 +13,26 @@ public class LcsServiceImpl implements LcsService {
     LcsRepository lcsRepository;
 
     @Override
+    public Address updateAddress(Address address, Client client) throws Exception {
+        return this.lcsRepository.updateAddress(address,client);
+    }
+
+    @Override
+    public Address saveAddress(Address address, Client client) throws Exception {
+        return this.lcsRepository.saveAddress(address,client);
+    }
+
+    @Override
+    public List<Address> getAddressesByClientId(int id) throws Exception {
+        return this.lcsRepository.getAddressesByClientId(id);
+    }
+
+    @Override
+    public List<Address> getAddresses() throws Exception {
+        return this.lcsRepository.getAddresses();
+    }
+
+    @Override
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception { return this.lcsRepository.saveZipcode(zipcode,city); }
 
     @Override
@@ -44,6 +64,9 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public List<City> getCities() throws Exception { return this.lcsRepository.getCities(); }
+
+    @Override
+    public City getCity(City city) throws Exception { return this.lcsRepository.getCity(city); }
 
     @Override
     public Admin saveAdmin(Admin admin) throws Exception { return this.lcsRepository.saveAdmin(admin); }

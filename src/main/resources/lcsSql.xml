@@ -3,29 +3,31 @@
 
     <saveAddress>
         <![CDATA[
-             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id)
-             VALUES (?, ?, ?, ?, ?)
+             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_active)
+             VALUES (?, ?, ?, ?, ?, ?)
         ]]>
     </saveAddress>
 
     <updateAddress>
         <![CDATA[
-            SET
-                client_id = ?,
-                street = ?,
-                city_id = ?,
-                state_id = ?,
-                zipcode_id = ?
-                    WHERE
-                        id = ?
+            UPDATE addresses
+                SET
+                    street = ?,
+                    city_id = ?,
+                    state_id = ?,
+                    zipcode_id = ?,
+                    is_active = ?
+                        WHERE
+                            id = ?
         ]]>
-    </updateAddress>>
+    </updateAddress>
 
     <getAddresses>
         <![CDATA[
             SELECT
                 ADDRESSES.id AS AddressID,
                 ADDRESSES.street AS Address,
+                is_active,
                 CITIES.id AS CityID,
                 CITIES.city AS City,
                 STATES.id AS StateID,
@@ -48,6 +50,7 @@
             SELECT
                 ADDRESSES.id AS AddressID,
                 ADDRESSES.street AS Address,
+                is_active,
                 CITIES.id AS CityID,
                 CITIES.city AS City,
                 STATES.id AS StateID,
@@ -102,19 +105,26 @@
             SELECT * FROM states
         ]]>
     </getAllStates>
-
+<!--***************************************************************Cities*********************************************************************************-->
     <getCities>
         <![CDATA[
             SELECT * FROM cities
         ]]>
     </getCities>
 
+    <getCity>
+        <![CDATA[
+            SELECT * FROM cities
+            WHERE city = ?
+        ]]>
+    </getCity>
+
     <saveCity>
         <![CDATA[
             INSERT INTO cities (city) VALUES (?)
         ]]>
     </saveCity>
-
+<!--**********************************************************************************Admin***************************************************************-->
     <getAllAdmin>
         <![CDATA[
             SELECT * FROM admin

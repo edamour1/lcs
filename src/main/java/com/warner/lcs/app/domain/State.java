@@ -9,8 +9,8 @@ public class State {
 
     public State() {}
 
-    public State(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt("id");
+    public State(ResultSet resultSet, boolean getForAddressObject) throws SQLException {
+        this.id = getForAddressObject ? resultSet.getInt("StateID") : resultSet.getInt("id");
         this.state = resultSet.getString("state");
     }
 

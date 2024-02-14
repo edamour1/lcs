@@ -10,8 +10,8 @@ public class Zipcode {
 
     public Zipcode(){}
 
-    public Zipcode(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt("id");
+    public Zipcode(ResultSet resultSet, boolean getForAddressObject) throws SQLException {
+        this.id = getForAddressObject ? resultSet.getInt("ZipCodeID") : resultSet.getInt("id");
         this.zipcode = resultSet.getString("zipcode");
     }
 

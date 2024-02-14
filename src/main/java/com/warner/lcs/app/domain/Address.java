@@ -10,14 +10,18 @@ public class Address {
     private City city;
     private State state;
     private Zipcode zipcode;
+    private boolean isActive;
 
     public  Address(){}
 
     public  Address(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt("id");
-        this.street = resultSet.getString("street");
-        this.state = new State(resultSet);
-        this.city = new City(resultSet);
+        this.id = resultSet.getInt("AddressID");
+        this.street = resultSet.getString("Address");
+        this.state = new State(resultSet,true);
+        this.city = new City(resultSet, true);
+        this.zipcode = new Zipcode(resultSet,true);
+        int active = resultSet.getInt("is_active");
+        this.isActive = active == 1 ? true : false;
     }
 
     public int getId() {
@@ -58,6 +62,14 @@ public class Address {
 
     public void setZipcode(Zipcode zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
     }
 }
 

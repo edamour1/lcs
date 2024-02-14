@@ -1,10 +1,58 @@
 package com.warner.lcs.app.repository;
 
 import com.warner.lcs.app.domain.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 public interface LcsRepository {
+
+    /**
+     * Updates an address in the database
+     *
+     * This method uses jdbc template to update an Address object in the database.
+     *
+     * @param client Has the client's personal information.
+     * @param address Has the client's address information.
+     * @return Address object containing the id of the updated object.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Address updateAddress(Address address, Client client) throws Exception;
+
+
+    /**
+     * Saves an address to the database
+     *
+     * This method uses the jdbc template to perisists (save) an Address object in the database.
+     *
+     * @param client Has the client's personal information.
+     * @param address Has the client's address information.
+     * @return Address object containing the id of the inerted object.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Address saveAddress(Address address, Client client) throws Exception;
+
+    /**
+     * Returns a desired addresses from the database based on provided id
+     *
+     * This method uses the jsbc template to fetch a list of addresses information by id from the database.
+     * @param id is going to be used to get the specific address.
+     * @return List Address objects that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<Address> getAddressesByClientId(int id) throws Exception;
+
+    /**
+     * Returns a list of addresses from the database.
+     *
+     * This method uses the jdbc template to fetch a lis of addresses information by id from the database.
+     * @return List Address objects that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<Address> getAddresses() throws Exception;
+
 
     /**
      * Saves a zipcode to the database using the jdbc template.
@@ -114,6 +162,16 @@ public interface LcsRepository {
      * @throws Exception If error something sql related goes wrong.
      */
     public List<City> getCities() throws Exception;
+
+    /**
+     * Returns a desired city from the database
+     *
+     * This method uses the jdbc template to fetch the city data by name from the database.
+     * @param city is going to be used to get the specific treatment.
+     * @return City object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public City getCity(City city) throws Exception;
 
     /**
      * Saves a client to the data

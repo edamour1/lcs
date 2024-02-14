@@ -21,13 +21,16 @@ public class LcsApplicationTest {
     private List<Admin> adminList;//used for testing
     private Client client;//used for testing
     private List<Client> clients;//used for testing
+    private Address address;//used for testing
+    private List<Address> addresses;//used for testing
     private City city;//used for testing
     private List<City> cities;//used for testing
+    private State state;//used for testing
     private List<State> states;//used for testing
     private Treatment treatment;//used for testing
     private List<Treatment> treatments;//used for testing
-    private Zipcode zipcode;
-    private List<Zipcode> zipcodes;
+    private Zipcode zipcode;//used for testing
+    private List<Zipcode> zipcodes;//used for testing
 
     @BeforeEach//do execute this method before running any tests
     void setup() {
@@ -43,14 +46,112 @@ public class LcsApplicationTest {
         admin.setRole("master administrator");
         admin.setHint("p*##word");
         city = new City();
-        city.setCity("Helen");
+        city.setCity("Atlanta");
         treatment = new Treatment();
 //        treatment.setId(2);
         treatment.setTreatmentName("treatment 8");
         treatment.setTreatmentDescription("treatment 8 description");
         treatment.setPrice(117.59);
         zipcode = new Zipcode();
-        zipcode.setZipcode("30545");
+        zipcode.setZipcode("30314");
+        state = new State();
+        state.setState("GA");
+        state.setId(10);
+        address = new Address();
+        address.setIsActive(true);
+        address.setStreet("9322 Melody Boost sw");
+        address.setCity(city);
+        address.setState(state);
+        address.setZipcode(zipcode);
+    }
+
+    @Test//means method is meant to be tested
+    public void getCityTest() throws Exception {//becuase were talking to the database we must throw an exception
+        try {
+            city.setId(39);
+            city.setCity("Cartersville");
+            City retrievedObject = this.lcsService.getCity(city);
+            assertThat(retrievedObject).isNotNull();
+            assertThat(city.getId()).isEqualTo(retrievedObject.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test//means method is meant to be tested
+    public void saveAddressTest() throws Exception {
+        try {
+            try {
+                this.client.setId(2);
+                this.address.getCity().setId(1);
+                this.address.getZipcode().setId(14);
+                Address savedObj = this.lcsService.saveAddress(this.address,this.client);//save treatment
+                assertThat(savedObj).isNotNull();//see if it's empty or not
+
+                /*####################################################################
+                 *   Very important make sure to add 1 to x before running the tests!##
+                 *       x = n + 1                                                   ##
+                 *   for an example: In this case n is 26. So x = 26 + 1 = 27        ##
+                 *  if:                                                              ##
+                 *       int n = 26;                                                 ##
+                 *       before running tests:                                       ##
+                 *                               int n = 27;                         ##
+                 * ####################################################################*/
+                int n = 1;//make sure to add 1 to x be for running tests!!!!
+                assertThat(savedObj.getId()).isGreaterThan(n);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } //catch
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test//means method is meant to be tested
+    public void updateAddressTest() throws Exception {
+        try {
+            this.client.setId(2);
+            this.city.setId(2);
+            this.zipcode.setId(2);
+
+            address.setId(3);
+            address.setStreet("184 Strawberry Mansion");
+            address.setCity(this.city);
+            address.setState(this.state);
+            address.setZipcode(this.zipcode);
+
+            Address updatedAddress = this.lcsService.updateAddress(this.address,this.client);
+            assertThat(updatedAddress).isNotNull();
+            assertThat(city).isEqualTo(address.getCity());
+            assertThat(state).isEqualTo(address.getState());
+            assertThat(zipcode).isEqualTo(address.getZipcode());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test//means method is meant to be tested
+    public void getAddressesByClientIdTest() throws Exception {//becuase were talking to the database we must throw an exception
+        try {
+            this.client.setId(1);
+            addresses = this.lcsService.getAddressesByClientId(this.client.getId());
+            assertThat(addresses).isNotNull();
+            assertTrue(addresses.size() > 0, "Array length should be more than 49");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test//means method is meant to be tested
+    public void getAddressesTest() throws Exception {
+        try {
+            addresses = this.lcsService.getAddresses();
+            assertThat(addresses).isNotNull();
+            assertTrue(addresses.size() > 1, "Array length should be more than 1");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test//means method is meant to be tested
