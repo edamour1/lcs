@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sql>
+    <!--*************************************************Invoice Information************************************************************-->
+    <getAllInvoiceInformations>
+        <![CDATA[
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes
+            FROM INVOICE_INFORMATION
+            ]]>
+    </getAllInvoiceInformations>
 
+    <getInvoiceInformationByClientId>
+        <![CDATA[
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes
+                FROM INVOICE_INFORMATION
+                    WHERE client_id = ?
+        ]]>
+    </getInvoiceInformationByClientId>
+
+    <saveInvoiceInformation>
+        <![CDATA[
+            INSERT INTO `INVOICE_INFORMATION` (
+            `payment_due_date`,
+            `start_date`,
+            `end_date`,
+            `client_id`,
+            `notes`,
+            `additional_services_list_id`,
+            `treatment_list_id`,
+            `lm_user_id`,
+            `lm_date`
+        ) VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            NOW())
+        ]]>
+    </saveInvoiceInformation>
+
+    <saveTreatmentForInvoiceInformation>
+        <![CDATA[
+            INSERT INTO `treatment_list` (`id`,`treatment_id`)
+            VALUES (?,
+                    ? )
+        ]]>
+    </saveTreatmentForInvoiceInformation>
+
+    <saveAdditionalCostServiceForInvoiceInformation>
+        <![CDATA[
+            INSERT INTO `ADDITIONAL_SERVICES_LIST` (`id`,`additional_service_id`)
+            VALUES (?,?)
+        ]]>
+    </saveAdditionalCostServiceForInvoiceInformation>
+
+    <updateInvoiceInformation>
+        <![CDATA[
+            UPDATE INVOICE_INFORMATION
+
+            SET
+                payment_due_date = ?,
+                start_date = ?,
+                end_date = ?,
+                notes = ?,
+                lm_user_id = ?,
+                lm_date = Now()
+            WHERE id = ?
+        ]]>
+    </updateInvoiceInformation>
+
+<!--**************************************************************Address***************************************************************-->
     <saveAddress>
         <![CDATA[
              INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_active)
@@ -70,6 +141,31 @@
         ]]>
     </getAddressesByClientId>
 
+    <doesAddressExists>
+        <![CDATA[
+            SELECT
+                ADDRESSES.id AS AddressID,
+                ADDRESSES.street AS Address,
+                is_active,
+                CITIES.id AS CityID,
+                CITIES.city AS City,
+                STATES.id AS StateID,
+                STATES.state AS State,
+                ZIPCODES.id AS ZipCodeID,
+                ZIPCODES.zipcode AS ZipCode
+            FROM
+                ADDRESSES
+            JOIN
+                CITIES ON ADDRESSES.city_id = CITIES.id
+            JOIN
+                STATES ON ADDRESSES.state_id = STATES.id
+            JOIN
+                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+            WHERE
+                ADDRESSES.street = ?
+        ]]>
+    </doesAddressExists>
+<!--******************************************************************Treatment**********************************************************-->
     <getTreatmentById>
         <![CDATA[
             SELECT * FROM treatments
@@ -82,6 +178,16 @@
             SELECT * FROM treatments
         ]]>
     </getAllTreatments>
+
+    <getTreatmentsByClientId>
+        <![CDATA[
+            SELECT TREATMENTS.*
+            FROM TREATMENTS
+            JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
+            JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = TREATMENT_LIST.id
+            WHERE INVOICE_INFORMATION.additional_services_list_id = ?
+        ]]>
+    </getTreatmentsByClientId>
 
     <updateTreatment>
         <![CDATA[
@@ -100,6 +206,14 @@
         ]]>
     </saveTreatment>
 
+    <removeTreatmentFromList>
+        <![CDATA[
+            DELETE FROM treatment_list
+            WHERE id = ?
+            AND   treatment_id = ?
+        ]]>
+    </removeTreatmentFromList>
+<!--**************************************************************States****************************************************-->
     <getAllStates>
         <![CDATA[
             SELECT * FROM states
@@ -124,7 +238,55 @@
             INSERT INTO cities (city) VALUES (?)
         ]]>
     </saveCity>
-<!--**********************************************************************************Admin***************************************************************-->
+<!--*************************************************************Additional Cost Services*****************************************************************-->
+    <getAllAdditionalCostServices>
+        <![CDATA[
+            SELECT * FROM ADDITIONAL_SERVICES
+        ]]>
+    </getAllAdditionalCostServices>..........
+
+    <getAdditionalCostServicesById>
+        <![CDATA[
+            SELECT * FROM additional_services
+            WHERE id = ?
+        ]]>
+    </getAdditionalCostServicesById>
+
+    <getAdditionalCostServicesByClientId>
+        <![CDATA[
+            SELECT ADDITIONAL_SERVICES.*
+            FROM ADDITIONAL_SERVICES
+            JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
+            JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = ADDITIONAL_SERVICES_LIST.id
+            WHERE INVOICE_INFORMATION.additional_services_list_id = ?
+        ]]>
+    </getAdditionalCostServicesByClientId>
+
+    <saveAdditionalCostService>
+        <![CDATA[
+            INSERT INTO `ADDITIONAL_SERVICES` (`treatment_name`, `treatment_description`, `price`)
+            VALUES(?,?,?)
+        ]]>
+    </saveAdditionalCostService>
+
+    <updateAdditionalCostService>
+        <![CDATA[
+            UPDATE `ADDITIONAL_SERVICES`
+                SET `treatment_name` = ?,
+                    `treatment_description` = ?,
+                    `price` = ?
+                    WHERE `id` = ?
+        ]]>
+    </updateAdditionalCostService>
+
+    <removeAdditionalCostServiceFromList>
+        <![CDATA[
+            DELETE FROM ADDITIONAL_SERVICES_LIST
+            WHERE id = ?
+            AND additional_service_id = ?
+        ]]>
+    </removeAdditionalCostServiceFromList>
+    <!--****************Admin*******************************************************************-->
     <getAllAdmin>
         <![CDATA[
             SELECT * FROM admin
@@ -139,12 +301,13 @@
     </getAdminById>
 
     <saveAdmin>
-        <![CDATA[
-            INSERT INTO `ADMIN` (`username`, `password`, `role`, `hint`)
-            VALUES(?, ?, ?, ?)
-        ]]>
-    </saveAdmin>
+            <![CDATA[
+                INSERT INTO `ADMIN` (`username`, `password`, `role`, `hint`)
+                VALUES(?, ?, ?, ?)
+            ]]>
+        </saveAdmin>
 
+    <!--**************************************************************Client***********************************************************************-->
     <saveClient>
         <![CDATA[
             INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`)
@@ -176,7 +339,7 @@
     <getClients>
         <![CDATA[ SELECT * FROM clients ]]>
     </getClients>
-
+<!--*********************************************************Zipcodes************************************************************-->
     <getAllZipcodes>
         <![CDATA[
             SELECT * FROM zipcodes

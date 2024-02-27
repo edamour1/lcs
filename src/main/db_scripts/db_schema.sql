@@ -1,4 +1,4 @@
-USE sample;
+USE lawncare_service;
 
 CREATE TABLE `ZIPCODES`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -8,10 +8,9 @@ CREATE TABLE `ZIPCODES`(
 );
 
 CREATE TABLE `ADDITIONAL_SERVICES_LIST`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `additional_services_list_id` BIGINT NULL,
-    `additional_service_id` BIGINT UNSIGNED NULL,
-     PRIMARY KEY (`id`)
+    `id` BIGINT UNSIGNED NOT NULL,
+    `additional_service_id` BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (`id`, `additional_service_id`) -- Composite key
 );
 
 CREATE TABLE `ADMIN`(
@@ -40,10 +39,9 @@ CREATE TABLE `BUSINESS`(
 );
 
 CREATE TABLE `TREATMENT_LIST`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `treatment_list_id` BIGINT NOT NULL,
+    `id` BIGINT UNSIGNED NOT NULL,
     `treatment_id` BIGINT UNSIGNED NOT NULL,
-     PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`, `treatment_id`) -- Composite key
 );
 
 CREATE TABLE `ADDRESSES`(
@@ -94,8 +92,8 @@ CREATE TABLE `INVOICE_INFORMATION`(
     `end_date` DATE NOT NULL,
     `client_id` BIGINT UNSIGNED NOT NULL,
     `notes` VARCHAR(255) NOT NULL,
-    `additional_services_list_id` BIGINT UNSIGNED NOT NULL,
-    `treatment_list_id` BIGINT UNSIGNED NOT NULL,
+    `additional_services_list_id` BIGINT UNSIGNED NULL,
+    `treatment_list_id` BIGINT UNSIGNED NULL,
     `lm_user_id` VARCHAR(255) NOT NULL,
     `lm_date` DATETIME NOT NULL,
      PRIMARY KEY (`id`)

@@ -13,6 +13,71 @@ public class LcsServiceImpl implements LcsService {
     LcsRepository lcsRepository;
 
     @Override
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
+        return this.lcsRepository.updateInvoiceInformation(invoiceInformation,admin);
+    }
+
+    @Override
+    public List<Treatment> removeTreatmentFromList(Treatment treatment, Client client) throws Exception {
+        return this.lcsRepository.removeTreatmentFromList(treatment,client);
+    }
+
+    @Override
+    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, Client client) throws Exception {
+        return this.lcsRepository.removeAdditionalCostServiceFromList(additionalCostService,client);
+    }
+
+    @Override
+    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client) throws Exception {
+        return this.lcsRepository.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+    }
+
+    @Override
+    public List<Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client) throws Exception {
+        return this.lcsRepository.saveTreatmentForInvoiceInformation(treatment,client);
+    }
+
+    @Override
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
+        return this.lcsRepository.saveInvoiceInformation(invoiceInformation,admin);
+    }
+
+    @Override
+    public List<InvoiceInformation> getInvoiceInformationByClientId(Client client) throws Exception {
+        return this.lcsRepository.getInvoiceInformationByClientId(client);
+    }
+
+    @Override
+    public List<InvoiceInformation> getAllInvoiceInformations() throws Exception {
+        return this.lcsRepository.getAllInvoiceInformations();
+    }
+
+    @Override
+    public List<AdditionalCostService> getAllAdditionalCostServices() throws Exception {
+        return this.lcsRepository.getAllAdditionalCostServices();
+    }
+
+    @Override
+    public List<AdditionalCostService> getAdditionalCostServicesByClientId(Client client) throws Exception {
+        return this.lcsRepository.getAdditionalCostServicesByClientId(client);
+    }
+
+    @Override
+    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        return this.lcsRepository.updateAdditionalCostService(additionalCostService);
+    }
+
+    @Override
+    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        return this.lcsRepository.saveAdditionalCostService(additionalCostService);
+    }
+
+    @Override
+    public AdditionalCostService getAdditionalCostServicesById(int id) throws Exception {
+        return this.lcsRepository.getAdditionalCostServicesById(id);
+    }
+
+    @Override
     public Address updateAddress(Address address, Client client) throws Exception {
         return this.lcsRepository.updateAddress(address,client);
     }
@@ -33,6 +98,11 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
+    public boolean doesAddressExists(Address address) throws Exception {
+        return this.lcsRepository.doesAddressExists(address);
+    }
+
+    @Override
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception { return this.lcsRepository.saveZipcode(zipcode,city); }
 
     @Override
@@ -49,6 +119,11 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public Treatment getTreatmentById(int id) throws Exception { return this.lcsRepository.getTreatmentById(id); }
+
+    @Override
+    public List<Treatment> getTreatmentsByClientId(Client client) throws Exception {
+        return this.lcsRepository.getTreatmentsByClientId(client);
+    }
 
     @Override
     public Treatment updateTreatment(Treatment treatment) throws Exception { return this.lcsRepository.updateTreatment(treatment); }

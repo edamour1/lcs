@@ -23,6 +23,303 @@ public class LcsRepositoryImpl implements LcsRepository {
     private JdbcTemplate lcsDataSourceTemplate;
 
     @Override
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
+
+//        for(Treatment treatment : invoiceInformation.getTreatments()){//update Treatment
+//            if(treatment.getRemoveFromList()) {
+//                this.removeTreatmentFromList(treatment,invoiceInformation.getClient());
+//            }
+//            else {
+//                    this.saveTreatmentForInvoiceInformation(treatment,invoiceInformation.getClient());
+//            }
+//        }
+//
+//        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){//update AdditionalCostServices
+//            if(additionalCostService.getRemoveFromList()) {
+//                this.removeAdditionalCostServiceFromList(additionalCostService,invoiceInformation.getClient());
+//            }
+//            else {
+//                this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,invoiceInformation.getClient());
+//            }
+//        }
+//
+//        if(!this.doesAddressExists(invoiceInformation.getAddress())){
+//            this.saveAddress(invoiceInformation.getAddress(), invoiceInformation.getClient());
+//        } else {  this.updateAddress(invoiceInformation.getAddress(),invoiceInformation.getClient()); }
+//
+//        this.updateClient(invoiceInformation.getClient());
+        String sql = SQL.get("lcsSql","updateInvoiceInformation");
+
+        this.lcsDataSourceTemplate.update(sql,
+                invoiceInformation.getPaymentDueDate(),
+                invoiceInformation.getStartDate(),
+                invoiceInformation.getEndDate(),
+                invoiceInformation.getNotes(),
+                admin.getUsername(),
+                invoiceInformation.getId());
+
+       List<InvoiceInformation>  retrievedInvoiceInformations = this.getInvoiceInformationByClientId(invoiceInformation.getClient());
+
+
+
+        return retrievedInvoiceInformations.get(0);
+    }
+
+    @Override
+    public List<Treatment> removeTreatmentFromList(Treatment treatment, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","removeTreatmentFromList");
+        this.lcsDataSourceTemplate.update(sql,client.getId(), treatment.getId());
+
+        List <Treatment> retrievedTreatments = this.getTreatmentsByClientId(client);
+
+        return retrievedTreatments;
+    }
+
+    @Override
+    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","removeAdditionalCostServiceFromList");
+        this.lcsDataSourceTemplate.update(sql,client.getId(), additionalCostService.getId());
+
+       List <AdditionalCostService> retrievedAdditionalCostServices = this.getAdditionalCostServicesByClientId(client);
+
+        return retrievedAdditionalCostServices;
+    }
+
+    @Override
+    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","saveAdditionalCostServiceForInvoiceInformation");
+        KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
+        this.lcsDataSourceTemplate.update(connection -> {
+            /* *******************************************************************************************************************************************************
+             *  PreparedStatement is not specific to the Spring JDBC Template;
+             *  it is part of the default Java Database Connectivity (JDBC) API,  which is a standard part of the Java Standard Edition (SE) platform.
+             *
+             * PreparedStatement is an interface in the java.sql package and is used to execute precompiled SQL statements.
+             *
+             * It extends the Statement interface and provides additional methods for setting parameters in a SQL statement.
+             *
+             * The primary advantage of using PreparedStatement over Statement is that it helps prevent SQL injection attacks.
+             *
+             * It also can improve performance by allowing the database to reuse previously compiled statements.
+             ********************************************************************************************************************************************************/
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, client.getId());
+            ps.setInt(2, additionalCostService.getId());
+            return ps;
+        }, keyHolder);
+        List<AdditionalCostService> additionalCostServices = this.getAdditionalCostServicesByClientId(client);
+        return additionalCostServices;
+    }
+
+    @Override
+    public List <Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","saveTreatmentForInvoiceInformation");
+        KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
+        this.lcsDataSourceTemplate.update(connection -> {
+            /* *******************************************************************************************************************************************************
+             *  PreparedStatement is not specific to the Spring JDBC Template;
+             *  it is part of the default Java Database Connectivity (JDBC) API,  which is a standard part of the Java Standard Edition (SE) platform.
+             *
+             * PreparedStatement is an interface in the java.sql package and is used to execute precompiled SQL statements.
+             *
+             * It extends the Statement interface and provides additional methods for setting parameters in a SQL statement.
+             *
+             * The primary advantage of using PreparedStatement over Statement is that it helps prevent SQL injection attacks.
+             *
+             * It also can improve performance by allowing the database to reuse previously compiled statements.
+             ********************************************************************************************************************************************************/
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, client.getId());
+            ps.setInt(2, treatment.getId());
+            return ps;
+        }, keyHolder);
+
+        return this.getTreatmentsByClientId(client);
+    }
+
+    @Override
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
+        for(Treatment treatment : invoiceInformation.getTreatments()){
+            this.saveTreatmentForInvoiceInformation(treatment,invoiceInformation.getClient());
+        }
+
+        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){
+            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,invoiceInformation.getClient());
+        }
+
+        if(!this.doesAddressExists(invoiceInformation.getAddress())){
+            this.saveAddress(invoiceInformation.getAddress(), invoiceInformation.getClient());
+        }
+
+        String sql = SQL.get("lcsSql","saveInvoiceInformation");
+        KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
+        this.lcsDataSourceTemplate.update(connection -> {
+            /* *******************************************************************************************************************************************************
+             *  PreparedStatement is not specific to the Spring JDBC Template;
+             *  it is part of the default Java Database Connectivity (JDBC) API,  which is a standard part of the Java Standard Edition (SE) platform.
+             *
+             * PreparedStatement is an interface in the java.sql package and is used to execute precompiled SQL statements.
+             *
+             * It extends the Statement interface and provides additional methods for setting parameters in a SQL statement.
+             *
+             * The primary advantage of using PreparedStatement over Statement is that it helps prevent SQL injection attacks.
+             *
+             * It also can improve performance by allowing the database to reuse previously compiled statements.
+             ********************************************************************************************************************************************************/
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setDate(1, invoiceInformation.getPaymentDueDate());
+            ps.setDate(2, invoiceInformation.getStartDate());
+            ps.setDate(3, invoiceInformation.getEndDate());
+            ps.setInt(4, invoiceInformation.getClient().getId());
+            ps.setString(5, invoiceInformation.getNotes());
+            ps.setInt(6, invoiceInformation.getClient().getId());
+            ps.setInt(7, invoiceInformation.getClient().getId());
+            ps.setString(8, admin.getUsername());
+            return ps;
+        }, keyHolder);
+
+        List<InvoiceInformation>  retrievedInvoiceInformation = this.getInvoiceInformationByClientId(invoiceInformation.getClient());
+
+        return retrievedInvoiceInformation;
+    }
+
+    @Override
+    public List<InvoiceInformation> getInvoiceInformationByClientId(Client client) throws Exception {
+        RowMapper<InvoiceInformation> mapper = new RowMapper<InvoiceInformation>(){
+            public InvoiceInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                InvoiceInformation invoiceInformation = new InvoiceInformation(rs);
+
+                return invoiceInformation;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getInvoiceInformationByClientId");
+        List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
+
+        for(InvoiceInformation invoiceInformation : invoiceInformations){
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation.getClient()));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation.getClient()));
+            invoiceInformation.setAddress(this.getAddressesByClientId(client.getId()).get(0));
+        }
+
+        return invoiceInformations;
+    }
+
+    @Override
+    public List<InvoiceInformation> getAllInvoiceInformations() throws Exception {
+        RowMapper<InvoiceInformation> mapper = new RowMapper<InvoiceInformation>(){
+            public InvoiceInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                InvoiceInformation invoiceInformation = new InvoiceInformation(rs);
+
+                return invoiceInformation;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAllInvoiceInformations");
+        List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper);
+
+        for(InvoiceInformation invoiceInformation : invoiceInformations){
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation.getClient()));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation.getClient()));
+        }
+        return invoiceInformations;
+    }
+
+    @Override
+    public List<AdditionalCostService> getAllAdditionalCostServices() throws Exception {
+        RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
+            public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                AdditionalCostService additionalCostService = new AdditionalCostService(rs);
+
+                return additionalCostService;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAllAdditionalCostServices");
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper);
+
+        return additionalCostServices;
+    }
+
+    @Override
+    public List<AdditionalCostService> getAdditionalCostServicesByClientId(Client client) throws Exception {
+        RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
+            public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                AdditionalCostService additionalCostService = new AdditionalCostService(rs);
+
+                return additionalCostService;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAdditionalCostServicesByClientId");
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
+
+        return additionalCostServices;
+    }
+
+    @Override
+    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        String sql = SQL.get("lcsSql","updateAdditionalCostService");
+                this.lcsDataSourceTemplate.update(sql,
+                additionalCostService.getTreatmentName(),
+                additionalCostService.getTreatmentDescription(),
+                additionalCostService.getPrice(),
+                additionalCostService.getId());
+        AdditionalCostService retrievedAdditionalCostService = this.getAdditionalCostServicesById(additionalCostService.getId());
+
+        return retrievedAdditionalCostService;
+    }
+
+    @Override
+    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        String sql = SQL.get("lcsSql","saveAdditionalCostService");
+        KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
+       this.lcsDataSourceTemplate.update(connection -> {
+            /* *******************************************************************************************************************************************************
+             *  PreparedStatement is not specific to the Spring JDBC Template;
+             *  it is part of the default Java Database Connectivity (JDBC) API,  which is a standard part of the Java Standard Edition (SE) platform.
+             *
+             * PreparedStatement is an interface in the java.sql package and is used to execute precompiled SQL statements.
+             *
+             * It extends the Statement interface and provides additional methods for setting parameters in a SQL statement.
+             *
+             * The primary advantage of using PreparedStatement over Statement is that it helps prevent SQL injection attacks.
+             *
+             * It also can improve performance by allowing the database to reuse previously compiled statements.
+             ********************************************************************************************************************************************************/
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, additionalCostService.getTreatmentName());
+            ps.setString(2, additionalCostService.getTreatmentDescription());
+            ps.setDouble(3, additionalCostService.getPrice());
+            return ps;
+        }, keyHolder);
+
+        AdditionalCostService retrievedAdditionalCostService = this.getAdditionalCostServicesById((Integer) keyHolder.getKey().intValue());
+
+        return retrievedAdditionalCostService;
+    }
+
+    @Override
+    public AdditionalCostService getAdditionalCostServicesById(int id) throws Exception {RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
+        public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            AdditionalCostService additionalCostService = new AdditionalCostService(rs);
+
+            return additionalCostService;
+        }
+    };
+
+        String sql = SQL.get("lcsSql","getAdditionalCostServicesById");
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,id);
+
+        return additionalCostServices.get(0);
+    }
+
+    @Override
     public Address updateAddress(Address address, Client client) throws Exception {
 
         String sql = SQL.get("lcsSql","updateAddress");
@@ -116,6 +413,24 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper);
 
         return addresses;
+    }
+
+    @Override
+    public boolean doesAddressExists(Address address) throws Exception {
+        RowMapper<Address> mapper = new RowMapper<Address>(){
+            public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Address address = new Address(rs);
+
+                return address;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","doesAddressExists");
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,address.getStreet());
+        boolean doesAddressExists = addresses.size() > 0 ? true : false;
+
+        return doesAddressExists;
     }
 
     @Override
@@ -241,6 +556,23 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,id);
 
         return treatments.get(0);
+    }
+
+    @Override
+    public List<Treatment> getTreatmentsByClientId(Client client) throws Exception {
+        RowMapper<Treatment> mapper = new RowMapper<Treatment>(){
+            public Treatment mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Treatment treatment = new Treatment(rs);
+
+                return treatment;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getTreatmentsByClientId");
+        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
+
+        return treatments;
     }
 
     @Override

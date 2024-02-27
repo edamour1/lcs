@@ -119,8 +119,20 @@ VALUES
     ('treatment name 5', 'treatment 5 description', 325.00),
     ('treatment name 6', 'treatment 6 description', 23.00),
     ('treatment name 7', 'treatment 7 description', 73.00)
-
 	
+	
+--*********************************************Additional_Services*********************************************
+INSERT INTO ADDITIONAL_SERVICES (treatment_name, treatment_description, price)
+VALUES
+    ('treatment name 1', 'treatment 1 description', 65.00),
+    ('treatment name 2', 'treatment 2 description', 105.00),
+    ('treatment name 3', 'treatment 3 description', 85.00),
+    ('treatment name 4', 'treatment 4 description', 65.00),
+    ('treatment name 5', 'treatment 5 description', 305.00),
+    ('treatment name 6', 'treatment 6 description', 13.00),
+    ('treatment name 7', 'treatment 7 description', 63.00)
+
+
 --*********************************************Zipcodes*********************************************
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30301, 1); -- Atlanta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30302, 1); -- Atlanta

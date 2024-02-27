@@ -1,17 +1,24 @@
 package com.warner.lcs.app.domain;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AdditionalCostService {
 
     private int id;
-    private String treatmentName;
-    private String treatmentDescription;
+    private String treatmentName, treatmentDescription;
     private double price;
+
+    private boolean addToList, removeFromList;
 
     public AdditionalCostService() {}
 
-    public AdditionalCostService(ResultSet resultset) {}
+    public AdditionalCostService(ResultSet resultset) throws SQLException {
+        this.id = resultset.getInt("id");
+        this.treatmentName = resultset.getString("treatment_name");
+        this.treatmentDescription = resultset.getString("treatment_description");
+        this.price = resultset.getDouble("price");
+    }
 
     public int getId() {
         return id;
@@ -43,6 +50,22 @@ public class AdditionalCostService {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean getAddToList() {
+        return addToList;
+    }
+
+    public void setAddToList(boolean addToList) {
+        this.addToList = addToList;
+    }
+
+    public boolean getRemoveFromList() {
+        return removeFromList;
+    }
+
+    public void setRemoveFromList(boolean removeFromList) {
+        this.removeFromList = removeFromList;
     }
 }
 

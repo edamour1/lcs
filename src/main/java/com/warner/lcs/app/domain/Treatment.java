@@ -6,9 +6,9 @@ import java.sql.SQLException;
 public class Treatment {
 
     private int id;
-    private String treatmentName;
-    private String treatmentDescription;
+    private String treatmentName, treatmentDescription;
     private double price;
+    private boolean addToList, removeFromList;
 
     public Treatment(){}
 
@@ -17,7 +17,6 @@ public class Treatment {
         this.treatmentName = resultSet.getString("treatment_name");
         this.treatmentDescription = resultSet.getString("treatment_description");
         this.price = resultSet.getDouble("price");
-
     }
 
     public int getId() {
@@ -50,5 +49,21 @@ public class Treatment {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean getAddToList() {
+        return addToList;
+    }
+
+    public void setAddToList(boolean addToList) {
+        this.addToList = addToList;
+    }
+
+    public boolean getRemoveFromList() {
+        return removeFromList;
+    }
+
+    public void setRemoveFromList(boolean removeFromList) {
+        this.removeFromList = removeFromList;
     }
 }
