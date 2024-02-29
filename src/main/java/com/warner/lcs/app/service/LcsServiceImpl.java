@@ -5,6 +5,7 @@ import com.warner.lcs.app.repository.LcsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.text.DecimalFormat;
 
 @Service
 public class LcsServiceImpl implements LcsService {
@@ -12,9 +13,55 @@ public class LcsServiceImpl implements LcsService {
     @Autowired
     LcsRepository lcsRepository;
 
+
     @Override
-    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
-        return this.lcsRepository.updateInvoiceInformation(invoiceInformation,admin);
+    public double calculateTotalCost(InvoiceInformation invoiceInformation) {
+        double totalCost = this.calculateTotalTreatmentsCost(invoiceInformation)
+                         + this.calculateTotalAdditionalCostServicesCost(invoiceInformation);
+
+        // Create a DecimalFormat object with two decimal places
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        // Format the double value
+        String formattedValue = decimalFormat.format(totalCost);
+
+        // Convert the formatted value back to a double
+        double totalCostRoundedValue = Double.parseDouble(formattedValue);
+
+        return totalCostRoundedValue;
+    }
+
+    @Override
+    public double calculateTotalTreatmentsCost(InvoiceInformation invoiceInformation) {
+        double totalCost = 0;
+        for(Treatment treatment: invoiceInformation.getTreatments()){
+            totalCost += treatment.getPrice();
+        }
+        return totalCost;
+    }
+
+    @Override
+    public double calculateTotalAdditionalCostServicesCost(InvoiceInformation invoiceInformation) {
+        double totalCost = 0;
+        for(AdditionalCostService additionalCostService: invoiceInformation.getAdditionalCostServices()){
+            totalCost += additionalCostService.getPrice();
+        }
+        return totalCost;
+    }
+
+    @Override
+    public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.getAddressesByInvoiceInformation(invoiceInformation);
+    }
+
+    @Override
+    public InvoiceInformation getInvoiceInformationByAddress(Address address) throws Exception {
+        return this.lcsRepository.getInvoiceInformationByAddress(address);
+    }
+
+    @Override
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception {
+        return this.lcsRepository.updateInvoiceInformation(invoiceInformation,client,admin);
     }
 
     @Override
@@ -38,8 +85,8 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
-    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
-        return this.lcsRepository.saveInvoiceInformation(invoiceInformation,admin);
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception {
+        return this.lcsRepository.saveInvoiceInformation(invoiceInformation,client,address,admin);
     }
 
     @Override

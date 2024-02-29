@@ -17,6 +17,7 @@ public class Treatment {
         this.treatmentName = resultSet.getString("treatment_name");
         this.treatmentDescription = resultSet.getString("treatment_description");
         this.price = resultSet.getDouble("price");
+        this.removeFromList = false;
     }
 
     public int getId() {

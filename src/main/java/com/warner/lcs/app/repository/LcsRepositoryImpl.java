@@ -22,32 +22,71 @@ public class LcsRepositoryImpl implements LcsRepository {
     @Qualifier("lcsDataSourceTemplate")
     private JdbcTemplate lcsDataSourceTemplate;
 
-    @Override
-    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
 
-//        for(Treatment treatment : invoiceInformation.getTreatments()){//update Treatment
-//            if(treatment.getRemoveFromList()) {
-//                this.removeTreatmentFromList(treatment,invoiceInformation.getClient());
-//            }
-//            else {
-//                    this.saveTreatmentForInvoiceInformation(treatment,invoiceInformation.getClient());
-//            }
-//        }
-//
-//        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){//update AdditionalCostServices
-//            if(additionalCostService.getRemoveFromList()) {
-//                this.removeAdditionalCostServiceFromList(additionalCostService,invoiceInformation.getClient());
-//            }
-//            else {
-//                this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,invoiceInformation.getClient());
-//            }
-//        }
-//
-//        if(!this.doesAddressExists(invoiceInformation.getAddress())){
-//            this.saveAddress(invoiceInformation.getAddress(), invoiceInformation.getClient());
-//        } else {  this.updateAddress(invoiceInformation.getAddress(),invoiceInformation.getClient()); }
-//
-//        this.updateClient(invoiceInformation.getClient());
+    @Override
+    public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception {
+        RowMapper<Address> mapper = new RowMapper<Address>(){
+            public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Address address = new Address(rs);
+
+                return address;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAddressesByInvoiceInformation");
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getAddressId());
+
+
+        return addresses.get(0);
+    }
+
+    @Override
+    public InvoiceInformation getInvoiceInformationByAddress(Address address) throws Exception {
+
+        RowMapper<InvoiceInformation> mapper = new RowMapper<InvoiceInformation>(){
+            public InvoiceInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                InvoiceInformation invoiceInformation = new InvoiceInformation(rs);
+
+                return invoiceInformation;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getInvoiceInformationByAddress");
+        List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,address.getId());
+
+        for(InvoiceInformation invoiceInformation : invoiceInformations){
+            Client client = new Client();
+            client.setId(invoiceInformation.getClientId());
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
+        }
+
+        return invoiceInformations.get(0);
+    }
+
+    @Override
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception {
+
+        for(Treatment treatment : invoiceInformation.getTreatments()){//update Treatment
+            if(treatment.getRemoveFromList()) {
+                this.removeTreatmentFromList(treatment,client);
+            }
+            else {
+                    this.saveTreatmentForInvoiceInformation(treatment,client);
+            }
+        }
+
+        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){//update AdditionalCostServices
+            if(additionalCostService.getRemoveFromList()) {
+                this.removeAdditionalCostServiceFromList(additionalCostService,client);
+            }
+            else {
+                this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+            }
+        }
+
         String sql = SQL.get("lcsSql","updateInvoiceInformation");
 
         this.lcsDataSourceTemplate.update(sql,
@@ -58,7 +97,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 admin.getUsername(),
                 invoiceInformation.getId());
 
-       List<InvoiceInformation>  retrievedInvoiceInformations = this.getInvoiceInformationByClientId(invoiceInformation.getClient());
+       List<InvoiceInformation>  retrievedInvoiceInformations = this.getInvoiceInformationByClientId(client);
 
 
 
@@ -138,17 +177,13 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception {
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception {
         for(Treatment treatment : invoiceInformation.getTreatments()){
-            this.saveTreatmentForInvoiceInformation(treatment,invoiceInformation.getClient());
+            this.saveTreatmentForInvoiceInformation(treatment,client);
         }
 
         for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){
-            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,invoiceInformation.getClient());
-        }
-
-        if(!this.doesAddressExists(invoiceInformation.getAddress())){
-            this.saveAddress(invoiceInformation.getAddress(), invoiceInformation.getClient());
+            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
         }
 
         String sql = SQL.get("lcsSql","saveInvoiceInformation");
@@ -170,15 +205,16 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setDate(1, invoiceInformation.getPaymentDueDate());
             ps.setDate(2, invoiceInformation.getStartDate());
             ps.setDate(3, invoiceInformation.getEndDate());
-            ps.setInt(4, invoiceInformation.getClient().getId());
+            ps.setInt(4, client.getId());
             ps.setString(5, invoiceInformation.getNotes());
-            ps.setInt(6, invoiceInformation.getClient().getId());
-            ps.setInt(7, invoiceInformation.getClient().getId());
-            ps.setString(8, admin.getUsername());
+            ps.setInt(6, client.getId());
+            ps.setInt(7, client.getId());
+            ps.setInt(8,address.getId());
+            ps.setString(9, admin.getUsername());
             return ps;
         }, keyHolder);
 
-        List<InvoiceInformation>  retrievedInvoiceInformation = this.getInvoiceInformationByClientId(invoiceInformation.getClient());
+        List<InvoiceInformation>  retrievedInvoiceInformation = this.getInvoiceInformationByClientId(client);
 
         return retrievedInvoiceInformation;
     }
@@ -198,9 +234,8 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
 
         for(InvoiceInformation invoiceInformation : invoiceInformations){
-            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation.getClient()));
-            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation.getClient()));
-            invoiceInformation.setAddress(this.getAddressesByClientId(client.getId()).get(0));
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
         }
 
         return invoiceInformations;
@@ -219,10 +254,12 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         String sql = SQL.get("lcsSql","getAllInvoiceInformations");
         List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper);
+        Client client = new Client();
 
         for(InvoiceInformation invoiceInformation : invoiceInformations){
-            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation.getClient()));
-            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation.getClient()));
+            client.setId(invoiceInformation.getClientId());
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
         }
         return invoiceInformations;
     }

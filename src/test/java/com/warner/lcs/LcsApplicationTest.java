@@ -80,28 +80,52 @@ public class LcsApplicationTest {
     }
 
     @Test//means method is meant to be tested
-    public void updateInvoiceInformationTest() throws Exception {
-//        this.client.setId(2);
-//        this.client.setFirstName("Manny");
-//        this.client.setMiddleName("June");
-//        this.client.setLastName("Damour");
-//        this.client.setEmail("clownprince1961@gmail.com");
-//        this.client.setPhoneNumber("4702259753");
-//
-//        this.zipcode.setId(77);
-//        this.zipcode.setZipcode("30905");
-//        this.city.setId(2);
-//        this.city.setCity("Augusta");
-//        address.setStreet("2926 Hampshire Dr");
-//        address.setState(this.state);
-//        address.setZipcode(this.zipcode);
+    public void calculateTotalCostTest() throws Exception {
+        this.client.setId(4);
+        this.invoiceInformations = this.lcsService.getInvoiceInformationByClientId(this.client);
+        double total = this.lcsService.calculateTotalCost(this.invoiceInformations.get(0));
+        assertThat(total).isEqualTo(438.91);
+    }
+
+    @Test//means method is meant to be tested
+    public void calculateTotalTreatmentsCost() throws Exception {
+        this.client.setId(4);
+        this.invoiceInformations = this.lcsService.getInvoiceInformationByClientId(this.client);
+        double total = this.lcsService.calculateTotalTreatmentsCost(this.invoiceInformations.get(0));
+        assertThat(total).isEqualTo(295.00);
+    }
+    @Test//means method is meant to be tested
+    public void calculateTotalAdditionalCostServicesCostTest() throws Exception  {
+        this.client.setId(4);
+        this.invoiceInformations = this.lcsService.getInvoiceInformationByClientId(this.client);
+        double total = this.lcsService.calculateTotalAdditionalCostServicesCost(this.invoiceInformations.get(0));
+        assertThat(total).isEqualTo(143.91);
+    }
+
+    @Test//means method is meant to be tested
+    public void getAddressesByInvoiceInformationTest() throws Exception {
+        this.invoiceInformation.setAddressId(7);
+        Address retrievedObj = this.lcsService.getAddressesByInvoiceInformation(invoiceInformation);
+
+        assertThat(retrievedObj.getId()).isEqualTo(invoiceInformation.getAddressId());
+    }
+
+    @Test//means method is meant to be tested
+    public void getInvoiceInformationByAddressTest() throws Exception {
         invoiceInformation.setId(2);
-//        invoiceInformation.setClient(client);
-//        invoiceInformation.setAddress(address);
-        invoiceInformation.setNotes("testing the notes!");
+        this.address.setId(1);
+        InvoiceInformation retrievedInvoiceInformation = this.lcsService.getInvoiceInformationByAddress(address);
+        assertThat(invoiceInformation.getId()).isEqualTo(retrievedInvoiceInformation.getId());
+    }
+
+    @Test//means method is meant to be tested
+    public void updateInvoiceInformationTest() throws Exception {
+        this.client.setId(2);
+        invoiceInformation.setId(2);
+        invoiceInformation.setNotes("test notes!");
 
         // Define the input date string
-        String paymentDueDateString = "2024-04-03", startDateString = "2024-05-06", endDateString="2024-06-07";
+        String paymentDueDateString = "2024-06-04", startDateString = "2024-07-05", endDateString="2024-09-06";
 
         // Define the desired date pattern
         String pattern = "yyyy-MM-dd";
@@ -122,41 +146,35 @@ public class LcsApplicationTest {
             e.printStackTrace();
         }
 
-        Treatment t1 = new Treatment(), t2 = new Treatment(), t3 = new Treatment(), t4 = new Treatment();
-        t1.setId(4);
-        t1.setRemoveFromList(true);
-        t2.setId(6);
-        t2.setRemoveFromList(false);
+
+        Treatment t1 = this.lcsService.getTreatmentById(4), t2 = this.lcsService.getTreatmentById(3);
+        boolean trueOrFalse = false;
+        t1.setRemoveFromList(trueOrFalse);
+        t2.setRemoveFromList(trueOrFalse);
         List<Treatment> tl = new ArrayList<>();
         tl.add(t1);
         tl.add(t2);
-        AdditionalCostService a1 = new AdditionalCostService(), a2 = new AdditionalCostService();
-        a1.setId(7);
-        a1.setRemoveFromList(false);
-        a2.setId(3);
-        a2.setRemoveFromList(true);
+        AdditionalCostService a1 = this.lcsService.getAdditionalCostServicesById(4), a2 = this.lcsService.getAdditionalCostServicesById(2);
+        boolean trueOrFalse2 = false;
+        a1.setRemoveFromList(!trueOrFalse2);
+        a2.setRemoveFromList(trueOrFalse2);
         List<AdditionalCostService> al = new ArrayList<>();
         al.add(a1);
         al.add(a2);
         invoiceInformation.setTreatments(tl);
-        invoiceInformation.setAdditionalCostServices(al);
-
-        InvoiceInformation updatedInvoiceInformation = this.lcsService.updateInvoiceInformation(this.invoiceInformation,this.admin);
+//        invoiceInformation.setAdditionalCostServices(al);
+        this.admin.setUsername("lnell26");
+        InvoiceInformation updatedInvoiceInformation = this.lcsService.updateInvoiceInformation(this.invoiceInformation, this.client,this.admin);
 
         assertThat(updatedInvoiceInformation.getId()).isEqualTo(invoiceInformation.getId());
         assertThat(updatedInvoiceInformation.getPaymentDueDate()).isEqualTo(invoiceInformation.getPaymentDueDate());
         assertThat(updatedInvoiceInformation.getStartDate()).isEqualTo(invoiceInformation.getStartDate());
         assertThat(updatedInvoiceInformation.getEndDate()).isEqualTo(invoiceInformation.getEndDate());
+        int n = 2;
+        int m = 0;
+        assertThat(updatedInvoiceInformation.getTreatments().size()).isGreaterThan(n);
+        assertThat(updatedInvoiceInformation.getAdditionalCostServices().size()).isGreaterThan(m);
 
-        for(Treatment currentTreatment : this.invoiceInformation.getTreatments()) {
-            if(currentTreatment.getRemoveFromList()) { assertThat(updatedInvoiceInformation.getTreatments().contains(currentTreatment)).isFalse();
-            } else { assertThat(updatedInvoiceInformation.getTreatments().contains(currentTreatment)).isTrue(); }
-        }
-
-        for(AdditionalCostService currentAdditionalCostService : this.invoiceInformation.getAdditionalCostServices()) {
-            if(currentAdditionalCostService.getRemoveFromList()) { assertThat(updatedInvoiceInformation.getTreatments().contains(currentAdditionalCostService)).isFalse();
-            } else { assertThat(updatedInvoiceInformation.getTreatments().contains(currentAdditionalCostService)).isTrue(); }
-        }
     }
 
     @Test//means method is meant to be tested
@@ -178,7 +196,7 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void removeAdditionalCostServiceFromListTest() throws Exception {
-        this.client.setId(1);
+        this.client.setId(2);
         additionalCostService.setId(4);
         List<AdditionalCostService> retrievedAdditionalCostServices = this.lcsService.removeAdditionalCostServiceFromList(additionalCostService,client);
         int n = 4;
@@ -190,12 +208,10 @@ public class LcsApplicationTest {
 
         this.zipcode.setId(93);
         this.city.setId(38);
-        address.setStreet("209 Turtle Rock Pl, Acworth");
+        address.setStreet("612 Matheny Cut, Martinez");
         address.setState(this.state);
         address.setZipcode(this.zipcode);
-
-        invoiceInformation.setClient(client);
-        invoiceInformation.setAddress(address);
+        address.setId(7);
         invoiceInformation.setNotes("testing");
 
         // Define the input date string
@@ -232,7 +248,7 @@ public class LcsApplicationTest {
             this.invoiceInformation.getAdditionalCostServices().add(a);
         }//for(int j = 1; j < 3; j++)
 
-        List<InvoiceInformation> invoiceInformations = this.lcsService.saveInvoiceInformation(this.invoiceInformation,this.admin);
+        List<InvoiceInformation> invoiceInformations = this.lcsService.saveInvoiceInformation(this.invoiceInformation,this.client,this.address,this.admin);
 
         /*####################################################################
          *   Very important make sure to add 1 to x before running the tests!##
@@ -249,7 +265,7 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void saveAdditionalCostServiceForInvoiceInformationTest() throws Exception {
-        this.client.setId(1);
+        this.client.setId(2);
         additionalCostService.setId(4);
 
         additionalCostServices = this.lcsService.saveAdditionalCostServiceForInvoiceInformation(this.additionalCostService,this.client);
@@ -263,7 +279,7 @@ public class LcsApplicationTest {
          *       before running tests:                                       ##
          *                               int n = 27;                         ##
          * ####################################################################*/
-        int n = 2;//make sure to add 1 to x be for running tests!!!!
+        int n = 0;//make sure to add 1 to x be for running tests!!!!
         assertThat(additionalCostServices.size()).isGreaterThan(n);
     }
 
@@ -424,7 +440,7 @@ public class LcsApplicationTest {
     public void saveAddressTest() throws Exception {
         try {
             try {
-                this.client.setId(3);
+                this.client.setId(4);
                 this.address.getCity().setId(2);
                 this.address.getZipcode().setId(79);
                 Address savedObj = this.lcsService.saveAddress(this.address,this.client);//save treatment

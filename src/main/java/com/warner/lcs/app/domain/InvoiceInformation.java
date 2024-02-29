@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceInformation {
-    private int id;
+    private int id, clientId;
     private Date paymentDueDate;
     private Date startDate;
     private Date endDate;
-    private Client client;
-    private Address address;
     private List<Treatment> treatments;
     private List<AdditionalCostService> additionalCostServices;
     private String notes;
 
+    private int addressId;
+
+
     public InvoiceInformation(){
-        this.address = new Address();
         this.treatments = new ArrayList<>();
         this.additionalCostServices = new ArrayList<>();
     }
@@ -27,10 +27,10 @@ public class InvoiceInformation {
         this.id = resultSet.getInt("id");
         this.paymentDueDate = resultSet.getDate("payment_due_date");
         this.startDate = resultSet.getDate("start_date");
-        this.client = new Client();
-        this.client.setId(resultSet.getInt("client_id"));
         this.endDate = resultSet.getDate("end_date");
         this.notes = resultSet.getString("notes");
+        this.clientId = resultSet.getInt("client_id");
+        this.addressId = resultSet.getInt("address_id");
     }
 
     public int getId() {
@@ -73,22 +73,6 @@ public class InvoiceInformation {
         this.endDate = endDate;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public List<Treatment> getTreatments() {
         return treatments;
     }
@@ -103,5 +87,21 @@ public class InvoiceInformation {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 }

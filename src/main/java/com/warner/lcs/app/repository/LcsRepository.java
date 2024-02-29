@@ -10,16 +10,40 @@ import java.util.List;
 public interface LcsRepository {
 
     /**
+     * Gets address based on the invoiceInformation database
+     *
+     * This method uses the jdbc template to get a InvoiceInformation object based on invoiceInformation from the database.
+     *
+     * @param invoiceInformation used to fetch address.
+     * @return address object containing data based on the invoiceInformation.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception;
+
+    /**
+     * Gets invoiceInformation based on the address database
+     *
+     * This method uses the jcbc template to get a InvoiceInformation object based on address from the database.
+     *
+     * @param address used to fetch invoiceInformation.
+     * @return invoiceInformation object containing data based on the address.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public InvoiceInformation getInvoiceInformationByAddress(Address address) throws Exception;
+
+
+    /**
      * Updates an invoiceInformation to the database
      *
      * This method uses this jdbc template to update an InvoiceInformation object in the database.
      *
      * @param invoiceInformation has the data that needs an update.
+     * @param client is who the invoiceInformation data is for.
      * @param admin used to keep track of who updated the invoice.
      * @return InvoiceInformation object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
-    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception;
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client,Admin admin) throws Exception;
 
     /**
      * Deletes treatment from invoice in database
@@ -75,11 +99,13 @@ public interface LcsRepository {
      *
      * This method uses the jdbc template to save an InvoiceInformation object to the database.
      * @param invoiceInformation has the city's name.
+     * @param client is who the invoiceInformation data is for.
+     * @param address of the client.
      * @param admin used to keep track of who saved the invoice.
      * @return InvoiceInformation object containing the information about the invoiceInformation that way it's saved to the database.
      * @throws Exception If error occurs during db operation layer.
      */
-    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception;
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception;
 
     /**
      * Returns a list of invoiceInformations from the database based on the client.

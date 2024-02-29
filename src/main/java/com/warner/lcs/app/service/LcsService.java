@@ -7,16 +7,69 @@ import java.util.List;
 public interface LcsService {
 
     /**
+     * Gets total price of treatments and additionalCostServices
+     *
+     * This method sums up the total price of the invoice's treatments and additionalCostServices.
+     *
+     * @param invoiceInformation has price details.
+     * @return totalCost of treatment.
+     */
+    public double calculateTotalCost(InvoiceInformation invoiceInformation);
+
+    /**
+     * Gets total the price of treatment
+     *
+     * This method sums up the total price of the invoice's treatment.
+     *
+     * @param invoiceInformation has price details.
+     * @return totalCost of treatment.
+     */
+    public double calculateTotalTreatmentsCost(InvoiceInformation invoiceInformation);
+
+    /**
+     * Gets total the price of additionalCostServices
+     *
+     * This method sums up the total price of the invoice's additionalCostServices.
+     *
+     * @param invoiceInformation has price details.
+     * @return totalCost of additionalCostServices.
+     */
+    public double calculateTotalAdditionalCostServicesCost(InvoiceInformation invoiceInformation);
+
+    /**
+     * Gets address based on the invoiceInformation database
+     *
+     * This method uses this repository layer to get a InvoiceInformation object based on invoiceInformation from the database.
+     *
+     * @param invoiceInformation used to fetch address.
+     * @return address object containing data based on the invoiceInformation.
+     * @throws Exception If error occurs in the repo layer.
+     */
+     public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception;
+
+    /**
+     * Gets invoiceInformation based on the address database
+     *
+     * This method uses this repository layer to get a InvoiceInformation object based on address from the database.
+     *
+     * @param address used to fetch invoiceInformation.
+     * @return invoiceInformation object containing data based on the address.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public InvoiceInformation getInvoiceInformationByAddress(Address address) throws Exception;
+
+    /**
      * Updates an invoiceInformation to the database
      *
      * This method uses this repository layer to update an InvoiceInformation object in the database.
      *
      * @param invoiceInformation has the data that needs an update.
+     * @param client will be used to remove a treatment from  list.
      * @param admin used to keep track of who updated the invoice.
      * @return InvoiceInformation object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
-    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception;
+    public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception;
 
     /**
      * Deletes treatment from invoice in database
@@ -72,11 +125,13 @@ public interface LcsService {
      * This method uses this repository layer to perisists (save) an InvoiceInformation object in the database.
      *
      * @param invoiceInformation Has the invoiceInformation data.
+     * @param client is who the invoiceInformation data is for.
+     * @param address of the client.
      * @param admin used to keep track of who saved the invoice.
      * @return InvoiceInformation object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Admin admin) throws Exception;
+    public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception;
 
     /**
      * Returns a list of invoiceInformations from the database based on the client.

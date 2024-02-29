@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sql>
     <!--*************************************************Invoice Information************************************************************-->
+    <getInvoiceInformationByAddress>
+        <![CDATA[
+            select * from invoice_information where address_id = ?
+        ]]>
+    </getInvoiceInformationByAddress>
+
     <getAllInvoiceInformations>
         <![CDATA[
             SELECT id, payment_due_date, start_date, end_date, client_id, notes
@@ -10,7 +16,7 @@
 
     <getInvoiceInformationByClientId>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes, address_id
                 FROM INVOICE_INFORMATION
                     WHERE client_id = ?
         ]]>
@@ -26,9 +32,11 @@
             `notes`,
             `additional_services_list_id`,
             `treatment_list_id`,
+            `address_id`,
             `lm_user_id`,
             `lm_date`
         ) VALUES (
+            ?,
             ?,
             ?,
             ?,
@@ -140,6 +148,33 @@
                 ADDRESSES.client_id = ?
         ]]>
     </getAddressesByClientId>
+
+    <getAddressesByInvoiceInformation>
+        <![CDATA[
+                       SELECT
+                ADDRESSES.id AS AddressID,
+                ADDRESSES.street AS Address,
+                ADDRESSES.is_active,
+                CITIES.id AS CityID,
+                CITIES.city AS City,
+                STATES.id AS StateID,
+                STATES.state AS State,
+                ZIPCODES.id AS ZipCodeID,
+                ZIPCODES.zipcode AS ZipCode
+            FROM
+                ADDRESSES
+            JOIN
+                CITIES ON ADDRESSES.city_id = CITIES.id
+            JOIN
+                STATES ON ADDRESSES.state_id = STATES.id
+            JOIN
+                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+            JOIN
+                INVOICE_INFORMATION ON ADDRESSES.id = INVOICE_INFORMATION.address_id
+            WHERE
+                ADDRESSES.id = ?
+        ]]>
+    </getAddressesByInvoiceInformation>
 
     <doesAddressExists>
         <![CDATA[
