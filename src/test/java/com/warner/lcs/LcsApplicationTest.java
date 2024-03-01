@@ -2,6 +2,7 @@ package com.warner.lcs;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.PdfGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,12 @@ public class LcsApplicationTest {
         additionalCostService.setTreatmentDescription("additional treatment description 8");
         additionalCostService.setPrice(89.45);
         this.invoiceInformation = new InvoiceInformation();
+    }
+
+    @Test//means method is meant to be tested
+    public void pdfGeneratorTest() throws Exception {
+        PdfGenerator pdfGenerator = new PdfGenerator("title.pdf");
+
     }
 
     @Test//means method is meant to be tested
