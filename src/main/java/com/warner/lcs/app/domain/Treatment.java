@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class Treatment {
 
-    private int id;
+    private int id, qty;
     private String treatmentName, treatmentDescription;
     private double price;
     private boolean addToList, removeFromList;
@@ -66,5 +66,21 @@ public class Treatment {
 
     public void setRemoveFromList(boolean removeFromList) {
         this.removeFromList = removeFromList;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public boolean isAddToList() {
+        return addToList;
+    }
+
+    public boolean isRemoveFromList() {
+        return removeFromList;
     }
 }

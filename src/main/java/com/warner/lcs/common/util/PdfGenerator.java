@@ -1,9 +1,6 @@
 package com.warner.lcs.common.util;
 
-import com.codingerror.model.AddressDetails;
-import com.codingerror.model.HeaderDetails;
 import com.codingerror.model.Product;
-import com.codingerror.model.ProductTableHeader;
 import com.codingerror.service.CodingErrorPdfInvoiceCreator;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.PageSize;
@@ -14,19 +11,13 @@ import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.DashedBorder;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
-import com.warner.lcs.app.domain.Address;
-import com.warner.lcs.app.domain.Business;
-import com.warner.lcs.app.domain.Client;
-import com.warner.lcs.app.domain.InvoiceInformation;
-
+import com.warner.lcs.app.domain.*;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +32,16 @@ public class PdfGenerator {
 
     private Document document;
     PdfDocument pdfDocument;
+
+    float fourcol = 95.0f;
     float threecol = 190.0F;
     float twocol = 285.0F;
     float twocol150=twocol+150f;
     float twocolumnWidth[] = {twocol150,twocol};
-    float fullwidth []={threecol*3};
+    float threecolumnWidth[] = {threecol,threecol,threecol};
+    float fourcolumnWidth[] = {fourcol,fourcol,fourcol,fourcol};
+    float fivecolumnWidth[] = {fourcol-5,fourcol-5,fourcol-5,fourcol-5,fourcol-5};
+    float fullWidth []={threecol*3};
     Paragraph onesp = new Paragraph("\n");
     private CodingErrorPdfInvoiceCreator cepdf;
 
@@ -63,15 +59,15 @@ public class PdfGenerator {
         Table table = new Table(this.twocolumnWidth);
         table.addCell(new Cell().add("Invoice").setFontSize(20f).setBorder(Border.NO_BORDER).setBold());
         Table nestedTable = new Table(new float[]{twocol/2,twocol/2});
-        nestedTable.addCell(this.getHeaderTextCell("Invoice No."));
+        nestedTable.addCell(this.getHeaderTextCell("Invoice No.").setBold());
         nestedTable.addCell(this.getHeaderTextCell("RK356748"));
-        nestedTable.addCell(this.getHeaderTextCell("Invoice Date"));
+        nestedTable.addCell(this.getHeaderTextCell("Invoice Date").setBold());
         nestedTable.addCell(this.getHeaderTextCell("15/16/2024"));
 
         table.addCell(new Cell().add(nestedTable).setBorder(Border.NO_BORDER));
 
         Border gb = new SolidBorder(Color.GRAY,1f/2f);
-        Table divider = new Table(fullwidth);
+        Table divider = new Table(fullWidth);
         divider.setBorder(gb);
         document.add(table);
         document.add(onesp);
@@ -106,9 +102,85 @@ public class PdfGenerator {
         oneColTable1.addCell(getCell10fLeft("stern@example.com",false));
         document.add(oneColTable1.setMarginBottom(10f));
 
-        Table tableDivider2 = new Table(fullwidth);
+
+        Table tableDivider2 = new Table(fullWidth);
         Border dgb = new DashedBorder(Color.GRAY,0.5f);
         document.add(tableDivider2.setBorder(dgb));
+        Paragraph productPara = new Paragraph("Products");
+
+        document.add(productPara.setBold());
+        Table threeColTable1 = new Table(fivecolumnWidth);
+        threeColTable1.setBackgroundColor(Color.BLACK,07.f);
+
+        threeColTable1.addCell(new Cell().add("Description").setBold().setFontColor(Color.WHITE).setBorder(Border.NO_BORDER));
+        threeColTable1.addCell(new Cell().add("Description").setBold().setFontColor(Color.WHITE).setBorder(Border.NO_BORDER));
+        threeColTable1.addCell(new Cell().add("Quantity").setBold().setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
+        threeColTable1.addCell(new Cell().add("Price").setBold().setBold().setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMargin(15f);
+        threeColTable1.addCell(new Cell().add("Total").setBold().setBold().setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMargin(15f);
+        document.add(threeColTable1);
+
+        List<Product> productList = new ArrayList<>();
+        productList.add(new Product("apple",2,159));
+        productList.add(new Product("mango",4,159));
+        productList.add(new Product("bannana",2,90));
+        productList.add(new Product("grapes",2,10));
+        productList.add(new Product("coconut",2,61));
+        productList.add(new Product("cherry",1,1000));
+        productList.add(new Product("kiwi",3,30));
+
+        List<Treatment> treatments = new ArrayList<>();
+        Treatment t1 = new Treatment(),t2 = new Treatment(),t3 = new Treatment();
+        t1.setTreatmentName("treatment 1");
+        t1.setTreatmentDescription("descritption 1");
+        t1.setQty(2);
+        t1.setPrice(35.00);
+
+        t2.setTreatmentName("treatment 2");
+        t2.setTreatmentDescription("descritption 2");
+        t2.setQty(6);
+        t2.setPrice(55.00);
+
+        t3.setTreatmentName("treatment 3");
+        t3.setTreatmentDescription("descritption 3");
+        t3.setQty(1);
+        t3.setPrice(65.00);
+        treatments.add(t1);
+        treatments.add(t2);
+        treatments.add(t3);
+
+        Table threeColTable2 = new Table(fivecolumnWidth);
+        float totalSum=0f;
+        for(Treatment treatment:treatments)
+        {
+            double total = treatment.getQty()*treatment.getPrice();
+            totalSum+=total;
+
+            threeColTable2.addCell(new Cell().add(treatment.getTreatmentName()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(treatment.getTreatmentDescription()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(treatment.getQty())).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(treatment.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+        }
+
+
+
+        document.add(threeColTable2.setMarginBottom(20f));
+        float onetwo[]={threecol+125f,threecol*2};
+        Table threeColTable4 = new Table(onetwo);
+        threeColTable4.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
+        threeColTable4.addCell(tableDivider2).setBorder(Border.NO_BORDER);
+        document.add(threeColTable4);
+
+        Table threeColTable3 = new Table(threecolumnWidth);
+        threeColTable3.addCell(new Cell().add("").setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+        threeColTable3.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
+        threeColTable3.addCell(new Cell().add(String.valueOf(totalSum)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+        document.add(threeColTable3);
+        document.add(tableDivider2);
+        document.add(new Paragraph("\n"));
+        document.add(divider.setBorder(new SolidBorder(Color.GRAY,1)).setMarginBottom(15f));
+//        productList.add()
+
     }
     public PdfGenerator(Client client, Address address, InvoiceInformation information, Business business) {
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
@@ -130,94 +202,5 @@ public class PdfGenerator {
         Cell cell = new Cell().add(textValue).setFontSize(10f).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
         return isBold ? cell.setBold() : cell;
     }
-
-
-//    public String generatePdf() {
-//        //Create Header start
-//        HeaderDetails header = new HeaderDetails();
-//        header.setInvoiceNo("RK35623").setInvoiceDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-//                .setInvoiceTitle("Invoice").build();
-//        cepdf.createHeader(header);
-//        //Header End
-//
-//        //Create Addrses start
-//        AddressDetails addressDetails = new AddressDetails();
-//        addressDetails
-//                .setBillingCompany("Coding Error")
-//                .setBillingName("Bhsakar")
-//                .setBillingAddress("9322 Melody circle sw covington ga 30014")
-//                .setBillingEmail("test@gmail.com")
-//                .setShippingName("Customer Name")
-//                .setShippingAddress("Test")
-//                .build();
-//        cepdf.createAddress(addressDetails);
-//        //Address end
-//
-//        //Product Start
-//        ProductTableHeader productTableHeader = new ProductTableHeader();
-//        cepdf.createTableHeader(productTableHeader);
-//        List<Product> productList = cepdf.getDummyProductList();
-//        productList = cepdf.modifyProductList(productList);
-//        cepdf.createProduct(productList);
-//        //Product End
-//
-//        //Term and Condition Start
-//        List<String> TncList = new ArrayList<>();
-//        TncList.add("etc...");
-//        TncList.add("etc...!");
-////        String imagePath = "C:/Users/User/Desktop/pdf";
-//
-////        cepdf.createTnc(TncList,false,imagePath);
-//        //Term and condition end
-//        System.out.println("pdf generated");
-//
-//        return "Success";
-//    }
-//
-//
-//    public void test() throws FileNotFoundException {
-//        LocalDate ld= LocalDate.now();
-//        String pdfName= ld+".pdf";
-//        CodingErrorPdfInvoiceCreator cepdf=new CodingErrorPdfInvoiceCreator(pdfName);
-//        cepdf.createDocument();
-//
-//        //Create Header start
-//        HeaderDetails header=new HeaderDetails();
-//        header.setInvoiceNo("RK35623").setInvoiceDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).build();
-//        cepdf.createHeader(header);
-//        //Header End
-//
-//        //Create Address start
-//        AddressDetails addressDetails=new AddressDetails();
-//        addressDetails
-//                .setBillingCompany("Coding Error")
-//                .setBillingName("Bhaskar")
-//                .setBillingAddress("Bangluru,karnataka,india\n djdj\ndsjdsk")
-//                .setBillingEmail("codingerror303@gmail.com")
-//                .setShippingName("Customer Name \n").setShippingInfoText("Client Information")
-//                .setShippingAddress("Banglore Name sdss\n swjs\n")
-//                .build();
-//
-//        cepdf.createAddress(addressDetails);
-//        //Address end
-//
-//        //Product Start
-//        ProductTableHeader productTableHeader=new ProductTableHeader();
-//        cepdf.createTableHeader(productTableHeader);
-//        List<Product> productList=cepdf.getDummyProductList();
-//        productList=cepdf.modifyProductList(productList);
-//        cepdf.createProduct(productList);
-//        //Product End
-//
-//        //Term and Condition Start
-//        List<String> TncList=new ArrayList<>();
-//        TncList.add("1. The Seller shall not be liable to the Buyer directly or indirectly for any loss or damage suffered by the Buyer.");
-//        TncList.add("2. The Seller warrants the product for one (1) year from the date of shipment");
-//        String imagePath="src/main/resources/ce_logo_circle_transparent.png";
-//        cepdf.createTnc(TncList,false,imagePath);
-//        // Term and condition end
-//        System.out.println("pdf genrated");
-//    }
-
 
 }
