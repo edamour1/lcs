@@ -7,6 +7,50 @@ import java.util.List;
 public interface LcsService {
 
     /**
+     * Gets specific additionalCostService for invoiceInformation.
+     *
+     * This method uses the repository layer to fetch a additionalCostService from the database for invoiceInformation.
+     *
+     * @param additionalCostService used to fetch additionalCostService details.
+     * @param client used to fetch additionalCostService details.
+     * @return retrievedAdditionalCostService has updated data.
+     */
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception;
+
+    /**
+     * Updates qty of additional_service for invoiceInformation.
+     *
+     * This method uses the repository layer to update the amount of additional_services list for  invoiceInformation.
+     *
+     * @param additionalCostService used to update quantity.
+     * @param client used to update quantity.
+     * @return updatedAdditionalCostService has updated data.
+     */
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception;
+
+    /**
+     * Gets specific treatment for invoiceInformation.
+     *
+     * This method uses the repository layer to fetch a treatment from the database for invoiceInformation.
+     *
+     * @param treatment used to fetch treatment details.
+     * @param client used to fetch treatment details.
+     * @return retrievedTreatment has updated data.
+     */
+    public Treatment getTreatment(Treatment treatment, Client client) throws Exception;
+
+    /**
+     * Updates qty of treatment for invoiceInformation.
+     *
+     * This method uses the repository layer to update the amount of treatments list for  invoiceInformation.
+     *
+     * @param treatment used to update quantity.
+     * @param client used to update quantity.
+     * @return updatedTreatment has updated data.
+     */
+    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception;
+
+    /**
      * Gets total price of treatments and additionalCostServices
      *
      * This method sums up the total price of the invoice's treatments and additionalCostServices.

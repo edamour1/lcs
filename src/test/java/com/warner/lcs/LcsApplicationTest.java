@@ -85,6 +85,43 @@ public class LcsApplicationTest {
     }
 
     @Test//means method is meant to be tested
+    public void updateAdditionalCostServiceQtyTest() throws Exception{
+        this.additionalCostService.setId(2);
+        this.additionalCostService.setQty(80);
+        this.client.setId(4);
+        AdditionalCostService updatedObj = this.lcsService.updateAdditionalCostServiceQty(additionalCostService,client);
+
+        assertThat(updatedObj.getQty()).isEqualTo(this.additionalCostService.getQty());
+    }
+
+    @Test//means method is meant to be tested
+    public void getAdditionalCostServiceTest() throws Exception {
+        this.additionalCostService.setId(1);
+        this.client.setId(4);
+        AdditionalCostService retrievedObj = this.lcsService.getAdditionalCostService(this.additionalCostService,this.client);
+        assertThat(retrievedObj.getId()).isEqualTo(this.additionalCostService.getId());
+    }
+
+    @Test//means method is meant to be tested
+    public void updateTreatmentQtyTest() throws Exception {
+        this.treatment.setId(1);
+        this.treatment.setQty(3);
+        this.client.setId(4);
+        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,client);
+
+        assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
+    }
+
+    @Test//means method is meant to be tested
+    public void getTreatmentTest() throws Exception {
+        this.treatment.setId(1);
+        this.client.setId(4);
+        Treatment retrievedObj = this.lcsService.getTreatment(this.treatment,this.client);
+        assertThat(retrievedObj.getId()).isEqualTo(this.treatment.getId());
+
+    }
+
+    @Test//means method is meant to be tested
     public void pdfGeneratorTest() throws Exception {
         InvoiceNumberGenerator invoiceNumberGenerator = new InvoiceNumberGenerator();
         System.out.println(invoiceNumberGenerator.generateInvoiceNo());
@@ -320,7 +357,7 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void getInvoiceInformationByClientIdTest() throws Exception {
         try {
-            client.setId(3);
+            client.setId(4);
             invoiceInformations = this.lcsService.getInvoiceInformationByClientId(client);
             assertThat(invoiceInformations).isNotNull();
             assertTrue(invoiceInformations.size() > 0, "Array length should be more than 6");

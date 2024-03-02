@@ -24,6 +24,61 @@ public class LcsRepositoryImpl implements LcsRepository {
 
 
     @Override
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception {
+
+        String sql = SQL.get("lcsSql","getAdditionalCostService");
+        RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
+            public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                AdditionalCostService additionalCostService = new AdditionalCostService(rs);
+                additionalCostService.setQty(rs.getInt("quantity"));
+
+                return additionalCostService;
+            }
+        };
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,client.getId(),additionalCostService.getId());
+        AdditionalCostService retrievedAdditionalCostService = additionalCostServices.get(0);
+            return retrievedAdditionalCostService;
+
+    }
+
+    @Override
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","updateAdditionalCostServiceQty");
+        this.lcsDataSourceTemplate.update(sql,additionalCostService.getQty(),client.getId(),additionalCostService.getId());
+        AdditionalCostService updatedAdditionalCostService = this.getAdditionalCostService(additionalCostService,client);
+        return updatedAdditionalCostService;
+    }
+
+    @Override
+    public Treatment getTreatment(Treatment treatment, Client client) throws Exception {
+        RowMapper<Treatment> mapper = new RowMapper<Treatment>(){
+            public Treatment mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Treatment treatment = new Treatment(rs);
+                treatment.setQty(rs.getInt("quantity"));
+
+                return treatment;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getTreatment");
+        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,client.getId(),treatment.getId());
+        Treatment retrievedTreatment = treatments.get(0);
+
+        return retrievedTreatment;
+    }
+
+    @Override
+    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception {
+        String sql = SQL.get("lcsSql","updateTreatmentQty");
+        this.lcsDataSourceTemplate.update(sql,treatment.getQty(),client.getId(),treatment.getId());
+        Treatment updatedTreatment = this.getTreatment(treatment,client);
+        return updatedTreatment;
+    }
+
+
+    @Override
     public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception {
         RowMapper<Address> mapper = new RowMapper<Address>(){
             public Address mapRow(ResultSet rs, int rowNum) throws SQLException {

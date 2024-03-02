@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sql>
     <!--*************************************************Invoice Information************************************************************-->
+    <getAdditionalCostService>
+        <![CDATA[
+            SELECT  additional_services.*, additional_services_list.quantity from  additional_services_list
+                JOIN
+                    additional_services on additional_services_list.additional_service_id = additional_services. ID
+                        WHERE additional_services_list.id = ? and additional_services_list.additional_service_id = ?
+        ]]>
+    </getAdditionalCostService>
+    <updateAdditionalCostServiceQty>
+        <![CDATA[
+            UPDATE additional_services_list
+                set quantity = ?
+                WHERE id = ? and additional_service_id = ?
+        ]]>
+    </updateAdditionalCostServiceQty>
+    <getTreatment>
+        <![CDATA[
+            SELECT  treatments.*, treatment_list.quantity from  treatment_list
+                JOIN
+                    treatments on treatment_list.treatment_id = treatments. ID
+                        WHERE treatment_list.id = ? and treatment_list.treatment_id = ?
+        ]]>
+    </getTreatment>
+    <updateTreatmentQty>
+        <![CDATA[
+            UPDATE treatment_list
+                set quantity = ?
+                WHERE id = ? and treatment_id = ?
+        ]]>
+    </updateTreatmentQty>
     <getInvoiceInformationByAddress>
         <![CDATA[
             select * from invoice_information where address_id = ?
@@ -9,7 +39,7 @@
 
     <getAllInvoiceInformations>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes, invoice_no
             FROM INVOICE_INFORMATION
             ]]>
     </getAllInvoiceInformations>

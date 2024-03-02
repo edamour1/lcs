@@ -83,4 +83,5 @@ public class Treatment {
     public boolean isRemoveFromList() {
         return removeFromList;
     }
+
 }

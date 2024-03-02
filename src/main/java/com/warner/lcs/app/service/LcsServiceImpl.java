@@ -15,6 +15,26 @@ public class LcsServiceImpl implements LcsService {
 
 
     @Override
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception {
+        return this.lcsRepository.getAdditionalCostService(additionalCostService,client);
+    }
+
+    @Override
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception {
+        return this.lcsRepository.updateAdditionalCostServiceQty(additionalCostService,client);
+    }
+
+    @Override
+    public Treatment getTreatment(Treatment treatment, Client client) throws Exception {
+        return this.lcsRepository.getTreatment(treatment,client);
+    }
+
+    @Override
+    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception {
+        return this.lcsRepository.updateTreatmentQty(treatment,client);
+    }
+
+    @Override
     public double calculateTotalCost(InvoiceInformation invoiceInformation) {
         double totalCost = this.calculateTotalTreatmentsCost(invoiceInformation)
                          + this.calculateTotalAdditionalCostServicesCost(invoiceInformation);
