@@ -31,7 +31,9 @@ public class PdfGenerator {
     private String pdfName = ld+".pdf";
 
     private Document document;
-    PdfDocument pdfDocument;
+    private PdfDocument pdfDocument;
+
+    private InvoiceNumberGenerator invoiceNumberGenerator;
 
     float fourcol = 95.0f;
     float threecol = 190.0F;
@@ -40,12 +42,13 @@ public class PdfGenerator {
     float twocolumnWidth[] = {twocol150,twocol};
     float threecolumnWidth[] = {threecol,threecol,threecol};
     float fourcolumnWidth[] = {fourcol,fourcol,fourcol,fourcol};
-    float fivecolumnWidth[] = {fourcol-5,fourcol-5,fourcol-5,fourcol-5,fourcol-5};
+    float fivecolumnWidth[] = {fourcol+10,fourcol+10,fourcol-5,fourcol-5,fourcol-5};
     float fullWidth []={threecol*3};
     Paragraph onesp = new Paragraph("\n");
     private CodingErrorPdfInvoiceCreator cepdf;
 
     public PdfGenerator(String path) throws FileNotFoundException {
+        invoiceNumberGenerator = new InvoiceNumberGenerator();
         PdfWriter pdfWriter = new PdfWriter(path);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -60,7 +63,7 @@ public class PdfGenerator {
         table.addCell(new Cell().add("Invoice").setFontSize(20f).setBorder(Border.NO_BORDER).setBold());
         Table nestedTable = new Table(new float[]{twocol/2,twocol/2});
         nestedTable.addCell(this.getHeaderTextCell("Invoice No.").setBold());
-        nestedTable.addCell(this.getHeaderTextCell("RK356748"));
+        nestedTable.addCell(this.getHeaderTextCell(invoiceNumberGenerator.generateInvoiceNo()));
         nestedTable.addCell(this.getHeaderTextCell("Invoice Date").setBold());
         nestedTable.addCell(this.getHeaderTextCell("15/16/2024"));
 
@@ -76,7 +79,7 @@ public class PdfGenerator {
 
         Table twoColTable = new Table(twocolumnWidth);
         twoColTable.addCell(getBillingAndShippingCell("Biling Information"));
-        twoColTable.addCell(getBillingAndShippingCell("Shipping Information"));
+        twoColTable.addCell(getBillingAndShippingCell("Service"));
         document.add(twoColTable.setMarginBottom(12f));
 
         Table twoColTable2 = new Table(twocolumnWidth);
@@ -110,9 +113,9 @@ public class PdfGenerator {
 
         document.add(productPara.setBold());
         Table threeColTable1 = new Table(fivecolumnWidth);
-        threeColTable1.setBackgroundColor(Color.BLACK,07.f);
+        threeColTable1.setBackgroundColor(Color.BLACK,07.f).setPaddingLeft(50);
 
-        threeColTable1.addCell(new Cell().add("Description").setBold().setFontColor(Color.WHITE).setBorder(Border.NO_BORDER));
+        threeColTable1.addCell(new Cell().add("Service").setBold().setFontColor(Color.WHITE).setBorder(Border.NO_BORDER));
         threeColTable1.addCell(new Cell().add("Description").setBold().setFontColor(Color.WHITE).setBorder(Border.NO_BORDER));
         threeColTable1.addCell(new Cell().add("Quantity").setBold().setFontColor(Color.WHITE).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
         threeColTable1.addCell(new Cell().add("Price").setBold().setBold().setFontColor(Color.WHITE).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMargin(15f);
@@ -131,7 +134,7 @@ public class PdfGenerator {
         List<Treatment> treatments = new ArrayList<>();
         Treatment t1 = new Treatment(),t2 = new Treatment(),t3 = new Treatment();
         t1.setTreatmentName("treatment 1");
-        t1.setTreatmentDescription("descritption 1");
+        t1.setTreatmentDescription("Pre-M #1/spring");
         t1.setQty(2);
         t1.setPrice(35.00);
 
@@ -148,6 +151,26 @@ public class PdfGenerator {
         treatments.add(t2);
         treatments.add(t3);
 
+        List<AdditionalCostService> additionalCostServices = new ArrayList<>();
+        AdditionalCostService a1 = new AdditionalCostService(),a2 = new AdditionalCostService(),a3 = new AdditionalCostService();
+        a1.setTreatmentName("additional cost 1");
+        a1.setTreatmentDescription("descritption 1");
+        a1.setQty(1);
+        a1.setPrice(20.00);
+
+        a2.setTreatmentName("additional cost 2");
+        a2.setTreatmentDescription("descritption 2");
+        a2.setQty(6);
+        a2.setPrice(30.00);
+
+        a3.setTreatmentName("additional cost 3");
+        a3.setTreatmentDescription("descritption 3");
+        a3.setQty(1);
+        a3.setPrice(40.00);
+        additionalCostServices.add(a1);
+        additionalCostServices.add(a2);
+        additionalCostServices.add(a3);
+
         Table threeColTable2 = new Table(fivecolumnWidth);
         float totalSum=0f;
         for(Treatment treatment:treatments)
@@ -162,6 +185,20 @@ public class PdfGenerator {
             threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
         }
 
+        for(AdditionalCostService additionalCostService:additionalCostServices)
+        {
+            double total = additionalCostService.getQty()*additionalCostService.getPrice();
+            totalSum+=total;
+
+            threeColTable2.addCell(new Cell().add(additionalCostService.getTreatmentName()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(additionalCostService.getTreatmentDescription()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(additionalCostService.getQty())).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(additionalCostService.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+        }
+
+
+
 
 
         document.add(threeColTable2.setMarginBottom(20f));
@@ -174,7 +211,7 @@ public class PdfGenerator {
         Table threeColTable3 = new Table(threecolumnWidth);
         threeColTable3.addCell(new Cell().add("").setBorder(Border.NO_BORDER)).setMarginLeft(10f);
         threeColTable3.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
-        threeColTable3.addCell(new Cell().add(String.valueOf(totalSum)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+        threeColTable3.addCell(new Cell().add(String.valueOf(totalSum)).setPaddingLeft(150f).setBorder(Border.NO_BORDER)).setMarginRight(15f);
         document.add(threeColTable3);
         document.add(tableDivider2);
         document.add(new Paragraph("\n"));

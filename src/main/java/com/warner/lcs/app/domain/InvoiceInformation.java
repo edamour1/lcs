@@ -17,6 +17,8 @@ public class InvoiceInformation {
 
     private int addressId;
 
+    private String no;
+
 
     public InvoiceInformation(){
         this.treatments = new ArrayList<>();
@@ -31,6 +33,7 @@ public class InvoiceInformation {
         this.notes = resultSet.getString("notes");
         this.clientId = resultSet.getInt("client_id");
         this.addressId = resultSet.getInt("address_id");
+        this.no = resultSet.getString("invoice_no");
     }
 
     public int getId() {
@@ -103,5 +106,13 @@ public class InvoiceInformation {
 
     public void setAddressId(int addressId) {
         this.addressId = addressId;
+    }
+
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
     }
 }

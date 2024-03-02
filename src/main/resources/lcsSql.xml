@@ -16,7 +16,7 @@
 
     <getInvoiceInformationByClientId>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes, address_id
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes, address_id, invoice_no
                 FROM INVOICE_INFORMATION
                     WHERE client_id = ?
         ]]>
@@ -34,8 +34,10 @@
             `treatment_list_id`,
             `address_id`,
             `lm_user_id`,
+            `invoice_no`,
             `lm_date`
         ) VALUES (
+            ?,
             ?,
             ?,
             ?,
@@ -51,16 +53,17 @@
 
     <saveTreatmentForInvoiceInformation>
         <![CDATA[
-            INSERT INTO `treatment_list` (`id`,`treatment_id`)
+            INSERT INTO `treatment_list` (`id`,`treatment_id`,`quantity`)
             VALUES (?,
-                    ? )
+                    ? ,
+                    ?)
         ]]>
     </saveTreatmentForInvoiceInformation>
 
     <saveAdditionalCostServiceForInvoiceInformation>
         <![CDATA[
-            INSERT INTO `ADDITIONAL_SERVICES_LIST` (`id`,`additional_service_id`)
-            VALUES (?,?)
+            INSERT INTO `ADDITIONAL_SERVICES_LIST` (`id`,`additional_service_id`,`quantity`)
+            VALUES (?,?,?)
         ]]>
     </saveAdditionalCostServiceForInvoiceInformation>
 
@@ -216,7 +219,7 @@
 
     <getTreatmentsByClientId>
         <![CDATA[
-            SELECT TREATMENTS.*
+            SELECT TREATMENTS.*,TREATMENT_LIST.quantity
             FROM TREATMENTS
             JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
             JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = TREATMENT_LIST.id
@@ -289,11 +292,11 @@
 
     <getAdditionalCostServicesByClientId>
         <![CDATA[
-            SELECT ADDITIONAL_SERVICES.*
-            FROM ADDITIONAL_SERVICES
-            JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
-            JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = ADDITIONAL_SERVICES_LIST.id
-            WHERE INVOICE_INFORMATION.additional_services_list_id = ?
+            SELECT ADDITIONAL_SERVICES.* , ADDITIONAL_SERVICES_LIST.quantity
+                FROM ADDITIONAL_SERVICES
+                JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
+                JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = ADDITIONAL_SERVICES_LIST.id
+                WHERE INVOICE_INFORMATION.additional_services_list_id =  ?
         ]]>
     </getAdditionalCostServicesByClientId>
 

@@ -144,6 +144,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, client.getId());
             ps.setInt(2, additionalCostService.getId());
+            ps.setInt(3,additionalCostService.getQty());
             return ps;
         }, keyHolder);
         List<AdditionalCostService> additionalCostServices = this.getAdditionalCostServicesByClientId(client);
@@ -170,6 +171,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, client.getId());
             ps.setInt(2, treatment.getId());
+            ps.setInt(3, treatment.getQty());
             return ps;
         }, keyHolder);
 
@@ -178,13 +180,6 @@ public class LcsRepositoryImpl implements LcsRepository {
 
     @Override
     public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception {
-        for(Treatment treatment : invoiceInformation.getTreatments()){
-            this.saveTreatmentForInvoiceInformation(treatment,client);
-        }
-
-        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){
-            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
-        }
 
         String sql = SQL.get("lcsSql","saveInvoiceInformation");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
@@ -211,8 +206,18 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setInt(7, client.getId());
             ps.setInt(8,address.getId());
             ps.setString(9, admin.getUsername());
+            ps.setString(10, invoiceInformation.getNo());
+
             return ps;
         }, keyHolder);
+
+        for(Treatment treatment : invoiceInformation.getTreatments()){
+            this.saveTreatmentForInvoiceInformation(treatment,client);
+        }
+
+        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){
+            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+        }
 
         List<InvoiceInformation>  retrievedInvoiceInformation = this.getInvoiceInformationByClientId(client);
 
@@ -287,7 +292,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
 
                 AdditionalCostService additionalCostService = new AdditionalCostService(rs);
-
+                additionalCostService.setQty(rs.getInt("quantity"));
                 return additionalCostService;
             }
         };
@@ -601,6 +606,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             public Treatment mapRow(ResultSet rs, int rowNum) throws SQLException {
 
                 Treatment treatment = new Treatment(rs);
+                treatment.setQty(rs.getInt("quantity"));
 
                 return treatment;
             }

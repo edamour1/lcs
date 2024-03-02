@@ -2,6 +2,7 @@ package com.warner.lcs;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.InvoiceNumberGenerator;
 import com.warner.lcs.common.util.PdfGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,8 +44,11 @@ public class LcsApplicationTest {
     private InvoiceInformation invoiceInformation;//used for testing
     private List<InvoiceInformation> invoiceInformations;//used for testing
 
+    private InvoiceNumberGenerator invoiceNumberGenerator;
+
     @BeforeEach//do execute this method before running any tests
     void setup() {
+        this.invoiceNumberGenerator = new InvoiceNumberGenerator();
         client = new Client();//create dummy object
         client.setFirstName("Test");
         client.setMiddleName("Test");
@@ -82,8 +86,9 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void pdfGeneratorTest() throws Exception {
+        InvoiceNumberGenerator invoiceNumberGenerator = new InvoiceNumberGenerator();
+        System.out.println(invoiceNumberGenerator.generateInvoiceNo());
         PdfGenerator pdfGenerator = new PdfGenerator("title.pdf");
-
     }
 
     @Test//means method is meant to be tested
@@ -246,15 +251,17 @@ public class LcsApplicationTest {
         for(int i = 1; i < 4; i++){
             Treatment t = new Treatment();
             t.setId(i);
+            t.setQty(i+1);
          this.invoiceInformation.getTreatments().add(t);
         }//for(int i = 1; i < 4; i++)
 
         for(int j = 1; j < 3; j++){
             AdditionalCostService a = new AdditionalCostService();
             a.setId(j);
+            a.setQty(j+1);
             this.invoiceInformation.getAdditionalCostServices().add(a);
         }//for(int j = 1; j < 3; j++)
-
+        invoiceInformation.setNo(this.invoiceNumberGenerator.generateInvoiceNo());
         List<InvoiceInformation> invoiceInformations = this.lcsService.saveInvoiceInformation(this.invoiceInformation,this.client,this.address,this.admin);
 
         /*####################################################################
@@ -349,7 +356,7 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void getTreatmentsByClientIdTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
-            this.client.setId(2);
+            this.client.setId(4);
             treatments = this.lcsService.getTreatmentsByClientId(client);
             assertThat(treatments).isNotNull();
             assertTrue(treatments.size() > 0, "Array length should be more than 6");
