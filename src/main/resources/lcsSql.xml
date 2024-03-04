@@ -101,22 +101,23 @@
         <![CDATA[
             UPDATE INVOICE_INFORMATION
 
-            SET
-                payment_due_date = ?,
-                start_date = ?,
-                end_date = ?,
-                notes = ?,
-                lm_user_id = ?,
-                lm_date = Now()
-            WHERE id = ?
+                SET
+                    payment_due_date = ?,
+                    start_date = ?,
+                    end_date = ?,
+                    notes = ?,
+                    lm_user_id = ?,
+                    lm_date = Now()
+
+                        WHERE id = ?
         ]]>
     </updateInvoiceInformation>
 
 <!--**************************************************************Address***************************************************************-->
     <saveAddress>
         <![CDATA[
-             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_active)
-             VALUES (?, ?, ?, ?, ?, ?)
+             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_billing,is_active)
+             VALUES (?, ?, ?, ?, ?, ?,?)
         ]]>
     </saveAddress>
 
@@ -128,7 +129,8 @@
                     city_id = ?,
                     state_id = ?,
                     zipcode_id = ?,
-                    is_active = ?
+                    is_active = ?,
+                    is_billing = ?
                         WHERE
                             id = ?
         ]]>
@@ -145,7 +147,9 @@
                 STATES.id AS StateID,
                 STATES.state AS State,
                 ZIPCODES.id AS ZipCodeID,
-                ZIPCODES.zipcode AS ZipCode
+                ZIPCODES.zipcode AS ZipCode,
+                is_billing,
+                is_active
             FROM
                 ADDRESSES
             JOIN
@@ -168,7 +172,10 @@
                 STATES.id AS StateID,
                 STATES.state AS State,
                 ZIPCODES.id AS ZipCodeID,
-                ZIPCODES.zipcode AS ZipCode
+                ZIPCODES.zipcode AS ZipCode,
+                is_billing,
+                is_active
+
             FROM
                 ADDRESSES
             JOIN
@@ -184,28 +191,30 @@
 
     <getAddressesByInvoiceInformation>
         <![CDATA[
-                       SELECT
-                ADDRESSES.id AS AddressID,
-                ADDRESSES.street AS Address,
-                ADDRESSES.is_active,
-                CITIES.id AS CityID,
-                CITIES.city AS City,
-                STATES.id AS StateID,
-                STATES.state AS State,
-                ZIPCODES.id AS ZipCodeID,
-                ZIPCODES.zipcode AS ZipCode
-            FROM
-                ADDRESSES
-            JOIN
-                CITIES ON ADDRESSES.city_id = CITIES.id
-            JOIN
-                STATES ON ADDRESSES.state_id = STATES.id
-            JOIN
-                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
-            JOIN
-                INVOICE_INFORMATION ON ADDRESSES.id = INVOICE_INFORMATION.address_id
-            WHERE
-                ADDRESSES.id = ?
+                SELECT
+                        ADDRESSES.id AS AddressID,
+                        ADDRESSES.street AS Address,
+                        is_active,
+                        CITIES.id AS CityID,
+                        CITIES.city AS City,
+                        STATES.id AS StateID,
+                        STATES.state AS State,
+                        ZIPCODES.id AS ZipCodeID,
+                        ZIPCODES.zipcode AS ZipCode,
+                        is_billing,
+                        is_active
+                FROM
+                    INVOICE_INFORMATION
+                JOIN
+                    ADDRESSES ON INVOICE_INFORMATION.address_id = ADDRESSES.id
+                JOIN
+                    CITIES ON ADDRESSES.city_id = CITIES.id
+                JOIN
+                    STATES ON ADDRESSES.state_id = STATES.id
+                JOIN
+                    ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+                WHERE
+                    INVOICE_INFORMATION.invoice_no = ?
         ]]>
     </getAddressesByInvoiceInformation>
 
@@ -220,7 +229,10 @@
                 STATES.id AS StateID,
                 STATES.state AS State,
                 ZIPCODES.id AS ZipCodeID,
-                ZIPCODES.zipcode AS ZipCode
+                ZIPCODES.zipcode AS ZipCode,
+                is_billing,
+                is_active
+
             FROM
                 ADDRESSES
             JOIN

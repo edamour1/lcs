@@ -1,5 +1,10 @@
 USE lawncare_service;
 
+CREATE TABLE `units`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `unit` VARCHAR(255) NULL
+);
+
 CREATE TABLE `ZIPCODES`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `zipcode` BIGINT NOT NULL,
@@ -10,7 +15,8 @@ CREATE TABLE `ZIPCODES`(
 CREATE TABLE `ADDITIONAL_SERVICES_LIST`(
     `id` BIGINT UNSIGNED NOT NULL,
     `additional_service_id` BIGINT UNSIGNED NOT NULL,
-    `quantity` BIGINT UNSIGNED  NULL,
+    `quantity` DECIMAL(8, 2) UNSIGNED NULL,
+	`unit_id` BIGINT UNSIGNED NULL,
     PRIMARY KEY (`id`, `additional_service_id`) -- Composite key
 );
 
@@ -42,7 +48,8 @@ CREATE TABLE `BUSINESS`(
 CREATE TABLE `TREATMENT_LIST`(
     `id` BIGINT UNSIGNED NOT NULL,
     `treatment_id` BIGINT UNSIGNED NOT NULL,
-    `quantity` BIGINT UNSIGNED  NULL,
+    `quantity` DECIMAL(8, 2) UNSIGNED NULL,
+	`unit_id` BIGINT UNSIGNED NULL,
     PRIMARY KEY (`id`, `treatment_id`) -- Composite key
 );
 
@@ -53,7 +60,10 @@ CREATE TABLE `ADDRESSES`(
     `city_id` BIGINT UNSIGNED NULL,
     `state_id` BIGINT UNSIGNED NULL,
     `zipcode_id` BIGINT UNSIGNED NULL,
+	`is_billing` tinyint(1) NULL,
 	`is_active` tinyint(1) NULL,
+	`quantity` DECIMAL(8, 2) NULL,
+    `unit_id` BIGINT UNSIGNED NULL,
      PRIMARY KEY (`id`)
 );
 
@@ -62,6 +72,7 @@ CREATE TABLE `TREATMENTS`(
     `treatment_name` VARCHAR(255) NOT NULL,
     `treatment_description` VARCHAR(255) NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
+	
     PRIMARY KEY (`id`)
 );
 
@@ -113,6 +124,12 @@ ALTER TABLE
     `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_treatment_id_foreign` FOREIGN KEY(`treatment_id`) REFERENCES `TREATMENTS`(`id`);
 ALTER TABLE
     `ADDRESSES` ADD CONSTRAINT `addresses_zipcode_id_foreign` FOREIGN KEY(`zipcode_id`) REFERENCES `ZIPCODES`(`id`);
+ALTER TABLE
+    `ADDRESSES` ADD CONSTRAINT `addresses_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
+ALTER TABLE
+    `ADDITIONAL_SERVICES_LIST` ADD CONSTRAINT `additional_services_list_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
+ALTER TABLE
+    `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
 ALTER TABLE
     `BUSINESS` ADD CONSTRAINT `business_address_id_foreign` FOREIGN KEY(`address_id`) REFERENCES `ADDRESSES`(`id`);
 ALTER TABLE

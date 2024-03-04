@@ -1,6 +1,6 @@
 USE lawncare_service;
 
---******************************************States****************************************************
+-- ******************************************States****************************************************
 INSERT INTO STATES (state) VALUES
     ('AL'), -- Alabama
     ('AK'), -- Alaska
@@ -53,7 +53,7 @@ INSERT INTO STATES (state) VALUES
     ('WI'), -- Wisconsin
     ('WY'); -- Wyoming
 	
---*********************************************Cities*********************************************
+-- *********************************************Cities*********************************************
 INSERT INTO `CITIES` (`city`) VALUES
 ('Atlanta'),
 ('Augusta'),
@@ -109,7 +109,7 @@ INSERT INTO `CITIES` (`city`) VALUES
 ('Kingsland');
 
 	
---*********************************************Treatments*********************************************
+-- *********************************************Treatments*********************************************
 INSERT INTO TREATMENTS (treatment_name, treatment_description, price)
 VALUES
     ('treatment name 1', 'treatment 1 description', 75.00),
@@ -121,7 +121,7 @@ VALUES
     ('treatment name 7', 'treatment 7 description', 73.00)
 	
 	
---*********************************************Additional_Services*********************************************
+-- *********************************************Additional_Services*********************************************
 INSERT INTO ADDITIONAL_SERVICES (treatment_name, treatment_description, price)
 VALUES
     ('treatment name 1', 'treatment 1 description', 65.00),
@@ -226,3 +226,30 @@ INSERT INTO zipcodes (zipcode, city_id) VALUES (30917, 2); -- Augusta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30918, 2); -- Augusta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30919, 2); -- Augusta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30999, 2); -- Augusta
+
+--*********************************************units*********************************************
+INSERT INTO units (unit) VALUES
+('Feet'),
+('Inches'),
+('Kilometer'),
+('Meter'),
+('Centimeter'),
+('Millimeter'),
+('Kilogram'),
+('Gram'),
+('Milligram'),
+('Kilolitre'),
+('Litre'),
+('Milliliter'),
+('Centilitre'),
+('Fluid Ounce'),
+('Minute'),
+('Hour'),
+('Second'),
+('Days'),
+('Week'),
+('Month'),
+('Year'),
+('Kelvin'),
+('Celsius'),
+('Fahrenheit');

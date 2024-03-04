@@ -10,7 +10,7 @@ public class Address {
     private City city;
     private State state;
     private Zipcode zipcode;
-    private boolean isActive;
+    private boolean isActive,isBilling;
 
     public  Address(){}
 
@@ -22,6 +22,8 @@ public class Address {
         this.zipcode = new Zipcode(resultSet,true);
         int active = resultSet.getInt("is_active");
         this.isActive = active == 1 ? true : false;
+        int billing = resultSet.getInt("is_billing");
+        this.isBilling = billing == 1 ? true : false;
     }
 
     public int getId() {
@@ -70,6 +72,22 @@ public class Address {
 
     public void setIsActive(boolean active) {
         isActive = active;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isBilling() {
+        return isBilling;
+    }
+
+    public void setBilling(boolean billing) {
+        isBilling = billing;
     }
 }
 

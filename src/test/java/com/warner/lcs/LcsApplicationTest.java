@@ -180,9 +180,10 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void getAddressesByInvoiceInformationTest() throws Exception {
         this.invoiceInformation.setAddressId(7);
+        this.invoiceInformation.setNo("YO172726");
         Address retrievedObj = this.lcsService.getAddressesByInvoiceInformation(invoiceInformation);
 
-        assertThat(retrievedObj.getId()).isEqualTo(invoiceInformation.getAddressId());
+        assertThat(retrievedObj.getId()).isEqualTo(this.invoiceInformation.getAddressId());
     }
 
     @Test//means method is meant to be tested
@@ -282,9 +283,10 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void doesAddressExistsTest() throws Exception {
+        this.address.setStreet("1366 Fallsbrook Way NW");
       boolean  doesAddressExists = this.lcsService.doesAddressExists(address);
       assertThat(doesAddressExists).isTrue();
-      address.setStreet("123 does not exist street");
+        this.address.setStreet("1366 does not exists");
       doesAddressExists = this.lcsService.doesAddressExists(address);
       assertThat(doesAddressExists).isFalse();
     }
@@ -545,7 +547,7 @@ public class LcsApplicationTest {
     public void saveAddressTest() throws Exception {
         try {
             try {
-                this.client.setId(4);
+                this.client.setId(5);
                 this.address.getCity().setId(2);
                 this.address.getZipcode().setId(79);
                 Address savedObj = this.lcsService.saveAddress(this.address,this.client);//save treatment
@@ -574,21 +576,24 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void updateAddressTest() throws Exception {
         try {
-            this.client.setId(3);
+            this.client.setId(4);
             this.city.setId(38);
+            this.city.setCity("Acworth");
             this.zipcode.setId(93);
+            this.zipcode.setZipcode("30101");
 
-            address.setId(2);
-            address.setStreet("1366 Fallsbrook Way NW");
+            address.setId(8);
+            address.setStreet("5554 Saluda Ct NW");
             address.setCity(this.city);
             address.setState(this.state);
             address.setZipcode(this.zipcode);
+            address.setBilling(true);
 
             Address updatedAddress = this.lcsService.updateAddress(this.address,this.client);
             assertThat(updatedAddress).isNotNull();
-            assertThat(city).isEqualTo(updatedAddress.getCity());
-            assertThat(state).isEqualTo(updatedAddress.getState());
-            assertThat(zipcode).isEqualTo(updatedAddress.getZipcode());
+            assertThat(city.getCity()).isEqualTo(updatedAddress.getCity().getCity());
+            assertThat(state.getState()).isEqualTo(updatedAddress.getState().getState());
+            assertThat(zipcode.getZipcode()).isEqualTo(updatedAddress.getZipcode().getZipcode());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -597,7 +602,7 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void getAddressesByClientIdTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
-            this.client.setId(1);
+            this.client.setId(5);
             addresses = this.lcsService.getAddressesByClientId(this.client.getId());
             assertThat(addresses).isNotNull();
             assertTrue(addresses.size() > 0, "Array length should be more than 49");

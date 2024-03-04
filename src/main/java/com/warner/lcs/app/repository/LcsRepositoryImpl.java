@@ -90,8 +90,7 @@ public class LcsRepositoryImpl implements LcsRepository {
         };
 
         String sql = SQL.get("lcsSql","getAddressesByInvoiceInformation");
-        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getAddressId());
-
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getNo());
 
         return addresses.get(0);
     }
@@ -428,12 +427,14 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         String sql = SQL.get("lcsSql","updateAddress");
         int isActiveArgument = address.getIsActive() ? 1 : 0;
+        int isBillingArgument = address.isBilling() ? 1 : 0;
         this.lcsDataSourceTemplate.update(sql,
                 address.getStreet(),
                 address.getCity().getId(),
                 address.getState().getId(),
                 address.getZipcode().getId(),
                 isActiveArgument,
+                isBillingArgument,
                 address.getId());
 
         List<Address> retrievedAddresses = this.getAddressesByClientId(client.getId());
@@ -473,7 +474,9 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setInt(4, address.getState().getId());
             ps.setInt(5, address.getZipcode().getId());
             int isActive = address.getIsActive() ? 1 : 0;
-            ps.setInt(6,isActive);
+            int isBilling= address.isBilling() ? 1 : 0;
+            ps.setInt(6,isBilling);
+            ps.setInt(7,isActive);
 
             return ps;
 
