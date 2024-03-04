@@ -39,7 +39,7 @@
 
     <getAllInvoiceInformations>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes, invoice_no
+            SELECT id, payment_due_date, start_date, end_date, client_id, notes, invoice_no, address_id
             FROM INVOICE_INFORMATION
             ]]>
     </getAllInvoiceInformations>
@@ -373,7 +373,26 @@
                 INSERT INTO `ADMIN` (`username`, `password`, `role`, `hint`)
                 VALUES(?, ?, ?, ?)
             ]]>
-        </saveAdmin>
+    </saveAdmin>
+
+    <adminLogin>
+        <![CDATA[
+            SELECT * FROM admin
+            WHERE  username = ? and  password = ?
+        ]]>
+    </adminLogin>
+
+    <updateAdmin>
+        <![CDATA[
+            update admin
+
+            set  username = ?,
+                password = ?,
+                role	 = ?,
+                hint = ?
+                    WHERE id = ?
+        ]]>
+    </updateAdmin>
 
     <!--**************************************************************Client***********************************************************************-->
     <saveClient>

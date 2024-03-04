@@ -441,13 +441,13 @@ public interface LcsService {
      * @return Admin object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Admin saveAdmin(Admin admin) throws Exception ;
+    public Admin saveAdmin(Admin admin) throws Exception;
 
     /**
      * Returns a desired admin from the database based on provided id
      *
      * This method uses the repository layer to fetch the admin data by id from the database.
-     * @param id is going to be used to get the specific treatment.
+     * @param id is going to be used to get the specific admin.
      * @return Admin object that contains data that was fetched.
      * @throws Exception If error occurs in the repo layer.
      */
@@ -461,6 +461,27 @@ public interface LcsService {
      * @throws Exception If error occurs in the repo layer.
      */
     public List<Admin> getAllAdmin() throws Exception;
+
+    /**
+     * Returns a desired admin from the database based on provided username & password
+     *
+     * This method uses the repository layer to fetch the admin data by id from the database.
+     * @param admin is going to be used to get the specific admin.
+     * @return Admin object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Admin adminLogin(Admin admin) throws Exception;
+
+    /**
+     * Updates an admin from the database
+     *
+     * This method uses the repository layer to update the given admin data.
+     * @param admin is going to be used to update a specific admin.
+     * @return Admin object that contains updated data.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Admin updateAdmin(Admin admin) throws Exception;
+
 
     /**
      * Saves a client to the database

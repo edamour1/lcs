@@ -220,6 +220,16 @@ public class LcsServiceImpl implements LcsService {
     public List<Admin> getAllAdmin() throws Exception { return this.lcsRepository.getAllAdmin(); }
 
     @Override
+    public Admin adminLogin(Admin admin) throws Exception {
+        return this.lcsRepository.adminLogin(admin);
+    }
+
+    @Override
+    public Admin updateAdmin(Admin admin) throws Exception {
+        return this.lcsRepository.updateAdmin(admin);
+    }
+
+    @Override
     public Client saveClient(Client client) throws Exception { return this.lcsRepository.saveClient(client); }
 
     @Override

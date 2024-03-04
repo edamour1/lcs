@@ -435,6 +435,26 @@ public interface LcsRepository {
     public List<Admin> getAllAdmin() throws Exception;
 
     /**
+     * Returns a desired admin from the database based on provided username & password
+     *
+     * This method uses the jdbc template to fetch the admin data by id from the database.
+     * @param admin is going to be used to get the specific admin.
+     * @return Admin object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Admin adminLogin(Admin admin) throws Exception;
+
+    /**
+     * Updates an admin from the database
+     *
+     * This method uses the jdbc template to update the given admin data.
+     * @param admin is going to be used to update a specific admin.
+     * @return Admin object that contains updated data.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Admin updateAdmin(Admin admin) throws Exception;
+
+    /**
      * Saves a client to the data
      *
      * This method uses saves a Client object to the database.

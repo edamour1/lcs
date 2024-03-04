@@ -9,15 +9,20 @@ public class AdditionalCostService {
     private String treatmentName, treatmentDescription;
     private double price;
 
-    private boolean addToList, removeFromList;
+    private boolean updateQty, removeFromList;
 
-    public AdditionalCostService() {}
+    public AdditionalCostService() {
+        this.removeFromList = false;
+        this.updateQty = false;
+    }
 
     public AdditionalCostService(ResultSet resultset) throws SQLException {
         this.id = resultset.getInt("id");
         this.treatmentName = resultset.getString("treatment_name");
         this.treatmentDescription = resultset.getString("treatment_description");
         this.price = resultset.getDouble("price");
+        this.removeFromList = false;
+        this.updateQty = false;
     }
 
     public int getId() {
@@ -52,14 +57,6 @@ public class AdditionalCostService {
         this.price = price;
     }
 
-    public boolean getAddToList() {
-        return addToList;
-    }
-
-    public void setAddToList(boolean addToList) {
-        this.addToList = addToList;
-    }
-
     public boolean getRemoveFromList() {
         return removeFromList;
     }
@@ -76,12 +73,12 @@ public class AdditionalCostService {
         this.qty = qty;
     }
 
-    public boolean isAddToList() {
-        return addToList;
+    public boolean isUpdateQty() {
+        return updateQty;
     }
 
-    public boolean isRemoveFromList() {
-        return removeFromList;
+    public void setUpdateQty(boolean updateQty) {
+        this.updateQty = updateQty;
     }
 }
 

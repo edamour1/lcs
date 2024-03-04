@@ -7,6 +7,7 @@ public class ClientProfile {
     private Client client;
 
     private List<Address> addresses;
+    private List<Address> billingAddresses;
 
     ClientProfile(){}
 
@@ -29,5 +30,13 @@ public class ClientProfile {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public List<Address> getBillingAddresses() {
+        return billingAddresses;
+    }
+
+    public void setBillingAddresses(List<Address> billingAddresses) {
+        this.billingAddresses = billingAddresses;
     }
 }

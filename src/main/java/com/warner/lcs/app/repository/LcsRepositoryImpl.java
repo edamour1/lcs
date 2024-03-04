@@ -129,7 +129,9 @@ public class LcsRepositoryImpl implements LcsRepository {
                 this.removeTreatmentFromList(treatment,client);
             }
             else {
+                if(!treatment.isUpdateQty()){
                     this.saveTreatmentForInvoiceInformation(treatment,client);
+                }else{ this.updateTreatmentQty(treatment,client); }
             }
         }
 
@@ -138,7 +140,12 @@ public class LcsRepositoryImpl implements LcsRepository {
                 this.removeAdditionalCostServiceFromList(additionalCostService,client);
             }
             else {
-                this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+                if(!additionalCostService.isUpdateQty()){
+                    this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+                } else {
+                    this.updateAdditionalCostServiceQty(additionalCostService,client);
+                }
+
             }
         }
 
@@ -851,6 +858,42 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         return adminList;
     }
+
+    @Override
+    public Admin adminLogin(Admin admin) throws Exception {
+        RowMapper<Admin> mapper = new RowMapper<Admin>() {
+
+            public Admin mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Admin admin = new Admin(rs);
+
+                return admin;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","adminLogin");
+        List<Admin> adminList = this.lcsDataSourceTemplate.query(sql,mapper,admin.getUsername(),admin.getPassword());
+
+        return adminList.get(0);
+    }
+
+    @Override
+    public Admin updateAdmin(Admin admin) throws Exception {
+
+        String sql = SQL.get("lcsSql","updateAdmin");
+        int id = this.lcsDataSourceTemplate.update(sql,
+                admin.getUsername(),
+                admin.getPassword(),
+                admin.getRole(),
+                admin.getHint(),
+                admin.getId());
+
+        Admin retrievedObj = this.getAdminById(admin.getId());
+
+        return retrievedObj;
+
+    }
+
 
     @Override
     public Client saveClient(Client client) throws Exception {

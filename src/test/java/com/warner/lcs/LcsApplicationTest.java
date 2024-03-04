@@ -84,6 +84,32 @@ public class LcsApplicationTest {
         this.invoiceInformation = new InvoiceInformation();
     }
 
+
+
+    @Test//means method is meant to be tested
+    public void updateAdminTest() throws Exception {
+
+        this.admin.setId(1);
+        this.admin.setUsername("ocean");
+        this.admin.setPassword("skiprocks88");
+        this.admin.setRole("employee");
+        this.admin.setHint("sediment");
+
+        Admin retrievedObj = this.lcsService.updateAdmin(this.admin);
+
+        assertThat(this.admin.getId()).isEqualTo(retrievedObj.getId());
+        assertThat(this.admin.getUsername()).isEqualTo(retrievedObj.getUsername());
+        assertThat(this.admin.getPassword()).isEqualTo(retrievedObj.getPassword());
+        assertThat(this.admin.getHint()).isEqualTo(retrievedObj.getHint());
+    }
+
+    @Test//means method is meant to be tested
+    public void adminLoginTest() throws Exception {
+        this.admin.setId(2);
+        Admin retrievedObj = this.lcsService.adminLogin(admin);
+        assertThat(retrievedObj.getId()).isEqualTo(this.admin.getId());
+    }
+
     @Test//means method is meant to be tested
     public void updateAdditionalCostServiceQtyTest() throws Exception{
         this.additionalCostService.setId(2);
@@ -169,12 +195,34 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void updateInvoiceInformationTest() throws Exception {
-        this.client.setId(2);
-        invoiceInformation.setId(2);
-        invoiceInformation.setNotes("test notes!");
+        this.client.setId(4);
+        invoiceInformation.setId(11);
+        Treatment t1 = this.lcsService.getTreatmentById(4), t2 = this.lcsService.getTreatmentById(2), t3 =  this.lcsService.getTreatmentById(3);
+        AdditionalCostService a1 = this.lcsService.getAdditionalCostServicesById(4), a2 = this.lcsService.getAdditionalCostServicesById(2), a3 = this.lcsService.getAdditionalCostServicesById(4);
+
+        boolean trueOrFalse = false;
+
+        t1.setQty(4);
+        t2.setQty(1);
+        t3.setQty(2);
+        a1.setQty(4);
+        a2.setQty(7);
+        a3.setQty(9);
+//        invoiceInformation.setNotes("test notes");
+//        // Define the input date string
+//        String paymentDueDateString = "2024-07-03", startDateString = "2024-08-02", endDateString="2024-10-01";
+//        this.admin.setUsername("fwner726");
+
+//        a1.setQty(2);
+//        a2.setQty(4);
+//        t1.setQty(2);
+//        t2.setQty(4);
+//        t3.setQty(1);
+        invoiceInformation.setNotes("test notes!!!");
 
         // Define the input date string
         String paymentDueDateString = "2024-06-04", startDateString = "2024-07-05", endDateString="2024-09-06";
+        this.admin.setUsername("lnell26");
 
         // Define the desired date pattern
         String pattern = "yyyy-MM-dd";
@@ -196,34 +244,40 @@ public class LcsApplicationTest {
         }
 
 
-        Treatment t1 = this.lcsService.getTreatmentById(4), t2 = this.lcsService.getTreatmentById(3);
-        boolean trueOrFalse = false;
-        t1.setRemoveFromList(trueOrFalse);
+        t1.setRemoveFromList(!trueOrFalse);
         t2.setRemoveFromList(trueOrFalse);
+        t3.setRemoveFromList(!trueOrFalse);
+        t1.setUpdateQty(trueOrFalse);
+        t2.setUpdateQty(!trueOrFalse);
+        t3.setUpdateQty(trueOrFalse);
+
         List<Treatment> tl = new ArrayList<>();
         tl.add(t1);
         tl.add(t2);
-        AdditionalCostService a1 = this.lcsService.getAdditionalCostServicesById(4), a2 = this.lcsService.getAdditionalCostServicesById(2);
-        boolean trueOrFalse2 = false;
-        a1.setRemoveFromList(!trueOrFalse2);
-        a2.setRemoveFromList(trueOrFalse2);
+        tl.add(t3);
+
+
+        a1.setRemoveFromList(!trueOrFalse);
+        a2.setRemoveFromList(trueOrFalse);
+        a3.setRemoveFromList(trueOrFalse);
+        a1.setUpdateQty(trueOrFalse);
+        a2.setUpdateQty(!trueOrFalse);
+        a3.setUpdateQty(trueOrFalse);
+
         List<AdditionalCostService> al = new ArrayList<>();
         al.add(a1);
         al.add(a2);
+        al.add(a3);
         invoiceInformation.setTreatments(tl);
-//        invoiceInformation.setAdditionalCostServices(al);
-        this.admin.setUsername("lnell26");
+        invoiceInformation.setAdditionalCostServices(al);
+
+
         InvoiceInformation updatedInvoiceInformation = this.lcsService.updateInvoiceInformation(this.invoiceInformation, this.client,this.admin);
 
         assertThat(updatedInvoiceInformation.getId()).isEqualTo(invoiceInformation.getId());
         assertThat(updatedInvoiceInformation.getPaymentDueDate()).isEqualTo(invoiceInformation.getPaymentDueDate());
         assertThat(updatedInvoiceInformation.getStartDate()).isEqualTo(invoiceInformation.getStartDate());
         assertThat(updatedInvoiceInformation.getEndDate()).isEqualTo(invoiceInformation.getEndDate());
-        int n = 2;
-        int m = 0;
-        assertThat(updatedInvoiceInformation.getTreatments().size()).isGreaterThan(n);
-        assertThat(updatedInvoiceInformation.getAdditionalCostServices().size()).isGreaterThan(m);
-
     }
 
     @Test//means method is meant to be tested

@@ -8,7 +8,7 @@ public class Treatment {
     private int id, qty;
     private String treatmentName, treatmentDescription;
     private double price;
-    private boolean addToList, removeFromList;
+    private boolean updateQty, removeFromList;
 
     public Treatment(){}
 
@@ -18,6 +18,7 @@ public class Treatment {
         this.treatmentDescription = resultSet.getString("treatment_description");
         this.price = resultSet.getDouble("price");
         this.removeFromList = false;
+        this.updateQty = false;
     }
 
     public int getId() {
@@ -52,14 +53,6 @@ public class Treatment {
         this.price = price;
     }
 
-    public boolean getAddToList() {
-        return addToList;
-    }
-
-    public void setAddToList(boolean addToList) {
-        this.addToList = addToList;
-    }
-
     public boolean getRemoveFromList() {
         return removeFromList;
     }
@@ -76,12 +69,12 @@ public class Treatment {
         this.qty = qty;
     }
 
-    public boolean isAddToList() {
-        return addToList;
+    public boolean isUpdateQty() {
+        return updateQty;
     }
 
-    public boolean isRemoveFromList() {
-        return removeFromList;
+    public void setUpdateQty(boolean updateQty) {
+        this.updateQty = updateQty;
     }
 
 }
