@@ -3,34 +3,43 @@
     <!--*************************************************Invoice Information************************************************************-->
     <getAdditionalCostService>
         <![CDATA[
-            SELECT  additional_services.*, additional_services_list.quantity from  additional_services_list
+            SELECT  additional_services.*, additional_services_list.quantity, units.unit from  additional_services_list
                 JOIN
                     additional_services on additional_services_list.additional_service_id = additional_services. ID
+                JOIN
+					units on additional_services_list.unit_id = units.id
                         WHERE additional_services_list.id = ? and additional_services_list.additional_service_id = ?
         ]]>
     </getAdditionalCostService>
+
     <updateAdditionalCostServiceQty>
         <![CDATA[
             UPDATE additional_services_list
-                set quantity = ?
+                set quantity = ?,
+                unit_id = ?
                 WHERE id = ? and additional_service_id = ?
         ]]>
     </updateAdditionalCostServiceQty>
+
     <getTreatment>
         <![CDATA[
-            SELECT  treatments.*, treatment_list.quantity from  treatment_list
-                JOIN
-                    treatments on treatment_list.treatment_id = treatments. ID
-                        WHERE treatment_list.id = ? and treatment_list.treatment_id = ?
+            SELECT treatments.*, treatment_list.quantity, units.unit
+                FROM treatment_list
+                    JOIN treatments ON treatment_list.treatment_id = treatments.ID
+                    JOIN units ON treatment_list.unit_id = units.id
+                        WHERE treatment_list.id = ? AND treatment_list.treatment_id = ?
         ]]>
     </getTreatment>
+
     <updateTreatmentQty>
         <![CDATA[
             UPDATE treatment_list
-                set quantity = ?
+                set quantity = ?,
+                     unit_id = ?
                 WHERE id = ? and treatment_id = ?
         ]]>
     </updateTreatmentQty>
+
     <getInvoiceInformationByAddress>
         <![CDATA[
             select * from invoice_information where address_id = ?
@@ -39,14 +48,14 @@
 
     <getAllInvoiceInformations>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes, invoice_no, address_id
+            SELECT payment_due_date, start_date, end_date, client_id, notes, invoice_no, address_id
             FROM INVOICE_INFORMATION
             ]]>
     </getAllInvoiceInformations>
 
     <getInvoiceInformationByClientId>
         <![CDATA[
-            SELECT id, payment_due_date, start_date, end_date, client_id, notes, address_id, invoice_no
+            SELECT payment_due_date, start_date, end_date, client_id, notes, address_id, invoice_no
                 FROM INVOICE_INFORMATION
                     WHERE client_id = ?
         ]]>
@@ -60,8 +69,6 @@
             `end_date`,
             `client_id`,
             `notes`,
-            `additional_services_list_id`,
-            `treatment_list_id`,
             `address_id`,
             `lm_user_id`,
             `invoice_no`,
@@ -75,25 +82,24 @@
             ?,
             ?,
             ?,
-            ?,
-            ?,
-            NOW())
+            NOW());
         ]]>
     </saveInvoiceInformation>
 
     <saveTreatmentForInvoiceInformation>
         <![CDATA[
-            INSERT INTO `treatment_list` (`id`,`treatment_id`,`quantity`)
+            INSERT INTO `treatment_list` (`id`,`treatment_id`,`quantity`,`unit_id`)
             VALUES (?,
-                    ? ,
+                    ?,
+                    ?,
                     ?)
         ]]>
     </saveTreatmentForInvoiceInformation>
 
     <saveAdditionalCostServiceForInvoiceInformation>
         <![CDATA[
-            INSERT INTO `ADDITIONAL_SERVICES_LIST` (`id`,`additional_service_id`,`quantity`)
-            VALUES (?,?,?)
+            INSERT INTO `ADDITIONAL_SERVICES_LIST` (`id`,`additional_service_id`,`quantity`,`unit_id`)
+            VALUES (?,?,?,?)
         ]]>
     </saveAdditionalCostServiceForInvoiceInformation>
 
@@ -109,15 +115,15 @@
                     lm_user_id = ?,
                     lm_date = Now()
 
-                        WHERE id = ?
+                        WHERE invoice_no = ?
         ]]>
     </updateInvoiceInformation>
 
 <!--**************************************************************Address***************************************************************-->
     <saveAddress>
         <![CDATA[
-             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_billing,is_active)
-             VALUES (?, ?, ?, ?, ?, ?,?)
+             INSERT INTO addresses (client_id, street, city_id, state_id, zipcode_id, is_billing,is_active,quantity,unit_id,lm_user_id,lm_date)
+             VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,NOW())
         ]]>
     </saveAddress>
 
@@ -130,7 +136,11 @@
                     state_id = ?,
                     zipcode_id = ?,
                     is_active = ?,
-                    is_billing = ?
+                    is_billing = ?,
+                    quantity = ?,
+                    unit_id = ?,
+                    lm_user_id = ?,
+                    lm_date = NOW()
                         WHERE
                             id = ?
         ]]>
@@ -149,7 +159,9 @@
                 ZIPCODES.id AS ZipCodeID,
                 ZIPCODES.zipcode AS ZipCode,
                 is_billing,
-                is_active
+                is_active,
+                 quantity,
+                 unit_id
             FROM
                 ADDRESSES
             JOIN
@@ -174,11 +186,15 @@
                 ZIPCODES.id AS ZipCodeID,
                 ZIPCODES.zipcode AS ZipCode,
                 is_billing,
-                is_active
+                is_active,
+                quantity,
+                unit
 
             FROM
                 ADDRESSES
             JOIN
+                UNITS ON ADDRESSES.unit_id = UNITS.id
+			JOIN
                 CITIES ON ADDRESSES.city_id = CITIES.id
             JOIN
                 STATES ON ADDRESSES.state_id = STATES.id
@@ -202,11 +218,15 @@
                         ZIPCODES.id AS ZipCodeID,
                         ZIPCODES.zipcode AS ZipCode,
                         is_billing,
-                        is_active
+                        is_active,
+                        quantity,
+                        UNITS.*
                 FROM
                     INVOICE_INFORMATION
                 JOIN
                     ADDRESSES ON INVOICE_INFORMATION.address_id = ADDRESSES.id
+				JOIN
+                    UNITS ON ADDRESSES.unit_id = units.id
                 JOIN
                     CITIES ON ADDRESSES.city_id = CITIES.id
                 JOIN
@@ -231,7 +251,9 @@
                 ZIPCODES.id AS ZipCodeID,
                 ZIPCODES.zipcode AS ZipCode,
                 is_billing,
-                is_active
+                is_active,
+                quantity,
+                UNITS.*
 
             FROM
                 ADDRESSES
@@ -241,10 +263,44 @@
                 STATES ON ADDRESSES.state_id = STATES.id
             JOIN
                 ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+			JOIN
+                    UNITS ON ADDRESSES.unit_id = units.id
             WHERE
-                ADDRESSES.street = ?
+                ADDRESSES.street =  ?
         ]]>
     </doesAddressExists>
+
+    <getAddressById>
+        <![CDATA[
+            SELECT
+                ADDRESSES.id AS AddressID,
+                ADDRESSES.street AS Address,
+                is_active,
+                CITIES.id AS CityID,
+                CITIES.city AS City,
+                STATES.id AS StateID,
+                STATES.state AS State,
+                ZIPCODES.id AS ZipCodeID,
+                ZIPCODES.zipcode AS ZipCode,
+                is_billing,
+                is_active,
+                quantity,
+                unit
+
+            FROM
+                ADDRESSES
+            JOIN
+                UNITS ON ADDRESSES.unit_id = UNITS.id
+			JOIN
+                CITIES ON ADDRESSES.city_id = CITIES.id
+            JOIN
+                STATES ON ADDRESSES.state_id = STATES.id
+            JOIN
+                ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
+            WHERE
+                ADDRESSES.id = ?
+        ]]>
+    </getAddressById>
 <!--******************************************************************Treatment**********************************************************-->
     <getTreatmentById>
         <![CDATA[
@@ -261,11 +317,12 @@
 
     <getTreatmentsByClientId>
         <![CDATA[
-            SELECT TREATMENTS.*,TREATMENT_LIST.quantity
-            FROM TREATMENTS
-            JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
-            JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = TREATMENT_LIST.id
-            WHERE INVOICE_INFORMATION.additional_services_list_id = ?
+            SELECT ADDITIONAL_SERVICES.* , ADDITIONAL_SERVICES_LIST.quantity,units.unit
+                FROM ADDITIONAL_SERVICES
+                JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
+                JOIN UNITS ON ADDITIONAL_SERVICES_LIST.unit_id = units.id
+                JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = ADDITIONAL_SERVICES_LIST.id
+                WHERE INVOICE_INFORMATION.invoice_no =   ?
         ]]>
     </getTreatmentsByClientId>
 
@@ -274,15 +331,17 @@
                 UPDATE TREATMENTS
                     SET treatment_name = ?,
                     treatment_description = ?,
-                    price = ?
+                    price = ?,
+                    lm_user_id = ?,
+                    lm_date = NOW()
                     WHERE id = ?
         ]]>
     </updateTreatment>
 
     <saveTreatment>
         <![CDATA[
-            INSERT INTO TREATMENTS (treatment_name, treatment_description, price)
-            VALUES(?,?,?)
+            INSERT INTO TREATMENTS (treatment_name, treatment_description, price, lm_user_id, lm_date)
+            VALUES(?,?,?,?,NOW())
         ]]>
     </saveTreatment>
 
@@ -334,18 +393,19 @@
 
     <getAdditionalCostServicesByClientId>
         <![CDATA[
-            SELECT ADDITIONAL_SERVICES.* , ADDITIONAL_SERVICES_LIST.quantity
-                FROM ADDITIONAL_SERVICES
-                JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
-                JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.additional_services_list_id = ADDITIONAL_SERVICES_LIST.id
-                WHERE INVOICE_INFORMATION.additional_services_list_id =  ?
+            SELECT TREATMENTS.*,TREATMENT_LIST.quantity,units.unit
+                FROM TREATMENTS
+                    JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
+                    JOIN UNITS ON TREATMENT_LIST.unit_id = units.id
+                    JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = TREATMENT_LIST.id
+                WHERE INVOICE_INFORMATION.invoice_no = ?
         ]]>
     </getAdditionalCostServicesByClientId>
 
     <saveAdditionalCostService>
         <![CDATA[
-            INSERT INTO `ADDITIONAL_SERVICES` (`treatment_name`, `treatment_description`, `price`)
-            VALUES(?,?,?)
+            INSERT INTO `ADDITIONAL_SERVICES` (`treatment_name`, `treatment_description`, `price`,`lm_user_id`,`lm_date`)
+            VALUES(?,?,?,?,NOW())
         ]]>
     </saveAdditionalCostService>
 
@@ -354,7 +414,9 @@
             UPDATE `ADDITIONAL_SERVICES`
                 SET `treatment_name` = ?,
                     `treatment_description` = ?,
-                    `price` = ?
+                    `price` = ?,
+                    `lm_user_id` = ?,
+                    `lm_date` = NOW()
                     WHERE `id` = ?
         ]]>
     </updateAdditionalCostService>
@@ -366,7 +428,7 @@
             AND additional_service_id = ?
         ]]>
     </removeAdditionalCostServiceFromList>
-    <!--****************Admin*******************************************************************-->
+    <!--******************************************************************************Admin*******************************************************************-->
     <getAllAdmin>
         <![CDATA[
             SELECT * FROM admin
@@ -409,8 +471,8 @@
     <!--**************************************************************Client***********************************************************************-->
     <saveClient>
         <![CDATA[
-            INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`)
-            VALUES(?, ?, ?, ?, ?)
+            INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`,`lm_user_id`,`lm_date`)
+            VALUES(?, ?, ?, ?, ?,?,NOW())
         ]]>
     </saveClient>
 
@@ -422,9 +484,12 @@
                   middle_name = ?,
                   last_name = ?,
                   email = ?,
-                  phone_number = ?
-                WHERE
-                  id = ?
+                  phone_number = ?,
+                  lm_user_id = ?,
+                  lm_date = NOW()
+
+                    WHERE
+                      id = ?
         ]]>
     </updateClient>
 
@@ -466,4 +531,39 @@
             INSERT INTO zipcodes (zipcode, city_id) VALUES (?, ?)
         ]]>
     </saveZipcode>
+    <!-- **************************************************** Business *********************************************************************************** -->
+    <getBusiness>
+        <![CDATA[
+            SELECT  business.id business_id, business.name, business.phone, business.address_id, business.lm_user_id,  business.lm_date, addresses.*
+                FROM business
+                JOIN addresses on address_id = addresses.id
+
+                WHERE business.id = ?
+         ]]>
+    </getBusiness>
+
+    <UpdateBusiness>
+        <![CDATA[
+            INSERT INTO `lawncare_service`.`business`
+            (`name`,
+            `phone`,
+            `address_id`,
+            `lm_user_id`,
+            `lm_date`)
+            VALUES(
+            ?,
+            ?,
+            ?,
+            ?,
+            Now())
+        ]]>
+    </UpdateBusiness>
+
+    <!--***************************************************master DB tools*********************************************************************-->
+
+    <foreignKeyChecks>
+        <![CDATA[
+            SET foreign_key_checks = 0
+        ]]>
+    </foreignKeyChecks>
 </sql>

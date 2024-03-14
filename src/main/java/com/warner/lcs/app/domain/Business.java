@@ -1,6 +1,7 @@
 package com.warner.lcs.app.domain;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Business {
     private int id;
@@ -9,9 +10,19 @@ public class Business {
     private String phoneNo,faxPhoneNo;
     private Address address;
 
-    public Business(){}
+    public
+    Business(){}
 
-    public Business(ResultSet resultSet){}
+    public Business(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getInt("business_id");
+        this.name = resultSet.getString("name");
+        this.phoneNo = resultSet.getString("phone");
+        this.address = new Address();
+        this.address.setId(resultSet.getInt("address_id"));
+        this.address.setStreet(resultSet.getString("street"));
+        this.address.setBilling(false);
+        this.address.setActive(false);
+    }
 
     public int getId() {
         return id;

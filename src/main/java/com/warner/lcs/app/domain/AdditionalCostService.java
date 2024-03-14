@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public class AdditionalCostService {
 
-    private int id,qty;
-    private String treatmentName, treatmentDescription;
-    private double price;
+    private int id;
+    private String treatmentName, treatmentDescription, unit;
+    private double price,qty;
 
     private boolean updateQty, removeFromList;
 
@@ -65,11 +65,11 @@ public class AdditionalCostService {
         this.removeFromList = removeFromList;
     }
 
-    public int getQty() {
+    public double getQty() {
         return qty;
     }
 
-    public void setQty(int qty) {
+    public void setQty(double qty) {
         this.qty = qty;
     }
 
@@ -79,6 +79,14 @@ public class AdditionalCostService {
 
     public void setUpdateQty(boolean updateQty) {
         this.updateQty = updateQty;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }
 

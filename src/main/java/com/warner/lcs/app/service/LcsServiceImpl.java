@@ -15,23 +15,28 @@ public class LcsServiceImpl implements LcsService {
 
 
     @Override
-    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception {
-        return this.lcsRepository.getAdditionalCostService(additionalCostService,client);
+    public Business getBusiness() throws Exception {
+        return this.lcsRepository.getBusiness();
     }
 
     @Override
-    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception {
-        return this.lcsRepository.updateAdditionalCostServiceQty(additionalCostService,client);
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.getAdditionalCostService(additionalCostService,invoiceInformation);
     }
 
     @Override
-    public Treatment getTreatment(Treatment treatment, Client client) throws Exception {
-        return this.lcsRepository.getTreatment(treatment,client);
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, InvoiceInformation information) throws Exception {
+        return this.lcsRepository.updateAdditionalCostServiceQty(additionalCostService,information);
     }
 
     @Override
-    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception {
-        return this.lcsRepository.updateTreatmentQty(treatment,client);
+    public Treatment getTreatment(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.getTreatment(treatment,invoiceInformation);
+    }
+
+    @Override
+    public Treatment updateTreatmentQty(Treatment treatment, InvoiceInformation information) throws Exception {
+        return this.lcsRepository.updateTreatmentQty(treatment,information);
     }
 
     @Override
@@ -85,23 +90,23 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
-    public List<Treatment> removeTreatmentFromList(Treatment treatment, Client client) throws Exception {
-        return this.lcsRepository.removeTreatmentFromList(treatment,client);
+    public List<Treatment> removeTreatmentFromList(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.removeTreatmentFromList(treatment,invoiceInformation);
     }
 
     @Override
-    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, Client client) throws Exception {
-        return this.lcsRepository.removeAdditionalCostServiceFromList(additionalCostService,client);
+    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.removeAdditionalCostServiceFromList(additionalCostService,invoiceInformation);
     }
 
     @Override
-    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client) throws Exception {
-        return this.lcsRepository.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client,invoiceInformation);
     }
 
     @Override
-    public List<Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client) throws Exception {
-        return this.lcsRepository.saveTreatmentForInvoiceInformation(treatment,client);
+    public List<Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client, InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.saveTreatmentForInvoiceInformation(treatment,client,invoiceInformation);
     }
 
     @Override
@@ -125,18 +130,18 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
-    public List<AdditionalCostService> getAdditionalCostServicesByClientId(Client client) throws Exception {
-        return this.lcsRepository.getAdditionalCostServicesByClientId(client);
+    public List<AdditionalCostService> getAdditionalCostServicesByClientId(InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.getAdditionalCostServicesByClientId(invoiceInformation);
     }
 
     @Override
-    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
-        return this.lcsRepository.updateAdditionalCostService(additionalCostService);
+    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception {
+        return this.lcsRepository.updateAdditionalCostService(additionalCostService,admin);
     }
 
     @Override
-    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
-        return this.lcsRepository.saveAdditionalCostService(additionalCostService);
+    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception {
+        return this.lcsRepository.saveAdditionalCostService(additionalCostService,admin);
     }
 
     @Override
@@ -145,13 +150,13 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
-    public Address updateAddress(Address address, Client client) throws Exception {
-        return this.lcsRepository.updateAddress(address,client);
+    public Address updateAddress(Address address, Client client, Admin admin) throws Exception {
+        return this.lcsRepository.updateAddress(address,client,admin);
     }
 
     @Override
-    public Address saveAddress(Address address, Client client) throws Exception {
-        return this.lcsRepository.saveAddress(address,client);
+    public Address saveAddress(Address address, Client client, Admin admin) throws Exception {
+        return this.lcsRepository.saveAddress(address,client,admin);
     }
 
     @Override
@@ -170,6 +175,11 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
+    public Address getAddressById(Address address) throws Exception {
+        return this.lcsRepository.getAddressById(address);
+    }
+
+    @Override
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception { return this.lcsRepository.saveZipcode(zipcode,city); }
 
     @Override
@@ -182,18 +192,18 @@ public class LcsServiceImpl implements LcsService {
     public List<Zipcode> getAllZipcodes() throws Exception { return this.lcsRepository.getAllZipcodes(); }
 
     @Override
-    public Treatment saveTreatment(Treatment treatment) throws Exception { return this.lcsRepository.saveTreatment(treatment); }
+    public Treatment saveTreatment(Treatment treatment,Admin admin) throws Exception { return this.lcsRepository.saveTreatment(treatment,admin); }
 
     @Override
     public Treatment getTreatmentById(int id) throws Exception { return this.lcsRepository.getTreatmentById(id); }
 
     @Override
-    public List<Treatment> getTreatmentsByClientId(Client client) throws Exception {
-        return this.lcsRepository.getTreatmentsByClientId(client);
+    public List<Treatment> getTreatmentsByClientId(InvoiceInformation invoiceInformation) throws Exception {
+        return this.lcsRepository.getTreatmentsByClientId(invoiceInformation);
     }
 
     @Override
-    public Treatment updateTreatment(Treatment treatment) throws Exception { return this.lcsRepository.updateTreatment(treatment); }
+    public Treatment updateTreatment(Treatment treatment, Admin admin) throws Exception { return this.lcsRepository.updateTreatment(treatment,admin); }
 
     @Override
     public List<Treatment> getAllTreatments() throws Exception { return this.lcsRepository.getAllTreatments(); }
@@ -230,10 +240,10 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
-    public Client saveClient(Client client) throws Exception { return this.lcsRepository.saveClient(client); }
+    public Client saveClient(Client client,Admin admin) throws Exception { return this.lcsRepository.saveClient(client,admin); }
 
     @Override
-    public Client updateClient(Client client) throws Exception { return this.lcsRepository.updateClient(client); }
+    public Client updateClient(Client client, Admin admin) throws Exception { return this.lcsRepository.updateClient(client,admin); }
 
     @Override
     public Client getClientById(int id) throws Exception { return this.lcsRepository.getClientById(id); }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceInformation {
-    private int id, clientId;
+    private int clientId;
     private Date paymentDueDate;
     private Date startDate;
     private Date endDate;
@@ -26,7 +26,6 @@ public class InvoiceInformation {
     }
 
     public InvoiceInformation(ResultSet resultSet) throws SQLException {
-        this.id = resultSet.getInt("id");
         this.paymentDueDate = resultSet.getDate("payment_due_date");
         this.startDate = resultSet.getDate("start_date");
         this.endDate = resultSet.getDate("end_date");
@@ -34,14 +33,6 @@ public class InvoiceInformation {
         this.clientId = resultSet.getInt("client_id");
         this.addressId = resultSet.getInt("address_id");
         this.no = resultSet.getString("invoice_no");
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public List<AdditionalCostService> getAdditionalCostServices() {

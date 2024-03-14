@@ -7,15 +7,24 @@ import java.util.List;
 public interface LcsService {
 
     /**
+     * Gets business details.
+     *
+     * This method uses the repository layer to fetch a additionalCostService from the database for invoiceInformation.
+     *
+     * @return Business obj containing business details.
+     */
+    public Business getBusiness() throws Exception;
+
+    /**
      * Gets specific additionalCostService for invoiceInformation.
      *
      * This method uses the repository layer to fetch a additionalCostService from the database for invoiceInformation.
      *
      * @param additionalCostService used to fetch additionalCostService details.
-     * @param client used to fetch additionalCostService details.
+     * @param invoiceInformation used to fetch additionalCostService details.
      * @return retrievedAdditionalCostService has updated data.
      */
-    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception;
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Updates qty of additional_service for invoiceInformation.
@@ -23,10 +32,10 @@ public interface LcsService {
      * This method uses the repository layer to update the amount of additional_services list for  invoiceInformation.
      *
      * @param additionalCostService used to update quantity.
-     * @param client used to update quantity.
+     * @param invoiceInformation used to update quantity.
      * @return updatedAdditionalCostService has updated data.
      */
-    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception;
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Gets specific treatment for invoiceInformation.
@@ -34,10 +43,10 @@ public interface LcsService {
      * This method uses the repository layer to fetch a treatment from the database for invoiceInformation.
      *
      * @param treatment used to fetch treatment details.
-     * @param client used to fetch treatment details.
+     * @param invoiceInformation used to fetch treatment details.
      * @return retrievedTreatment has updated data.
      */
-    public Treatment getTreatment(Treatment treatment, Client client) throws Exception;
+    public Treatment getTreatment(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Updates qty of treatment for invoiceInformation.
@@ -45,10 +54,10 @@ public interface LcsService {
      * This method uses the repository layer to update the amount of treatments list for  invoiceInformation.
      *
      * @param treatment used to update quantity.
-     * @param client used to update quantity.
+     * @param information used to update quantity.
      * @return updatedTreatment has updated data.
      */
-    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception;
+    public Treatment updateTreatmentQty(Treatment treatment, InvoiceInformation information) throws Exception;
 
     /**
      * Gets total price of treatments and additionalCostServices
@@ -121,11 +130,11 @@ public interface LcsService {
      * This method uses the repository layer to delete treatment from InvoiceInformation's additionalCostServices list.
      *
      * @param treatment will be used to remove a treatment from  list.
-     * @param client will be used to remove a treatment from  list.
+     * @param invoiceInformation will be used to remove a treatment from  list.
      * @return Treatment objects remained in invoice list.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<Treatment> removeTreatmentFromList(Treatment treatment, Client client) throws Exception;
+    public List<Treatment> removeTreatmentFromList(Treatment treatment,  InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Deletes additionalCostService from invoice in database
@@ -133,11 +142,11 @@ public interface LcsService {
      * This method uses the repository layer to delete additionalCostService from InvoiceInformation's additionalCostServices list.
      *
      * @param additionalCostService will be used to remove an additionalCostService from  list.
-     * @param client will be used to remove an additionalCostService from  list.
+     * @param invoiceInformation will be used to remove an additionalCostService from  list.
      * @return AdditionalCostService objects remained in invoice list.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, Client client) throws Exception;
+    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Saves a additionalCostService to the database
@@ -146,10 +155,11 @@ public interface LcsService {
      *
      * @param additionalCostService will be added to invoice additionalCostServices list.
      * @param client used to link additionalCostService to invoice.
+     * @param invoiceInformation used to link additionalCostService to invoice.
      * @return List AdditionalCostService objects that contains data that was fetched.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client) throws Exception;
+    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Saves a treatment to the database
@@ -158,10 +168,11 @@ public interface LcsService {
      *
      * @param treatment will be added to invoice treatments list.
      * @param client used to link treatment to invoice.
+     * @param invoiceInformation used to link additionalCostService to invoice.
      * @return List Treatment objects that contains data that was fetched.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client) throws Exception;
+    public List<Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
      * Saves an invoiceInformation to the database
@@ -209,21 +220,22 @@ public interface LcsService {
      * Returns a list of additionalCostServices from the database based on the client.
      *
      * This method uses the repository layer to fetch a list of additionalCostServices based on client from the database.
-     * @param client is going to be used to fetch a filtered additionalCostService list.
+     * @param invoiceInformation is going to be used to fetch a filtered additionalCostService list.
      * @return List AdditionalCostService objects that contains data that was fetched.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<AdditionalCostService> getAdditionalCostServicesByClientId(Client client) throws  Exception;
+    public List<AdditionalCostService> getAdditionalCostServicesByClientId(InvoiceInformation invoiceInformation) throws  Exception;
 
     /**
      * Updates a additionalCostService in the database
      *
      * This method uses the repository layer to update the additionalCostService data in the database.
      * @param additionalCostService Has the additionalCostService data.
+     * @param admin has data of whose performing the action.
      * @return AdditionalCostService object.
      * @throws Exception If error occurs in the repo layer.
      */
-    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService) throws Exception;
+    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception;
 
     /**
      * Saves an additionalCostService to the database
@@ -231,11 +243,12 @@ public interface LcsService {
      * This method uses this repository layer to perisists (save) an AdditionalCostService object in the database.
      *
      * @param additionalCostService Has the additionalCostService data.
+     * @param admin has data of whose performing the action.
      * @return AdditionalCostService object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
 
-    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService) throws Exception;
+    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception;
 
     /**
      * Returns a desired additionalCostService from the database based on provided id
@@ -254,10 +267,11 @@ public interface LcsService {
      *
      * @param client Has the client's personal information.
      * @param address Has the client's address information.
+     * @param admin has the admin's data.
      * @return Address object containing the id of the updated object.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Address updateAddress(Address address, Client client) throws Exception;
+    public Address updateAddress(Address address, Client client,Admin admin) throws Exception;
 
     /**
      * Saves an address to the database
@@ -266,10 +280,11 @@ public interface LcsService {
      *
      * @param client Has the client's personal information.
      * @param address Has the client's address information.
+     * @param admin has admin data.
      * @return Address object containing the id of the inerted object.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Address saveAddress(Address address, Client client) throws Exception;
+    public Address saveAddress(Address address, Client client,Admin admin) throws Exception;
 
     /**
      * Returns a desired addresses from the database based on provided id
@@ -300,6 +315,18 @@ public interface LcsService {
      * @throws Exception If error occurs in the repo layer.
      */
     public boolean doesAddressExists(Address address) throws Exception;
+
+
+    /**
+     * Gets  address by id from database.
+     *
+     * This method uses the repository layer to get the address by id from the database.
+     *
+     * @param address has the client's address data.
+     * @return address data.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Address getAddressById(Address address) throws Exception;
 
     /**
      * Saves a zipcode to the database
@@ -345,13 +372,13 @@ public interface LcsService {
     /**
      * Saves a treatment to the database
      *
-     * This method uses this repository layer to perisists (save) a Treatment object in the database.
-     *
-     * @param treatment Has the treatment data.
-     * @return Treatment object containing the id.
-     * @throws Exception If error occurs in the repo layer.
+     * This method uses the repository saves a Treatment object to the database.
+     * @param treatment has the city's name.
+     * @param admin has data of whose performing the action.
+     * @return Treatment object containing the information about the treatment that way it's saved to the database.
+     * @throws Exception If error occurs during db operation layer.
      */
-    public Treatment saveTreatment(Treatment treatment) throws Exception;
+    public Treatment saveTreatment(Treatment treatment,Admin admin) throws Exception;
 
     /**
      * Returns a desired treatment from the database based on provided id
@@ -367,21 +394,22 @@ public interface LcsService {
      * Returns a list of treatments from the database based on the client.
      *
      * This method uses the repository layer to fetch a list of treatments based on client from the database.
-     * @param client is going to be used to fetch a filtered treatment list.
+     * @param invoiceInformation is going to be used to fetch a filtered treatment list.
      * @return List Treatment objects that contains data that was fetched.
      * @throws Exception If error occurs in the repo layer.
      */
-    public List<Treatment> getTreatmentsByClientId(Client client) throws  Exception;
+    public List<Treatment> getTreatmentsByClientId(InvoiceInformation invoiceInformation) throws  Exception;
 
     /**
      * Updates a treatment in the database
      *
      * This method uses the repository layer to update the treatment data in the database.
      * @param treatment Has the treatment data.
+     * @param admin has data of whose performing the action.
      * @return Treatment object.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Treatment updateTreatment(Treatment treatment) throws Exception;
+    public Treatment updateTreatment(Treatment treatment, Admin admin) throws Exception;
 
 
     /**
@@ -489,20 +517,22 @@ public interface LcsService {
      * This method uses this repository layer to perisists (save) an client object to the database.
      *
      * @param client Has the client data.
+     * @param admin has admin data.
      * @return Client object containing the id.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Client saveClient(Client client) throws Exception;
+    public Client saveClient(Client client,Admin admin) throws Exception;
 
     /**
      * Updates a client in the database
      *
      * This method uses the repository layer to update the client data in the database.
      * @param client Has the client data.
+     * @param admin has admin data.
      * @return Client object.
      * @throws Exception If error occurs in the repo layer.
      */
-    public Client updateClient(Client client) throws Exception;
+    public Client updateClient(Client client, Admin admin) throws Exception;
 
 
     /**

@@ -1,16 +1,20 @@
 package com.warner.lcs.app.domain;
 
+import com.warner.lcs.common.util.Unit;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Address {
 
     private int id;
-    private String street;
+    private String street, unit;
     private City city;
     private State state;
     private Zipcode zipcode;
     private boolean isActive,isBilling;
+
+    private double quantity;
 
     public  Address(){}
 
@@ -24,6 +28,8 @@ public class Address {
         this.isActive = active == 1 ? true : false;
         int billing = resultSet.getInt("is_billing");
         this.isBilling = billing == 1 ? true : false;
+        this.quantity = resultSet.getDouble("quantity");
+        this.unit = resultSet.getString("unit");
     }
 
     public int getId() {
@@ -88,6 +94,22 @@ public class Address {
 
     public void setBilling(boolean billing) {
         isBilling = billing;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
     }
 }
 

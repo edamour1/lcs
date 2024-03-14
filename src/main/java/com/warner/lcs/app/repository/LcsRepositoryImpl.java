@@ -2,6 +2,7 @@ package com.warner.lcs.app.repository;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.common.util.SQL;
+import com.warner.lcs.common.util.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,10 +10,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -24,57 +28,120 @@ public class LcsRepositoryImpl implements LcsRepository {
 
 
     @Override
-    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, Client client) throws Exception {
+    public Business getBusiness() throws Exception {
+        String sql = SQL.get("lcsSql","getBusiness");
+
+        RowMapper<Business> mapper = new RowMapper<Business>(){
+            public Business mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Business business = new Business(rs);
+
+                return business;
+            }
+        };
+        int businessId = 3;
+        List<Business> businesses = new ArrayList<>();
+        businesses = this.lcsDataSourceTemplate.query(sql,mapper,businessId);
+
+        return businesses.get(0);
+    }
+
+    @Override
+    public AdditionalCostService getAdditionalCostService(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception {
 
         String sql = SQL.get("lcsSql","getAdditionalCostService");
         RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
             public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
 
                 AdditionalCostService additionalCostService = new AdditionalCostService(rs);
-                additionalCostService.setQty(rs.getInt("quantity"));
+                additionalCostService.setQty(rs.getDouble("quantity"));
 
                 return additionalCostService;
             }
         };
-        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,client.getId(),additionalCostService.getId());
+
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getNo(),additionalCostService.getId());
         AdditionalCostService retrievedAdditionalCostService = additionalCostServices.get(0);
             return retrievedAdditionalCostService;
 
     }
 
     @Override
-    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, Client client) throws Exception {
+    public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception {
         String sql = SQL.get("lcsSql","updateAdditionalCostServiceQty");
-        this.lcsDataSourceTemplate.update(sql,additionalCostService.getQty(),client.getId(),additionalCostService.getId());
-        AdditionalCostService updatedAdditionalCostService = this.getAdditionalCostService(additionalCostService,client);
-        return updatedAdditionalCostService;
+        String enumName = additionalCostService.getUnit().toUpperCase(); // Replace with the desired enum constant name
+        StringBuilder sb = new StringBuilder();
+        char character;
+        for (int i = 0;  i < enumName.length(); i++){
+            character = enumName.charAt(i);
+
+            if(character == ' '){
+                sb.append('_');
+            } else { sb.append(character); }
+        }
+
+        try {
+            Unit unitsEnum = Unit.valueOf(sb.toString());
+            int unitId = unitsEnum.getId();
+
+            this.lcsDataSourceTemplate.update(sql,additionalCostService.getQty(),unitId,invoiceInformation.getNo(),additionalCostService.getId());
+            AdditionalCostService updatedAdditionalCostService = this.getAdditionalCostService(additionalCostService,invoiceInformation);
+            return updatedAdditionalCostService;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid enum constant name: " + sb.toString());
+        }
+
+        return null;
     }
 
     @Override
-    public Treatment getTreatment(Treatment treatment, Client client) throws Exception {
+    public Treatment getTreatment(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
         RowMapper<Treatment> mapper = new RowMapper<Treatment>(){
             public Treatment mapRow(ResultSet rs, int rowNum) throws SQLException {
 
                 Treatment treatment = new Treatment(rs);
-                treatment.setQty(rs.getInt("quantity"));
+                treatment.setQty(rs.getDouble("quantity"));
 
                 return treatment;
             }
         };
 
         String sql = SQL.get("lcsSql","getTreatment");
-        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,client.getId(),treatment.getId());
+        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getNo(),treatment.getId());
         Treatment retrievedTreatment = treatments.get(0);
 
         return retrievedTreatment;
     }
 
     @Override
-    public Treatment updateTreatmentQty(Treatment treatment, Client client) throws Exception {
+    public Treatment updateTreatmentQty(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
         String sql = SQL.get("lcsSql","updateTreatmentQty");
-        this.lcsDataSourceTemplate.update(sql,treatment.getQty(),client.getId(),treatment.getId());
-        Treatment updatedTreatment = this.getTreatment(treatment,client);
-        return updatedTreatment;
+
+        String enumName = treatment.getUnit().toUpperCase(); // Replace with the desired enum constant name
+        StringBuilder sb = new StringBuilder();
+        char character;
+        for (int i = 0;  i < enumName.length(); i++){
+            character = enumName.charAt(i);
+
+            if(character == ' '){
+                sb.append('_');
+            } else { sb.append(character); }
+        }
+
+        try {
+            Unit unitsEnum = Unit.valueOf(sb.toString());
+            int unitId = unitsEnum.getId();
+
+            this.lcsDataSourceTemplate.update(sql,treatment.getQty(),unitId,invoiceInformation.getNo(),treatment.getId());
+            Treatment updatedTreatment = this.getTreatment(treatment,invoiceInformation);
+            return updatedTreatment;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid enum constant name: " + sb.toString());
+        }
+
+        return null;
     }
 
 
@@ -111,10 +178,8 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,address.getId());
 
         for(InvoiceInformation invoiceInformation : invoiceInformations){
-            Client client = new Client();
-            client.setId(invoiceInformation.getClientId());
-            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
-            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation));
         }
 
         return invoiceInformations.get(0);
@@ -122,30 +187,31 @@ public class LcsRepositoryImpl implements LcsRepository {
 
     @Override
     public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception {
-
+//        this.disableOrEnableForeignKeyChecks(true);
         for(Treatment treatment : invoiceInformation.getTreatments()){//update Treatment
             if(treatment.getRemoveFromList()) {
-                this.removeTreatmentFromList(treatment,client);
+                this.removeTreatmentFromList(treatment,invoiceInformation);
             }
             else {
                 if(!treatment.isUpdateQty()){
-                    this.saveTreatmentForInvoiceInformation(treatment,client);
-                }else{ this.updateTreatmentQty(treatment,client); }
+                    this.saveTreatmentForInvoiceInformation(treatment,client,invoiceInformation);
+                }else{ this.updateTreatmentQty(treatment,invoiceInformation); }
             }
         }
 
         for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){//update AdditionalCostServices
             if(additionalCostService.getRemoveFromList()) {
-                this.removeAdditionalCostServiceFromList(additionalCostService,client);
+                this.removeAdditionalCostServiceFromList(additionalCostService,invoiceInformation);
             }
             else {
                 if(!additionalCostService.isUpdateQty()){
-                    this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+                    this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client,invoiceInformation);
                 } else {
-                    this.updateAdditionalCostServiceQty(additionalCostService,client);
+                    this.updateAdditionalCostServiceQty(additionalCostService,invoiceInformation);
                 }
 
             }
+
         }
 
         String sql = SQL.get("lcsSql","updateInvoiceInformation");
@@ -156,7 +222,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 invoiceInformation.getEndDate(),
                 invoiceInformation.getNotes(),
                 admin.getUsername(),
-                invoiceInformation.getId());
+                invoiceInformation.getNo());
 
        List<InvoiceInformation>  retrievedInvoiceInformations = this.getInvoiceInformationByClientId(client);
 
@@ -165,28 +231,63 @@ public class LcsRepositoryImpl implements LcsRepository {
         return retrievedInvoiceInformations.get(0);
     }
 
+
+
+// ...
+
+    @Transactional
     @Override
-    public List<Treatment> removeTreatmentFromList(Treatment treatment, Client client) throws Exception {
-        String sql = SQL.get("lcsSql","removeTreatmentFromList");
-        this.lcsDataSourceTemplate.update(sql,client.getId(), treatment.getId());
+    public List<Treatment> removeTreatmentFromList(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
+        try {
+            // Disable foreign key checks
+            String disableForeignKeyChecksSql = "SET foreign_key_checks = 0";
+            this.lcsDataSourceTemplate.execute(disableForeignKeyChecksSql);
 
-        List <Treatment> retrievedTreatments = this.getTreatmentsByClientId(client);
+            // Perform the DELETE operation
+            String deleteSql = SQL.get("lcsSql", "removeTreatmentFromList");
+            this.lcsDataSourceTemplate.update(deleteSql, invoiceInformation.getNo(), treatment.getId());
 
-        return retrievedTreatments;
+            // Enable foreign key checks
+            String enableForeignKeyChecksSql = "SET foreign_key_checks = 1";
+            this.lcsDataSourceTemplate.execute(enableForeignKeyChecksSql);
+
+            // Retrieve the updated treatments
+            List<Treatment> retrievedTreatments = this.getTreatmentsByClientId(invoiceInformation);
+            return retrievedTreatments;
+        } catch (Exception e) {
+            // Handle exceptions
+            throw e;
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception {
+        try {
+            // Disable foreign key checks
+            String disableForeignKeyChecksSql = "SET foreign_key_checks = 0";
+            this.lcsDataSourceTemplate.execute(disableForeignKeyChecksSql);
+
+            // Perform the DELETE operation
+            String deleteSql = SQL.get("lcsSql", "removeAdditionalCostServiceFromList");
+            this.lcsDataSourceTemplate.update(deleteSql, invoiceInformation.getNo(), additionalCostService.getId());
+
+            // Enable foreign key checks
+            String enableForeignKeyChecksSql = "SET foreign_key_checks = 1";
+            this.lcsDataSourceTemplate.execute(enableForeignKeyChecksSql);
+
+            // Retrieve the updated treatments
+            List<AdditionalCostService> retrievedAdditionalCostServices = this.getAdditionalCostServicesByClientId(invoiceInformation);
+            return retrievedAdditionalCostServices;
+        } catch (Exception e) {
+            // Handle exceptions
+            throw e;
+        }
     }
 
     @Override
-    public List<AdditionalCostService> removeAdditionalCostServiceFromList(AdditionalCostService additionalCostService, Client client) throws Exception {
-        String sql = SQL.get("lcsSql","removeAdditionalCostServiceFromList");
-        this.lcsDataSourceTemplate.update(sql,client.getId(), additionalCostService.getId());
-
-       List <AdditionalCostService> retrievedAdditionalCostServices = this.getAdditionalCostServicesByClientId(client);
-
-        return retrievedAdditionalCostServices;
-    }
-
-    @Override
-    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client) throws Exception {
+    public List<AdditionalCostService> saveAdditionalCostServiceForInvoiceInformation(AdditionalCostService additionalCostService, Client client,InvoiceInformation invoiceInformation) throws Exception {
         String sql = SQL.get("lcsSql","saveAdditionalCostServiceForInvoiceInformation");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
         this.lcsDataSourceTemplate.update(connection -> {
@@ -203,17 +304,38 @@ public class LcsRepositoryImpl implements LcsRepository {
              * It also can improve performance by allowing the database to reuse previously compiled statements.
              ********************************************************************************************************************************************************/
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, client.getId());
+            ps.setString(1, invoiceInformation.getNo());
             ps.setInt(2, additionalCostService.getId());
-            ps.setInt(3,additionalCostService.getQty());
+            ps.setDouble(3,additionalCostService.getQty());
+            String enumName = additionalCostService.getUnit().toUpperCase(); // Replace with the desired enum constant name
+
+            StringBuilder sb = new StringBuilder();
+            char character;
+            for (int i = 0;  i < enumName.length(); i++){
+                character = enumName.charAt(i);
+
+                if(character == ' '){
+                    sb.append('_');
+                } else { sb.append(character); }
+            }
+
+            try {
+                Unit unitsEnum = Unit.valueOf(sb.toString());
+                int unitId = unitsEnum.getId();
+                ps.setInt(4,unitId);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid enum constant name: " + sb.toString());
+            }
+
             return ps;
         }, keyHolder);
-        List<AdditionalCostService> additionalCostServices = this.getAdditionalCostServicesByClientId(client);
+        List<AdditionalCostService> additionalCostServices = this.getAdditionalCostServicesByClientId(invoiceInformation);
         return additionalCostServices;
     }
 
+
     @Override
-    public List <Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client) throws Exception {
+    public List <Treatment> saveTreatmentForInvoiceInformation(Treatment treatment, Client client, InvoiceInformation invoiceInformation) throws Exception {
         String sql = SQL.get("lcsSql","saveTreatmentForInvoiceInformation");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
         this.lcsDataSourceTemplate.update(connection -> {
@@ -230,13 +352,31 @@ public class LcsRepositoryImpl implements LcsRepository {
              * It also can improve performance by allowing the database to reuse previously compiled statements.
              ********************************************************************************************************************************************************/
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, client.getId());
+            ps.setString(1,invoiceInformation.getNo());
             ps.setInt(2, treatment.getId());
-            ps.setInt(3, treatment.getQty());
+            ps.setDouble(3, treatment.getQty());
+            String enumName = treatment.getUnit().toUpperCase(); // Replace with the desired enum constant name
+            StringBuilder sb = new StringBuilder();
+            char character;
+            for (int i = 0;  i < enumName.length(); i++){
+                character = enumName.charAt(i);
+
+                if(character == ' '){
+                    sb.append('_');
+                } else { sb.append(character); }
+            }
+            try {
+                Unit unitsEnum = Unit.valueOf(sb.toString());
+
+                int unitId = unitsEnum.getId();
+                ps.setInt(4,unitId);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid enum constant name: " + sb.toString());
+            }
             return ps;
         }, keyHolder);
 
-        return this.getTreatmentsByClientId(client);
+        return this.getTreatmentsByClientId(invoiceInformation);
     }
 
     @Override
@@ -263,22 +403,23 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setDate(3, invoiceInformation.getEndDate());
             ps.setInt(4, client.getId());
             ps.setString(5, invoiceInformation.getNotes());
-            ps.setInt(6, client.getId());
-            ps.setInt(7, client.getId());
-            ps.setInt(8,address.getId());
-            ps.setString(9, admin.getUsername());
-            ps.setString(10, invoiceInformation.getNo());
+
+            ps.setInt(6,address.getId());
+            ps.setString(7, admin.getUsername());
+            ps.setString(8, invoiceInformation.getNo());
+
 
             return ps;
         }, keyHolder);
 
         for(Treatment treatment : invoiceInformation.getTreatments()){
-            this.saveTreatmentForInvoiceInformation(treatment,client);
+            this.saveTreatmentForInvoiceInformation(treatment,client,invoiceInformation);
         }
 
-        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()){
-            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client);
+        for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()) {
+            this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client,invoiceInformation);
         }
+
 
         List<InvoiceInformation>  retrievedInvoiceInformation = this.getInvoiceInformationByClientId(client);
 
@@ -300,8 +441,8 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
 
         for(InvoiceInformation invoiceInformation : invoiceInformations){
-            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
-            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation));
         }
 
         return invoiceInformations;
@@ -320,12 +461,10 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         String sql = SQL.get("lcsSql","getAllInvoiceInformations");
         List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper);
-        Client client = new Client();
 
         for(InvoiceInformation invoiceInformation : invoiceInformations){
-            client.setId(invoiceInformation.getClientId());
-            invoiceInformation.setTreatments(this.getTreatmentsByClientId(client));
-            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(client));
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation));
         }
         return invoiceInformations;
     }
@@ -348,7 +487,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public List<AdditionalCostService> getAdditionalCostServicesByClientId(Client client) throws Exception {
+    public List<AdditionalCostService> getAdditionalCostServicesByClientId(InvoiceInformation invoiceInformation) throws Exception {
         RowMapper<AdditionalCostService> mapper = new RowMapper<AdditionalCostService>(){
             public AdditionalCostService mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -359,18 +498,19 @@ public class LcsRepositoryImpl implements LcsRepository {
         };
 
         String sql = SQL.get("lcsSql","getAdditionalCostServicesByClientId");
-        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
+        List<AdditionalCostService> additionalCostServices = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getNo());
 
         return additionalCostServices;
     }
 
     @Override
-    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+    public AdditionalCostService updateAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","updateAdditionalCostService");
                 this.lcsDataSourceTemplate.update(sql,
                 additionalCostService.getTreatmentName(),
                 additionalCostService.getTreatmentDescription(),
                 additionalCostService.getPrice(),
+                admin.getUsername(),
                 additionalCostService.getId());
         AdditionalCostService retrievedAdditionalCostService = this.getAdditionalCostServicesById(additionalCostService.getId());
 
@@ -378,7 +518,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+    public AdditionalCostService saveAdditionalCostService(AdditionalCostService additionalCostService, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","saveAdditionalCostService");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
        this.lcsDataSourceTemplate.update(connection -> {
@@ -398,6 +538,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setString(1, additionalCostService.getTreatmentName());
             ps.setString(2, additionalCostService.getTreatmentDescription());
             ps.setDouble(3, additionalCostService.getPrice());
+            ps.setString(4, admin.getUsername());
             return ps;
         }, keyHolder);
 
@@ -423,7 +564,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public Address updateAddress(Address address, Client client) throws Exception {
+    public Address updateAddress(Address address, Client client, Admin admin) throws Exception {
 
         String sql = SQL.get("lcsSql","updateAddress");
         int isActiveArgument = address.getIsActive() ? 1 : 0;
@@ -435,15 +576,18 @@ public class LcsRepositoryImpl implements LcsRepository {
                 address.getZipcode().getId(),
                 isActiveArgument,
                 isBillingArgument,
+                address.getQuantity(),
+                Unit.SQUARE_FEET.getId(),
+               admin.getUsername(),
                 address.getId());
 
-        List<Address> retrievedAddresses = this.getAddressesByClientId(client.getId());
+        Address retrievedAddress = this.getAddressById(address);
 
-        return retrievedAddresses.get(0);
+        return retrievedAddress;
     }
 
     @Override
-    public Address saveAddress(Address address, Client client) throws Exception {
+    public Address saveAddress(Address address, Client client,Admin admin) throws Exception {
 
         City city = this.getCity(address.getCity());
         if(city == null) { address.setCity(this.saveCity(address.getCity())); }
@@ -477,6 +621,9 @@ public class LcsRepositoryImpl implements LcsRepository {
             int isBilling= address.isBilling() ? 1 : 0;
             ps.setInt(6,isBilling);
             ps.setInt(7,isActive);
+            ps.setDouble(8,address.getQuantity());
+            ps.setDouble(9, Unit.SQUARE_FEET.getId());
+            ps.setString(10, String.valueOf(admin.getUsername()));
 
             return ps;
 
@@ -538,6 +685,24 @@ public class LcsRepositoryImpl implements LcsRepository {
         boolean doesAddressExists = addresses.size() > 0 ? true : false;
 
         return doesAddressExists;
+    }
+
+    @Override
+    public Address getAddressById(Address address) throws Exception {
+        RowMapper<Address> mapper = new RowMapper<Address>(){
+            public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Address address = new Address(rs);
+
+                return address;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getAddressById");
+        List<Address> addresses = this.lcsDataSourceTemplate.query(sql,mapper,address.getId());
+
+
+        return addresses.get(0);
     }
 
     @Override
@@ -620,7 +785,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public Treatment saveTreatment(Treatment treatment) throws Exception {
+    public Treatment saveTreatment(Treatment treatment, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","saveTreatment");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
         int id = this.lcsDataSourceTemplate.update(connection -> {
@@ -640,6 +805,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setString(1, treatment.getTreatmentName());
             ps.setString(2, treatment.getTreatmentDescription());
             ps.setDouble(3, treatment.getPrice());
+            ps.setString(4, admin.getUsername());
             return ps;
         }, keyHolder);
 
@@ -666,7 +832,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public List<Treatment> getTreatmentsByClientId(Client client) throws Exception {
+    public List<Treatment> getTreatmentsByClientId(InvoiceInformation invoiceInformation) throws Exception {
         RowMapper<Treatment> mapper = new RowMapper<Treatment>(){
             public Treatment mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -678,19 +844,21 @@ public class LcsRepositoryImpl implements LcsRepository {
         };
 
         String sql = SQL.get("lcsSql","getTreatmentsByClientId");
-        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,client.getId());
+        List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper,invoiceInformation.getNo());
 
         return treatments;
     }
 
     @Override
-    public Treatment updateTreatment(Treatment treatment) throws Exception {
+    public Treatment updateTreatment(Treatment treatment, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","updateTreatment");
         int id = this.lcsDataSourceTemplate.update(sql,
                 treatment.getTreatmentName(),
                 treatment.getTreatmentDescription(),
                 treatment.getPrice(),
+                admin.getUsername(),
                 treatment.getId());
+
         Treatment retrievedTreatment = this.getTreatmentById(treatment.getId());
 
         return retrievedTreatment;
@@ -899,7 +1067,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
 
     @Override
-    public Client saveClient(Client client) throws Exception {
+    public Client saveClient(Client client, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","saveClient");
         KeyHolder keyHolder = new GeneratedKeyHolder();//used in order to hold primary key value that's returned after the db insert is performed.
         int id = this.lcsDataSourceTemplate.update(connection -> {
@@ -921,6 +1089,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setString(3, client.getLastName());
             ps.setString(4, client.getEmail());
             ps.setString(5, client.getPhoneNumber());
+            ps.setString(6, admin.getUsername());
 
             return ps;
         }, keyHolder);
@@ -931,7 +1100,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
-    public Client updateClient(Client client) throws Exception {
+    public Client updateClient(Client client,Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","updateClient");
         this.lcsDataSourceTemplate.update(sql,
                 client.getFirstName(),
@@ -939,6 +1108,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 client.getLastName(),
                 client.getEmail(),
                 client.getPhoneNumber(),
+                admin.getUsername(),
                 client.getId());
 
         Client retrievedClient = this.getClientById(client.getId());
@@ -980,4 +1150,13 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         return clients;
     }
+
+    @Override
+    public void disableOrEnableForeignKeyChecks(boolean disableOrEnable) throws Exception {
+        int enableOrDisableValue = disableOrEnable ? 0 : 1;
+        String sql = SQL.get("lcsSql","foreignKeyChecks");
+        this.lcsDataSourceTemplate.execute(sql);
+    }
+
+
 }

@@ -12,14 +12,6 @@ CREATE TABLE `ZIPCODES`(
      PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `ADDITIONAL_SERVICES_LIST`(
-    `id` BIGINT UNSIGNED NOT NULL,
-    `additional_service_id` BIGINT UNSIGNED NOT NULL,
-    `quantity` DECIMAL(8, 2) UNSIGNED NULL,
-	`unit_id` BIGINT UNSIGNED NULL,
-    PRIMARY KEY (`id`, `additional_service_id`) -- Composite key
-);
-
 CREATE TABLE `ADMIN`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(255) NULL,
@@ -34,6 +26,8 @@ CREATE TABLE `ADDITIONAL_SERVICES`(
     `treatment_name` VARCHAR(255) NOT NULL,
     `treatment_description` VARCHAR(255) NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
+    `lm_user_id` VARCHAR(255) NULL,
+    `lm_date` DATETIME NULL,
      PRIMARY KEY (`id`)
 );
 
@@ -41,16 +35,12 @@ CREATE TABLE `BUSINESS`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL,
     `phone` VARCHAR(255) NULL,
+	`email` varchar(255) NULL,
+	`faxPhoneNo` VARCHAR(255) NULL,
     `address_id` BIGINT UNSIGNED NULL,
+    `lm_user_id` VARCHAR(255) NULL,
+    `lm_date` DATETIME NULL,
      PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `TREATMENT_LIST`(
-    `id` BIGINT UNSIGNED NOT NULL,
-    `treatment_id` BIGINT UNSIGNED NOT NULL,
-    `quantity` DECIMAL(8, 2) UNSIGNED NULL,
-	`unit_id` BIGINT UNSIGNED NULL,
-    PRIMARY KEY (`id`, `treatment_id`) -- Composite key
 );
 
 CREATE TABLE `ADDRESSES`(
@@ -64,6 +54,8 @@ CREATE TABLE `ADDRESSES`(
 	`is_active` tinyint(1) NULL,
 	`quantity` DECIMAL(8, 2) NULL,
     `unit_id` BIGINT UNSIGNED NULL,
+    `lm_user_id` VARCHAR(255) NULL,
+    `lm_date` DATETIME NULL,
      PRIMARY KEY (`id`)
 );
 
@@ -72,7 +64,8 @@ CREATE TABLE `TREATMENTS`(
     `treatment_name` VARCHAR(255) NOT NULL,
     `treatment_description` VARCHAR(255) NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
-	
+	`lm_user_id` VARCHAR(255) NULL,
+    `lm_date` DATETIME NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -95,39 +88,57 @@ CREATE TABLE `CLIENTS`(
     `last_name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NULL,
     `phone_number` VARCHAR(255) NULL,
+    `lm_user_id` VARCHAR(255) NULL,
+    `lm_date` DATETIME NULL,
      PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `INVOICE_INFORMATION`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `invoice_no` VARCHAR(255) NOT NULL,
     `payment_due_date` DATE NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     `client_id` BIGINT UNSIGNED NOT NULL,
     `notes` VARCHAR(255) NOT NULL,
-    `additional_services_list_id` BIGINT UNSIGNED NULL,
-    `treatment_list_id` BIGINT UNSIGNED NULL,
     `lm_user_id` VARCHAR(255) NOT NULL,
     `lm_date` DATETIME NOT NULL,
 	`address_id` BIGINT UNSIGNED NULL,
-	`invoice_no` VARCHAR(255) NOT NULL,
-     PRIMARY KEY (`id`)
+     PRIMARY KEY (`invoice_no`)
+);
+
+CREATE TABLE TREATMENT_LIST (
+    `id` VARCHAR(255) NOT NULL,
+    `treatment_id` BIGINT UNSIGNED NOT NULL,
+	`quantity` DECIMAL(8, 2) NULL,
+    `unit_id` BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (id, treatment_id)
+);
+
+
+CREATE TABLE ADDITIONAL_SERVICES_LIST (
+    `id` VARCHAR(255) NOT NULL,
+    `additional_service_id` BIGINT UNSIGNED NOT NULL,
+	`quantity` DECIMAL(8, 2) NULL,
+    `unit_id` BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (id, additional_service_id)
 );
 
 ALTER TABLE
-    `INVOICE_INFORMATION` ADD CONSTRAINT `invoice_information_additional_services_list_id_foreign` FOREIGN KEY(`additional_services_list_id`) REFERENCES `ADDITIONAL_SERVICES_LIST`(`id`);
+    `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_id_foreign` FOREIGN KEY(`id`) REFERENCES `INVOICE_INFORMATION`(`invoice_no`);
+ALTER TABLE
+    `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_treatment_ id _foreign` FOREIGN KEY(`treatment_id`) REFERENCES `treatments`(`id`);
+	
+ALTER TABLE
+    `ADDITIONAL_SERVICES_LIST` ADD CONSTRAINT `additional_services_list_id_foreign` FOREIGN KEY(`id`) REFERENCES `invoice_information`(`invoice_no`);
 ALTER TABLE
     `ADDITIONAL_SERVICES_LIST` ADD CONSTRAINT `additional_services_list_additional_service_id_foreign` FOREIGN KEY(`additional_service_id`) REFERENCES `ADDITIONAL_SERVICES`(`id`);
-ALTER TABLE
-    `INVOICE_INFORMATION` ADD CONSTRAINT `invoice_information_treatment_list_id_foreign` FOREIGN KEY(`treatment_list_id`) REFERENCES `TREATMENT_LIST`(`id`);
-ALTER TABLE
-    `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_treatment_id_foreign` FOREIGN KEY(`treatment_id`) REFERENCES `TREATMENTS`(`id`);
+
 ALTER TABLE
     `ADDRESSES` ADD CONSTRAINT `addresses_zipcode_id_foreign` FOREIGN KEY(`zipcode_id`) REFERENCES `ZIPCODES`(`id`);
 ALTER TABLE
     `ADDRESSES` ADD CONSTRAINT `addresses_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
 ALTER TABLE
-    `ADDITIONAL_SERVICES_LIST` ADD CONSTRAINT `additional_services_list_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
+    `ADDITIONAL_SERVICES_LIST` ADD CONSTRAINT `additional_services_list_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`) ;
 ALTER TABLE
     `TREATMENT_LIST` ADD CONSTRAINT `treatment_list_unit_id_foreign` FOREIGN KEY(`unit_id`) REFERENCES `units`(`id`);
 ALTER TABLE
@@ -145,4 +156,4 @@ ALTER TABLE
 ALTER TABLE
     `ADDRESSES` ADD CONSTRAINT `addresses_state_id_foreign` FOREIGN KEY(`state_id`) REFERENCES `STATES`(`id`);
     
-    commit;
+commit;

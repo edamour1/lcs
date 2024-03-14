@@ -4,6 +4,7 @@ import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
 import com.warner.lcs.common.util.InvoiceNumberGenerator;
 import com.warner.lcs.common.util.PdfGenerator;
+import com.warner.lcs.common.util.Unit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class LcsApplicationTest {
     private LcsService lcsService;
 
     private Admin admin;//used for testing
+    private Business business;//used for testing
     private List<Admin> adminList;//used for testing
     private Client client;//used for testing
     private List<Client> clients;//used for testing
@@ -50,9 +52,9 @@ public class LcsApplicationTest {
     void setup() {
         this.invoiceNumberGenerator = new InvoiceNumberGenerator();
         client = new Client();//create dummy object
-        client.setFirstName("Test");
-        client.setMiddleName("Test");
-        client.setLastName("Test");
+        client.setFirstName("first name 1");
+        client.setMiddleName("middle name 1");
+        client.setLastName("last name 1");
         client.setEmail("test@gmail.com");
         client.setPhoneNumber("4514560991");
         admin = new Admin();
@@ -61,13 +63,14 @@ public class LcsApplicationTest {
         admin.setRole("master administrator");
         admin.setHint("p*##word");
         city = new City();
-        city.setCity("Tybee Island");
+        city.setCity("Atlanta");
         treatment = new Treatment();
         treatment.setTreatmentName("treatment name 10");
         treatment.setTreatmentDescription("treatment 10 description");
         treatment.setPrice(117.59);
         zipcode = new Zipcode();
-        zipcode.setZipcode("30101");
+        zipcode.setId(58);
+        zipcode.setZipcode("30303");
         state = new State();
         state.setState("GA");
         state.setId(10);
@@ -82,9 +85,33 @@ public class LcsApplicationTest {
         additionalCostService.setTreatmentDescription("additional treatment description 8");
         additionalCostService.setPrice(89.45);
         this.invoiceInformation = new InvoiceInformation();
+        business = new Business();
+        this.business.setName("Warner lawncare service");
+        this.business.setEmail("edamourjr@gmail.com");
+        this.business.setPhoneNo("678-410-9876");
+        this.business.setFaxPhoneNo("770-223-0988");
     }
 
+    @Test//means method is meant to be tested
+    public void getBusinessTest() throws Exception {
+        this.business = this.lcsService.getBusiness();
+        assertThat(business.getId()).isEqualTo(3);
+        assertThat(business.getAddress().getId()).isEqualTo(3);
+    }
 
+    @Test//means method is meant to be tested
+    public void getAddressByIdTest() throws Exception {
+        this.address.setId(1);
+        this.address.getState().setId(10);
+        this.address.getCity().setId(1);
+        this.address.getZipcode().setId(3);
+        Address retrievedObj = this.lcsService.getAddressById(this.address);
+        assertThat(this.address.getId()).isEqualTo(retrievedObj.getId());
+        assertThat(this.address.getStreet()).isEqualTo(retrievedObj.getStreet());
+        assertThat(this.address.getCity().getCity()).isEqualTo(retrievedObj.getCity().getCity());
+        assertThat(this.address.getState().getState()).isEqualTo(retrievedObj.getState().getState());
+        assertThat(this.address.getZipcode().getZipcode()).isEqualTo(retrievedObj.getZipcode().getZipcode());
+    }
 
     @Test//means method is meant to be tested
     public void updateAdminTest() throws Exception {
@@ -112,28 +139,34 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void updateAdditionalCostServiceQtyTest() throws Exception{
-        this.additionalCostService.setId(2);
+        this.additionalCostService.setId(3);
         this.additionalCostService.setQty(80);
+        this.additionalCostService.setUnit("Kilolitre");
+        invoiceInformation.setNo("JB788715");
         this.client.setId(4);
-        AdditionalCostService updatedObj = this.lcsService.updateAdditionalCostServiceQty(additionalCostService,client);
+        AdditionalCostService updatedObj = this.lcsService.updateAdditionalCostServiceQty(additionalCostService,invoiceInformation);
 
         assertThat(updatedObj.getQty()).isEqualTo(this.additionalCostService.getQty());
     }
 
     @Test//means method is meant to be tested
     public void getAdditionalCostServiceTest() throws Exception {
-        this.additionalCostService.setId(1);
+        this.additionalCostService.setId(4);
         this.client.setId(4);
-        AdditionalCostService retrievedObj = this.lcsService.getAdditionalCostService(this.additionalCostService,this.client);
+        invoiceInformation.setNo("TE287026");
+        AdditionalCostService retrievedObj = this.lcsService.getAdditionalCostService(this.additionalCostService,this.invoiceInformation);
         assertThat(retrievedObj.getId()).isEqualTo(this.additionalCostService.getId());
     }
 
     @Test//means method is meant to be tested
     public void updateTreatmentQtyTest() throws Exception {
-        this.treatment.setId(1);
-        this.treatment.setQty(3);
+        this.treatment.setId(2);
+        this.treatment.setQty(0.75);
+        this.treatment.setUnit("Milligram");
         this.client.setId(4);
-        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,client);
+        this.invoiceInformation.setNo("TE287026");
+
+        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,invoiceInformation);
 
         assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
     }
@@ -142,7 +175,7 @@ public class LcsApplicationTest {
     public void getTreatmentTest() throws Exception {
         this.treatment.setId(1);
         this.client.setId(4);
-        Treatment retrievedObj = this.lcsService.getTreatment(this.treatment,this.client);
+        Treatment retrievedObj = this.lcsService.getTreatment(this.treatment,this.invoiceInformation);
         assertThat(retrievedObj.getId()).isEqualTo(this.treatment.getId());
 
     }
@@ -179,8 +212,8 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void getAddressesByInvoiceInformationTest() throws Exception {
-        this.invoiceInformation.setAddressId(7);
-        this.invoiceInformation.setNo("YO172726");
+        this.invoiceInformation.setAddressId(1);
+        this.invoiceInformation.setNo("JB788715");
         Address retrievedObj = this.lcsService.getAddressesByInvoiceInformation(invoiceInformation);
 
         assertThat(retrievedObj.getId()).isEqualTo(this.invoiceInformation.getAddressId());
@@ -188,27 +221,34 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void getInvoiceInformationByAddressTest() throws Exception {
-        invoiceInformation.setId(2);
+
         this.address.setId(1);
+        this.invoiceInformation.setNo("JB788715");
         InvoiceInformation retrievedInvoiceInformation = this.lcsService.getInvoiceInformationByAddress(address);
-        assertThat(invoiceInformation.getId()).isEqualTo(retrievedInvoiceInformation.getId());
+        assertThat(invoiceInformation.getNo()).isEqualTo(retrievedInvoiceInformation.getNo());
     }
 
     @Test//means method is meant to be tested
     public void updateInvoiceInformationTest() throws Exception {
-        this.client.setId(4);
-        invoiceInformation.setId(11);
-        Treatment t1 = this.lcsService.getTreatmentById(4), t2 = this.lcsService.getTreatmentById(2), t3 =  this.lcsService.getTreatmentById(3);
-        AdditionalCostService a1 = this.lcsService.getAdditionalCostServicesById(4), a2 = this.lcsService.getAdditionalCostServicesById(2), a3 = this.lcsService.getAdditionalCostServicesById(4);
+        this.client.setId(1);
+        this.invoiceInformation.setNo("JB788715");
+        Treatment t2 = this.lcsService.getTreatmentById(2), t4 = this.lcsService.getTreatmentById(4), t3 =  this.lcsService.getTreatmentById(3);
+        AdditionalCostService a3 = this.lcsService.getAdditionalCostServicesById(3), a2 = this.lcsService.getAdditionalCostServicesById(2), a4 = this.lcsService.getAdditionalCostServicesById(4);
 
         boolean trueOrFalse = false;
 
-        t1.setQty(4);
-        t2.setQty(1);
-        t3.setQty(2);
-        a1.setQty(4);
-        a2.setQty(7);
-        a3.setQty(9);
+        t2.setQty(4.786);
+        t2.setUnit("Centimeter");
+        t4.setQty(0.991);
+        t4.setUnit("Millimeter");
+        t3.setQty(2.09);
+        t3.setUnit("Kilogram");
+        a3.setQty(4.567);
+        a3.setUnit("Kilolitre");
+        a2.setQty(7.543);
+        a2.setUnit("Square Feet");
+        a3.setQty(9.12);
+        a3.setUnit("Kilogram");
 //        invoiceInformation.setNotes("test notes");
 //        // Define the input date string
 //        String paymentDueDateString = "2024-07-03", startDateString = "2024-08-02", endDateString="2024-10-01";
@@ -245,28 +285,28 @@ public class LcsApplicationTest {
         }
 
 
-        t1.setRemoveFromList(!trueOrFalse);
+        t4.setRemoveFromList(!trueOrFalse);
         t2.setRemoveFromList(trueOrFalse);
-        t3.setRemoveFromList(!trueOrFalse);
-        t1.setUpdateQty(trueOrFalse);
+        t3.setRemoveFromList(trueOrFalse);
+        t4.setUpdateQty(trueOrFalse);
         t2.setUpdateQty(!trueOrFalse);
-        t3.setUpdateQty(trueOrFalse);
+        t3.setUpdateQty(!trueOrFalse);
 
         List<Treatment> tl = new ArrayList<>();
-        tl.add(t1);
+        tl.add(t4);
         tl.add(t2);
         tl.add(t3);
 
 
-        a1.setRemoveFromList(!trueOrFalse);
-        a2.setRemoveFromList(trueOrFalse);
+        a4.setRemoveFromList(!trueOrFalse);
+        a2.setRemoveFromList(!trueOrFalse);
         a3.setRemoveFromList(trueOrFalse);
-        a1.setUpdateQty(trueOrFalse);
-        a2.setUpdateQty(!trueOrFalse);
-        a3.setUpdateQty(trueOrFalse);
+        a4.setUpdateQty(trueOrFalse);
+        a2.setUpdateQty(trueOrFalse);
+        a3.setUpdateQty(!trueOrFalse);
 
         List<AdditionalCostService> al = new ArrayList<>();
-        al.add(a1);
+        al.add(a4);
         al.add(a2);
         al.add(a3);
         invoiceInformation.setTreatments(tl);
@@ -275,7 +315,7 @@ public class LcsApplicationTest {
 
         InvoiceInformation updatedInvoiceInformation = this.lcsService.updateInvoiceInformation(this.invoiceInformation, this.client,this.admin);
 
-        assertThat(updatedInvoiceInformation.getId()).isEqualTo(invoiceInformation.getId());
+        assertThat(updatedInvoiceInformation.getNo()).isEqualTo(invoiceInformation.getNo());
         assertThat(updatedInvoiceInformation.getPaymentDueDate()).isEqualTo(invoiceInformation.getPaymentDueDate());
         assertThat(updatedInvoiceInformation.getStartDate()).isEqualTo(invoiceInformation.getStartDate());
         assertThat(updatedInvoiceInformation.getEndDate()).isEqualTo(invoiceInformation.getEndDate());
@@ -283,7 +323,7 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void doesAddressExistsTest() throws Exception {
-        this.address.setStreet("1366 Fallsbrook Way NW");
+        this.address.setStreet("123 street");
       boolean  doesAddressExists = this.lcsService.doesAddressExists(address);
       assertThat(doesAddressExists).isTrue();
         this.address.setStreet("1366 does not exists");
@@ -292,9 +332,9 @@ public class LcsApplicationTest {
     }
     @Test//means method is meant to be tested
     public void removeTreatmentFromListTest() throws Exception {
-        this.client.setId(1);
-        treatment.setId(6);
-        List<Treatment> retrievedAdditionalCostServices = this.lcsService.removeTreatmentFromList(treatment,client);
+        treatment.setId(3);
+        this.invoiceInformation.setNo("TE287026");
+        List<Treatment> retrievedAdditionalCostServices = this.lcsService.removeTreatmentFromList(treatment,this.invoiceInformation);
         int n = 4;
         assertTrue(retrievedAdditionalCostServices.size() < n, "Array length should be less than n: "+n);
     }
@@ -302,21 +342,24 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void removeAdditionalCostServiceFromListTest() throws Exception {
         this.client.setId(2);
-        additionalCostService.setId(4);
-        List<AdditionalCostService> retrievedAdditionalCostServices = this.lcsService.removeAdditionalCostServiceFromList(additionalCostService,client);
-        int n = 4;
+        additionalCostService.setId(3);
+        this.invoiceInformation.setNo("TE287026");
+        List<AdditionalCostService> retrievedAdditionalCostServices = this.lcsService.removeAdditionalCostServiceFromList(additionalCostService,this.invoiceInformation);
+        int n = 5;
         assertTrue(retrievedAdditionalCostServices.size() < n, "Array length should be less than n: "+n);
     }
+
     @Test//means method is meant to be tested
     public void saveInvoiceInformationTest() throws Exception {
-        this.client.setId(4);
+        this.client.setId(1);
 
-        this.zipcode.setId(93);
-        this.city.setId(38);
-        address.setStreet("612 Matheny Cut, Martinez");
+        this.zipcode = this.lcsService.getZipcodesById(27);
+        this.city.setId(1);
+        this.city.setCity("Atlanta");
+        address.setStreet("3480 Meadowlane Cir SW");
         address.setState(this.state);
         address.setZipcode(this.zipcode);
-        address.setId(7);
+        address.setId(1);
         invoiceInformation.setNotes("testing");
 
         // Define the input date string
@@ -340,18 +383,25 @@ public class LcsApplicationTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        int i = 1, j = 1;
 
-        for(int i = 1; i < 4; i++){
+        for(Unit unit : Unit.values()){
+            if(i > 3){ break; }
+            i++;
             Treatment t = new Treatment();
             t.setId(i);
-            t.setQty(i+1);
+            t.setQty(i+1.0);
+            t.setUnit(unit.getFullName());
          this.invoiceInformation.getTreatments().add(t);
         }//for(int i = 1; i < 4; i++)
 
-        for(int j = 1; j < 3; j++){
+        for(Unit unit : Unit.values()){
+            if(j > 4){ break; }
+            j++;
             AdditionalCostService a = new AdditionalCostService();
             a.setId(j);
-            a.setQty(j+1);
+            a.setQty(j+1.0);
+            a.setUnit(unit.getFullName());
             this.invoiceInformation.getAdditionalCostServices().add(a);
         }//for(int j = 1; j < 3; j++)
         invoiceInformation.setNo(this.invoiceNumberGenerator.generateInvoiceNo());
@@ -366,16 +416,17 @@ public class LcsApplicationTest {
          *       before running tests:                                       ##
          *                               int n = 27;                         ##
          * ####################################################################*/
-        int n = 4;//make sure to add 1 to x be for running tests!!!!
-        assertThat(invoiceInformations.get(0).getId()).isGreaterThan(n);
+        int n = 0;//make sure to add 1 to x be for running tests!!!!
+        assertThat(invoiceInformations.get(0).getNo()).isEqualTo(invoiceInformation.getNo());
     }
 
     @Test//means method is meant to be tested
     public void saveAdditionalCostServiceForInvoiceInformationTest() throws Exception {
         this.client.setId(2);
-        additionalCostService.setId(4);
-
-        additionalCostServices = this.lcsService.saveAdditionalCostServiceForInvoiceInformation(this.additionalCostService,this.client);
+        additionalCostService.setId(6);
+        additionalCostService.setUnit("Fluid Ounce");
+        this.invoiceInformation.setNo("JB788715");
+        additionalCostServices = this.lcsService.saveAdditionalCostServiceForInvoiceInformation(this.additionalCostService,this.client,this.invoiceInformation);
 
         /*####################################################################
          *   Very important make sure to add 1 to x before running the tests!##
@@ -392,10 +443,14 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void saveTreatmentForInvoiceInformationTest() throws Exception {
-        this.client.setId(1);
-        treatment.setId(6);
+        this.client.setId(2);
+        treatment.setId(5);
+        treatment.setQty(67);
+        treatment.setUnit("Fluid Ounce");
 
-        this.treatments = this.lcsService.saveTreatmentForInvoiceInformation(this.treatment,this.client);
+        this.invoiceInformation.setNo("JB788715");
+
+        this.treatments = this.lcsService.saveTreatmentForInvoiceInformation(this.treatment,this.client,invoiceInformation);
 
         /*####################################################################
          *   Very important make sure to add 1 to x before running the tests!##
@@ -436,8 +491,8 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void getAdditionalCostServicesByClientIdTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
-            this.client.setId(1);
-            additionalCostServices = this.lcsService.getAdditionalCostServicesByClientId(client);
+            this.invoiceInformation.setNo("TE287026");
+            additionalCostServices = this.lcsService.getAdditionalCostServicesByClientId(invoiceInformation);
             assertThat(additionalCostServices).isNotNull();
             int n = 1;
             assertTrue(additionalCostServices.size() > n, "Array length should be more than n");
@@ -450,9 +505,11 @@ public class LcsApplicationTest {
     public void getTreatmentsByClientIdTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
             this.client.setId(4);
-            treatments = this.lcsService.getTreatmentsByClientId(client);
+            this.invoiceInformation.setNo("JB788715");
+            treatments = this.lcsService.getTreatmentsByClientId(invoiceInformation);
             assertThat(treatments).isNotNull();
-            assertTrue(treatments.size() > 0, "Array length should be more than 6");
+            int n = 0;
+            assertTrue(treatments.size() > n, "Array length should be more than n: "+n);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -473,11 +530,11 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void updateAdditionalCostServiceTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
-            this.additionalCostService.setId(1);
-            this.additionalCostService.setTreatmentName("treatment name 1");
-            this.additionalCostService.setTreatmentDescription("treatment 1 description");
-            this.additionalCostService.setPrice(38.91);
-            AdditionalCostService updatedAdditionalCostService = this.lcsService.updateAdditionalCostService(additionalCostService);
+            this.additionalCostService.setId(7);
+            this.additionalCostService.setTreatmentName("treatment name 7");
+            this.additionalCostService.setTreatmentDescription("treatment description 7");
+            this.additionalCostService.setPrice(35.91);
+            AdditionalCostService updatedAdditionalCostService = this.lcsService.updateAdditionalCostService(additionalCostService,this.admin);
             assertThat(updatedAdditionalCostService).isNotNull();
             assertThat(additionalCostService.getId()).isEqualTo(updatedAdditionalCostService.getId());
             assertThat(additionalCostService.getTreatmentName()).isEqualTo(updatedAdditionalCostService.getTreatmentName());
@@ -493,7 +550,7 @@ public class LcsApplicationTest {
             try {
                 try {
 
-                    AdditionalCostService savedObj = this.lcsService.saveAdditionalCostService(this.additionalCostService);//save additionalCostService
+                    AdditionalCostService savedObj = this.lcsService.saveAdditionalCostService(this.additionalCostService,this.admin);//save additionalCostService
                     assertThat(savedObj).isNotNull();//see if it's empty or not
 
                     /*####################################################################
@@ -547,10 +604,10 @@ public class LcsApplicationTest {
     public void saveAddressTest() throws Exception {
         try {
             try {
-                this.client.setId(5);
+                this.client.setId(1);
                 this.address.getCity().setId(2);
-                this.address.getZipcode().setId(79);
-                Address savedObj = this.lcsService.saveAddress(this.address,this.client);//save treatment
+                this.address.getZipcode().setId(239);
+                Address savedObj = this.lcsService.saveAddress(this.address,this.client,this.admin);//save treatment
                 assertThat(savedObj).isNotNull();//see if it's empty or not
 
                 /*####################################################################
@@ -562,7 +619,7 @@ public class LcsApplicationTest {
                  *       before running tests:                                       ##
                  *                               int n = 27;                         ##
                  * ####################################################################*/
-                int n = 1;//make sure to add 1 to x be for running tests!!!!
+                int n = 0;//make sure to add 1 to x be for running tests!!!!
                 assertThat(savedObj.getId()).isGreaterThan(n);
 
             } catch (Exception e) {
@@ -576,20 +633,20 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void updateAddressTest() throws Exception {
         try {
-            this.client.setId(4);
-            this.city.setId(38);
-            this.city.setCity("Acworth");
-            this.zipcode.setId(93);
-            this.zipcode.setZipcode("30101");
+            this.client.setId(1);
+            this.city.setId(2);
+            this.city.setCity("Augusta");
+            this.zipcode.setId(233);
+            this.zipcode.setZipcode("30805");
 
-            address.setId(8);
+            address.setId(1);
             address.setStreet("5554 Saluda Ct NW");
             address.setCity(this.city);
             address.setState(this.state);
             address.setZipcode(this.zipcode);
             address.setBilling(true);
 
-            Address updatedAddress = this.lcsService.updateAddress(this.address,this.client);
+            Address updatedAddress = this.lcsService.updateAddress(this.address,this.client,this.admin);
             assertThat(updatedAddress).isNotNull();
             assertThat(city.getCity()).isEqualTo(updatedAddress.getCity().getCity());
             assertThat(state.getState()).isEqualTo(updatedAddress.getState().getState());
@@ -685,11 +742,11 @@ public class LcsApplicationTest {
     }
 
     @Test//means method is meant to be tested
-    public void saveTreatment() throws Exception {//becuase were talking to the database we must throw an exception
+    public void saveTreatmentTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
             try {
-
-                Treatment savedObj = this.lcsService.saveTreatment(this.treatment);//save additionalCostService
+                this.admin.setId(1);
+                Treatment savedObj = this.lcsService.saveTreatment(this.treatment,this.admin);//save additionalCostService
                 assertThat(savedObj).isNotNull();//see if it's empty or not
 
                 /*####################################################################
@@ -715,8 +772,11 @@ public class LcsApplicationTest {
     @Test//means method is meant to be tested
     public void updateTreatmentTest() throws Exception {//becuase were talking to the database we must throw an exception
         try {
-            this.treatment.setId(19);
-            Treatment updatedTreatment = this.lcsService.updateTreatment(treatment);
+            this.treatment.setId(8);
+            this.treatment.setTreatmentName("treatment name 8");
+            this.treatment.setTreatmentDescription("treatment 8 description");
+            this.treatment.setPrice(86.9);
+            Treatment updatedTreatment = this.lcsService.updateTreatment(treatment,admin);
             assertThat(updatedTreatment).isNotNull();
             assertThat(treatment.getId()).isEqualTo(updatedTreatment.getId());
             assertThat(treatment.getTreatmentName()).isEqualTo(updatedTreatment.getTreatmentName());
@@ -815,7 +875,7 @@ public class LcsApplicationTest {
                  *       before running tests:                                       ##
                  *                               int n = 27;                         ##
                  * ####################################################################*/
-                int n = 1;//make sure to add 1 to x be for running tests!!!!
+                int n = 0;//make sure to add 1 to x be for running tests!!!!
                 assertThat(savedObj.getId()).isGreaterThan(n);
 
             } catch (Exception e) {
@@ -853,7 +913,7 @@ public class LcsApplicationTest {
         try {
             try {
 
-                Client savedObj = this.lcsService.saveClient(this.client);//save treatment
+                Client savedObj = this.lcsService.saveClient(this.client,this.admin);//save treatment
                 assertThat(savedObj).isNotNull();//see if it's empty or not
 
                 /*####################################################################
@@ -885,7 +945,7 @@ public class LcsApplicationTest {
             this.client.setLastName("Damour");
             this.client.setEmail("clownprince1961@gmail.com");
             this.client.setPhoneNumber("4702256306");
-            Client updatedClient = this.lcsService.updateClient(client);
+            Client updatedClient = this.lcsService.updateClient(client,this.admin);
             assertThat(updatedClient).isNotNull();
             assertThat(client.getId()).isEqualTo(updatedClient.getId());
             assertThat(client.getFirstName()).isEqualTo(updatedClient.getFirstName());

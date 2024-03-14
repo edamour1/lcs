@@ -229,27 +229,28 @@ INSERT INTO zipcodes (zipcode, city_id) VALUES (30999, 2); -- Augusta
 
 --*********************************************units*********************************************
 INSERT INTO units (unit) VALUES
-('Feet'),
-('Inches'),
-('Kilometer'),
-('Meter'),
-('Centimeter'),
-('Millimeter'),
-('Kilogram'),
-('Gram'),
-('Milligram'),
-('Kilolitre'),
-('Litre'),
-('Milliliter'),
-('Centilitre'),
-('Fluid Ounce'),
-('Minute'),
-('Hour'),
-('Second'),
-('Days'),
-('Week'),
-('Month'),
-('Year'),
-('Kelvin'),
-('Celsius'),
-('Fahrenheit');
+('Feet'),       -- ft
+('Inches'),     -- in
+('Kilometer'),  -- km
+('Meter'),      -- m
+('Centimeter'), -- cm
+('Millimeter'), -- mm
+('Kilogram'),   -- kg
+('Gram'),       -- g
+('Milligram'),  -- mg
+('Kilolitre'),  -- kl
+('Litre'),      -- l
+('Milliliter'), -- ml
+('Centilitre'), -- cl
+('Fluid Ounce'),-- fl oz
+('Minute'),     -- min
+('Hour'),       -- hr
+('Second'),     -- sec
+('Days'),       -- days
+('Week'),       -- week
+('Month'),      -- month
+('Year'),       -- year
+('Kelvin'),     -- K
+('Celsius'),    -- °C
+('Fahrenheit'), -- °F
+('Square Feet'); -- sqft
