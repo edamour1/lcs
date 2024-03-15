@@ -28,6 +28,20 @@ public class LcsRepositoryImpl implements LcsRepository {
 
 
     @Override
+    public Business updateBusiness(Business business, Admin admin) throws Exception {
+        String sql = SQL.get("lcsSql","updateBusiness");
+
+         this.lcsDataSourceTemplate.update(sql,
+                                                 business.getName(),
+                                                 business.getPhoneNo(),
+                                                 business.getFaxPhoneNo(),
+                                                 business.getEmail(),
+                                                 admin.getUsername(),
+                                                 business.getId());
+         return this.getBusiness();
+    }
+
+    @Override
     public Business getBusiness() throws Exception {
         String sql = SQL.get("lcsSql","getBusiness");
 

@@ -36,7 +36,7 @@ CREATE TABLE `BUSINESS`(
     `name` VARCHAR(255) NULL,
     `phone` VARCHAR(255) NULL,
 	`email` varchar(255) NULL,
-	`faxPhoneNo` VARCHAR(255) NULL,
+	`fax_phone_No` VARCHAR(255) NULL,
     `address_id` BIGINT UNSIGNED NULL,
     `lm_user_id` VARCHAR(255) NULL,
     `lm_date` DATETIME NULL,

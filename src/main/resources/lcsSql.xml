@@ -534,7 +534,7 @@
     <!-- **************************************************** Business *********************************************************************************** -->
     <getBusiness>
         <![CDATA[
-            SELECT  business.id business_id, business.name, business.phone, business.address_id, business.lm_user_id,  business.lm_date, addresses.*
+            SELECT  business.id business_id, business.name, business.phone, business.address_id, business.lm_user_id,  business.lm_date, business.faxPhoneNo as fax_phone_No , email, addresses.*
                 FROM business
                 JOIN addresses on address_id = addresses.id
 
@@ -542,22 +542,19 @@
          ]]>
     </getBusiness>
 
-    <UpdateBusiness>
+    <updateBusiness>
         <![CDATA[
-            INSERT INTO `lawncare_service`.`business`
-            (`name`,
-            `phone`,
-            `address_id`,
-            `lm_user_id`,
-            `lm_date`)
-            VALUES(
-            ?,
-            ?,
-            ?,
-            ?,
-            Now())
+            UPDATE `lawncare_service`.`business`
+                SET
+                    `name` = ?,
+                    `phone` = ?,
+                    `faxPhoneNo` = ?,
+                    `email` = ?,
+                    `lm_user_id` = ?,
+                    `lm_date` = NOW()
+                        WHERE `id` = ?
         ]]>
-    </UpdateBusiness>
+    </updateBusiness>
 
     <!--***************************************************master DB tools*********************************************************************-->
 

@@ -15,6 +15,11 @@ public class LcsServiceImpl implements LcsService {
 
 
     @Override
+    public Business updateBusiness(Business business, Admin admin) throws Exception {
+        return this.lcsRepository.updateBusiness(business,admin);
+    }
+
+    @Override
     public Business getBusiness() throws Exception {
         return this.lcsRepository.getBusiness();
     }

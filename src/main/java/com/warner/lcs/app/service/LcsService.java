@@ -6,6 +6,18 @@ import java.util.List;
 
 public interface LcsService {
 
+
+    /**
+     * Updates business details.
+     *
+     * This method uses the repository layer to update the business's details in the database.
+     *
+     * @param business has dats needed for the update
+     * @param admin is who performed the update.
+     * @return Business obj containing business updated details.
+     */
+    public Business updateBusiness(Business business, Admin admin) throws Exception;
+
     /**
      * Gets business details.
      *

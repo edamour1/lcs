@@ -17,6 +17,7 @@ public class Business {
         this.id = resultSet.getInt("business_id");
         this.name = resultSet.getString("name");
         this.phoneNo = resultSet.getString("phone");
+        this.faxPhoneNo = resultSet.getString("fax_phone_No");
         this.address = new Address();
         this.address.setId(resultSet.getInt("address_id"));
         this.address.setStreet(resultSet.getString("street"));

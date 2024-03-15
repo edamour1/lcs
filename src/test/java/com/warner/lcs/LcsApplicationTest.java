@@ -92,6 +92,19 @@ public class LcsApplicationTest {
         this.business.setFaxPhoneNo("770-223-0988");
     }
 
+
+    @Test//means method is meant to be tested
+    public void updateBusinessTest() throws Exception {
+        this.business.setId(3);
+        this.business.setName("Warner Lawncare Service inc.");
+        this.business.setEmail("edamourjr@gmail.comm");
+        this.business.setFaxPhoneNo("344-444-4444");
+        this.business.setPhoneNo("470-225-9753");
+
+        Business updatedObj = this.lcsService.updateBusiness(this.business,this.admin);
+        assertThat(updatedObj.getId()).isEqualTo(3);
+    }
+
     @Test//means method is meant to be tested
     public void getBusinessTest() throws Exception {
         this.business = this.lcsService.getBusiness();
