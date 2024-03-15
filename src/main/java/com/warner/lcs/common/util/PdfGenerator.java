@@ -2,6 +2,8 @@ package com.warner.lcs.common.util;
 
 import com.codingerror.model.Product;
 import com.codingerror.service.CodingErrorPdfInvoiceCreator;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -11,12 +13,15 @@ import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.DashedBorder;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
+
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import com.warner.lcs.app.domain.*;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,18 +52,29 @@ public class PdfGenerator {
     Paragraph onesp = new Paragraph("\n");
     private CodingErrorPdfInvoiceCreator cepdf;
 
-    public PdfGenerator(String path) throws FileNotFoundException {
+    public PdfGenerator(String path) throws IOException {
         invoiceNumberGenerator = new InvoiceNumberGenerator();
         PdfWriter pdfWriter = new PdfWriter(path);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
         document = (Document) new Document(pdfDocument);
+        String imagePath="C:\\Users\\User\\Documents\\lcs\\lcs\\src\\main\\resources\\water_mark_lcs.png";
+        ImageData imageData = ImageDataFactory.create(imagePath);
+        Image image = new Image(imageData);
+
+        float x = pdfDocument.getDefaultPageSize().getWidth()/2;
+        float y = pdfDocument.getDefaultPageSize().getHeight()/2;
+        image.setFixedPosition(x-150, y-150);
+        image.setOpacity(0.18f);
+        document.add(image);
+
 
         this.createHeader();
         document.close();
     }
 
-    public void createHeader() {
+    public void createHeader() throws MalformedURLException {
+
         Table table = new Table(this.twocolumnWidth);
         table.addCell(new Cell().add("Invoice").setFontSize(20f).setBorder(Border.NO_BORDER).setBold());
         Table nestedTable = new Table(new float[]{twocol/2,twocol/2});
@@ -197,27 +213,36 @@ public class PdfGenerator {
             threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
         }
 
-
-
-
-
         document.add(threeColTable2.setMarginBottom(20f));
         float onetwo[]={threecol+125f,threecol*2};
         Table threeColTable4 = new Table(onetwo);
         threeColTable4.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
-        threeColTable4.addCell(tableDivider2).setBorder(Border.NO_BORDER);
+        threeColTable4.addCell(new Cell().add(tableDivider2).setBorder(Border.NO_BORDER));
         document.add(threeColTable4);
 
         Table threeColTable3 = new Table(threecolumnWidth);
         threeColTable3.addCell(new Cell().add("").setBorder(Border.NO_BORDER)).setMarginLeft(10f);
         threeColTable3.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
         threeColTable3.addCell(new Cell().add(String.valueOf(totalSum)).setPaddingLeft(150f).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+
         document.add(threeColTable3);
         document.add(tableDivider2);
         document.add(new Paragraph("\n"));
         document.add(divider.setBorder(new SolidBorder(Color.GRAY,1)).setMarginBottom(15f));
-//        productList.add()
+        String paraText = "Sample company overview\n" +
+                "We provide residential and commercial lawn mowing, edging, trimming, pruning, weed control, yard cleanup, aeration, grass seeding and sodding, and snow shoveling and deicing in the winter months. We put customer happiness above all else and pride ourselves on doing the job right the first time.";
+        document.add(new Paragraph("Notes: "+paraText));
 
+        Table tb = new Table(fullWidth);
+        tb.addCell(new Cell().add("Terms AND CONDITIONS\n").setBold().setBorder(Border.NO_BORDER));
+        List <String> TncList = new ArrayList<>();
+        TncList.add("1. The Seller shall not be liable to the Buyer directly or indirectly or for any loss or damage suffered by the buyer.");
+        TncList.add("1. The Seller warrants the product for one (1) year from the data of shipment.");
+
+        for(String tnc:TncList){
+            tb.addCell(new Cell().add(tnc).setBorder(Border.NO_BORDER));
+        }
+        document.add(tb);
     }
     public PdfGenerator(Client client, Address address, InvoiceInformation information, Business business) {
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
