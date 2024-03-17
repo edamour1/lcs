@@ -101,6 +101,17 @@ public interface LcsService {
      */
     public double calculateTotalAdditionalCostServicesCost(InvoiceInformation invoiceInformation);
 
+
+    /**
+     * Gets invoiceInformation.
+     *
+     * This method uses the repository layer to retrieve invoiceInformation from the database.
+     *
+     * @param invoiceNo is the id for the target invoiceInformation.
+     * @return invoiceInformation data.
+     */
+    public InvoiceInformation getInvoiceInformation(String invoiceNo) throws Exception;
+
     /**
      * Gets address based on the invoiceInformation database
      *

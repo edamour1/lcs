@@ -10,7 +10,7 @@ public class City {
     public City(){}
 
     public City(ResultSet resultSet, boolean getForAddressObject) throws SQLException {
-        this.id = getForAddressObject ? resultSet.getInt("CityID") : resultSet.getInt("id");
+         this.id = getForAddressObject ? resultSet.getInt("CityID") : resultSet.getInt("id");
         this.city = resultSet.getString("city");
     }
 

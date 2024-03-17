@@ -8,9 +8,7 @@ import java.util.List;
 
 public class InvoiceInformation {
     private int clientId;
-    private Date paymentDueDate;
-    private Date startDate;
-    private Date endDate;
+    private Date paymentDueDate, startDate, endDate, date;
     private List<Treatment> treatments;
     private List<AdditionalCostService> additionalCostServices;
     private String notes;
@@ -33,6 +31,7 @@ public class InvoiceInformation {
         this.clientId = resultSet.getInt("client_id");
         this.addressId = resultSet.getInt("address_id");
         this.no = resultSet.getString("invoice_no");
+        this.date = resultSet.getDate("lm_date");
     }
 
     public List<AdditionalCostService> getAdditionalCostServices() {
@@ -105,5 +104,13 @@ public class InvoiceInformation {
 
     public void setNo(String no) {
         this.no = no;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

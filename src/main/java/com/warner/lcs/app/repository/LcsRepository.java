@@ -75,6 +75,16 @@ public interface LcsRepository {
     public Treatment updateTreatmentQty(Treatment treatment, InvoiceInformation information) throws Exception;
 
     /**
+     * Gets invoiceInformation.
+     *
+     * This method uses the jdbc template to retrieve invoiceInformation from the database.
+     *
+     * @param invoiceNo is the id for the target invoiceInformation.
+     * @return invoiceInformation data.
+     */
+    public InvoiceInformation getInvoiceInformation(String invoiceNo) throws Exception;
+
+    /**
      * Gets address based on the invoiceInformation database
      *
      * This method uses the jdbc template to get a InvoiceInformation object based on invoiceInformation from the database.
@@ -84,6 +94,7 @@ public interface LcsRepository {
      * @throws Exception If error occurs in the repo layer.
      */
     public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception;
+
 
     /**
      * Gets invoiceInformation based on the address database

@@ -39,14 +39,14 @@ public class LcsApplicationTest {
     private List<State> states;//used for testing
     private Treatment treatment;//used for testing
     private List<Treatment> treatments;//used for testing
-    private AdditionalCostService additionalCostService;////used for testing
-    private List<AdditionalCostService> additionalCostServices;////used for testing
+    private AdditionalCostService additionalCostService;//used for testing
+    private List<AdditionalCostService> additionalCostServices;//used for testing
     private Zipcode zipcode;//used for testing
     private List<Zipcode> zipcodes;//used for testing
     private InvoiceInformation invoiceInformation;//used for testing
     private List<InvoiceInformation> invoiceInformations;//used for testing
 
-    private InvoiceNumberGenerator invoiceNumberGenerator;
+    private InvoiceNumberGenerator invoiceNumberGenerator;//used for testing
 
     @BeforeEach//do execute this method before running any tests
     void setup() {
@@ -92,6 +92,12 @@ public class LcsApplicationTest {
         this.business.setFaxPhoneNo("770-223-0988");
     }
 
+
+    @Test//means method is meant to be tested
+    public void getInvoiceInformationTest() throws Exception {
+        String invoiceNo = "JB788715";
+        InvoiceInformation retrivedObj = this.lcsService.getInvoiceInformation(invoiceNo);
+    }
 
     @Test//means method is meant to be tested
     public void updateBusinessTest() throws Exception {
@@ -195,9 +201,13 @@ public class LcsApplicationTest {
 
     @Test//means method is meant to be tested
     public void pdfGeneratorTest() throws Exception {
-        InvoiceNumberGenerator invoiceNumberGenerator = new InvoiceNumberGenerator();
+        this.client = this.lcsService.getClientById(1);
+        this.invoiceInformation = this.lcsService.getInvoiceInformation("JB788715");
+        this.address.setId(this.invoiceInformation.getAddressId());
+        Address billingAddress = this.lcsService.getAddressById(this.address);
+        this.business = this.lcsService.getBusiness();
         System.out.println(invoiceNumberGenerator.generateInvoiceNo());
-        PdfGenerator pdfGenerator = new PdfGenerator("title.pdf");
+        PdfGenerator pdfGenerator = new PdfGenerator("invoice.pdf", this.client, this.client, billingAddress, billingAddress, this.invoiceInformation, this.business);
     }
 
     @Test//means method is meant to be tested

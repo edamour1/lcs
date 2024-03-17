@@ -80,6 +80,11 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
+    public InvoiceInformation getInvoiceInformation(String invoiceNo) throws Exception {
+        return this.lcsRepository.getInvoiceInformation(invoiceNo);
+    }
+
+    @Override
     public Address getAddressesByInvoiceInformation(InvoiceInformation invoiceInformation) throws Exception {
         return this.lcsRepository.getAddressesByInvoiceInformation(invoiceInformation);
     }

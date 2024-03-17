@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sql>
     <!--*************************************************Invoice Information************************************************************-->
+    <getInvoiceInformation>
+        <![CDATA[
+            select * from invoice_information
+                where invoice_no = ?
+        ]]>
+    </getInvoiceInformation>
+
     <getAdditionalCostService>
         <![CDATA[
             SELECT  additional_services.*, additional_services_list.quantity, units.unit from  additional_services_list
@@ -48,14 +55,14 @@
 
     <getAllInvoiceInformations>
         <![CDATA[
-            SELECT payment_due_date, start_date, end_date, client_id, notes, invoice_no, address_id
+            SELECT *
             FROM INVOICE_INFORMATION
             ]]>
     </getAllInvoiceInformations>
 
     <getInvoiceInformationByClientId>
         <![CDATA[
-            SELECT payment_due_date, start_date, end_date, client_id, notes, address_id, invoice_no
+            SELECT *
                 FROM INVOICE_INFORMATION
                     WHERE client_id = ?
         ]]>
@@ -220,6 +227,9 @@
                         is_billing,
                         is_active,
                         quantity,
+                        payment_due_date,
+                        start_date,
+                        end_date,
                         UNITS.*
                 FROM
                     INVOICE_INFORMATION
@@ -317,11 +327,11 @@
 
     <getTreatmentsByClientId>
         <![CDATA[
-            SELECT ADDITIONAL_SERVICES.* , ADDITIONAL_SERVICES_LIST.quantity,units.unit
-                FROM ADDITIONAL_SERVICES
-                JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
-                JOIN UNITS ON ADDITIONAL_SERVICES_LIST.unit_id = units.id
-                JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = ADDITIONAL_SERVICES_LIST.id
+            SELECT TREATMENTS.*,TREATMENT_LIST.quantity,units.unit
+                FROM TREATMENTS
+                    JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
+                    JOIN UNITS ON TREATMENT_LIST.unit_id = units.id
+                    JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = TREATMENT_LIST.id
                 WHERE INVOICE_INFORMATION.invoice_no =   ?
         ]]>
     </getTreatmentsByClientId>
@@ -393,11 +403,11 @@
 
     <getAdditionalCostServicesByClientId>
         <![CDATA[
-            SELECT TREATMENTS.*,TREATMENT_LIST.quantity,units.unit
-                FROM TREATMENTS
-                    JOIN TREATMENT_LIST ON TREATMENTS.id = TREATMENT_LIST.treatment_id
-                    JOIN UNITS ON TREATMENT_LIST.unit_id = units.id
-                    JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = TREATMENT_LIST.id
+            SELECT ADDITIONAL_SERVICES.*,ADDITIONAL_SERVICES_LIST.quantity,units.unit
+                FROM ADDITIONAL_SERVICES
+                    JOIN ADDITIONAL_SERVICES_LIST ON ADDITIONAL_SERVICES.id = ADDITIONAL_SERVICES_LIST.additional_service_id
+                    JOIN UNITS ON ADDITIONAL_SERVICES_LIST.unit_id = units.id
+                    JOIN INVOICE_INFORMATION ON INVOICE_INFORMATION.invoice_no = ADDITIONAL_SERVICES_LIST.id
                 WHERE INVOICE_INFORMATION.invoice_no = ?
         ]]>
     </getAdditionalCostServicesByClientId>

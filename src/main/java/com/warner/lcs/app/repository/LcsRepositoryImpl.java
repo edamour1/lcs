@@ -116,7 +116,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
                 Treatment treatment = new Treatment(rs);
                 treatment.setQty(rs.getDouble("quantity"));
-
+                treatment.setUnit(rs.getString("unit"));
                 return treatment;
             }
         };
@@ -156,6 +156,28 @@ public class LcsRepositoryImpl implements LcsRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public InvoiceInformation getInvoiceInformation(String invoiceNo) throws Exception {
+        RowMapper<InvoiceInformation> mapper = new RowMapper<InvoiceInformation>(){
+            public InvoiceInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                InvoiceInformation invoiceInformation = new InvoiceInformation(rs);
+
+                return invoiceInformation;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getInvoiceInformation");
+        List<InvoiceInformation> invoiceInformations = this.lcsDataSourceTemplate.query(sql,mapper,invoiceNo);
+
+        for(InvoiceInformation invoiceInformation : invoiceInformations){
+            invoiceInformation.setTreatments(this.getTreatmentsByClientId(invoiceInformation));
+            invoiceInformation.setAdditionalCostServices(this.getAdditionalCostServicesByClientId(invoiceInformation));
+        }
+
+        return invoiceInformations.get(0);
     }
 
 
@@ -507,6 +529,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
                 AdditionalCostService additionalCostService = new AdditionalCostService(rs);
                 additionalCostService.setQty(rs.getInt("quantity"));
+                additionalCostService.setUnit(rs.getString("unit"));
                 return additionalCostService;
             }
         };
@@ -852,7 +875,7 @@ public class LcsRepositoryImpl implements LcsRepository {
 
                 Treatment treatment = new Treatment(rs);
                 treatment.setQty(rs.getInt("quantity"));
-
+                treatment.setUnit(rs.getString("unit"));
                 return treatment;
             }
         };
@@ -1171,6 +1194,5 @@ public class LcsRepositoryImpl implements LcsRepository {
         String sql = SQL.get("lcsSql","foreignKeyChecks");
         this.lcsDataSourceTemplate.execute(sql);
     }
-
 
 }
