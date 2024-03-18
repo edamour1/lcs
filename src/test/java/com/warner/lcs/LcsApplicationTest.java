@@ -2,6 +2,7 @@ package com.warner.lcs;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.Email;
 import com.warner.lcs.common.util.InvoiceNumberGenerator;
 import com.warner.lcs.common.util.PdfGenerator;
 import com.warner.lcs.common.util.Unit;
@@ -93,6 +94,15 @@ public class LcsApplicationTest {
     }
 
 
+    @Test//means method is meant to be tested
+    public void emailUtilTest() throws Exception {
+//        Business business, String emailSubject, String emailBody, String[] emailReceipients, String pdfFilePath
+        this.business = lcsService.getBusiness();
+        this.client = this.lcsService.getClientById(1);
+        String emailSubject = "Invoice";
+        String emailBody =  String.format("Dear %s,\n\n\tThank you for choosing us to take care of your lawn. \nAttached to this email is your invoice as a pdf. \n\nThanks, %s", this.client.getFirstName(), business.getName());
+        Email email = new Email();
+    }
     @Test//means method is meant to be tested
     public void getInvoiceInformationTest() throws Exception {
         String invoiceNo = "JB788715";
