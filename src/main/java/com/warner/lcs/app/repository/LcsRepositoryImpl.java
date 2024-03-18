@@ -54,8 +54,13 @@ public class LcsRepositoryImpl implements LcsRepository {
             }
         };
         int businessId = 3;
-        List<Business> businesses = new ArrayList<>();
-        businesses = this.lcsDataSourceTemplate.query(sql,mapper,businessId);
+
+        List<Business> businesses  = this.lcsDataSourceTemplate.query(sql,mapper,businessId);
+
+        for(Business business: businesses){
+            Address businessAddress = this.getAddressById(business.getAddress());
+            business.setAddress(businessAddress);
+        }
 
         return businesses.get(0);
     }

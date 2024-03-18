@@ -16,6 +16,7 @@ public class Business {
     public Business(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getInt("business_id");
         this.name = resultSet.getString("name");
+        this.email = resultSet.getString("email");
         this.phoneNo = resultSet.getString("phone");
         this.faxPhoneNo = resultSet.getString("fax_phone_No");
         this.address = new Address();

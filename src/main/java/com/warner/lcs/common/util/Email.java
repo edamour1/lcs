@@ -31,23 +31,21 @@ public class Email {
     private MimeMessage mimeMessage = null;
     private String emailSubject, emailBody;
     private String[] emailReceipients;
-    private String pdfFilePath = "C:\\Users\\User\\Documents\\lcs\\lcs\\invoice.pdf"; // Specify the path to your PDF file
+    private String pdfFilePath; // Specify the path to your PDF file
 
+    public Email(){}
     public Email(String emailSubject, String emailBody, String[] emailReceipients, String pdfFilePath) throws MessagingException, IOException {
         this.emailSubject = emailSubject;
         this.emailBody = emailBody;
         this.emailReceipients = emailReceipients;
         this.pdfFilePath = pdfFilePath;
-    }
-    public Email() throws MessagingException, IOException {
         this.setupServerProperties();
         this.draftEmail();
-        this.sendEmail();
     }
 
-    private void sendEmail() throws MessagingException {
+    public void sendEmail() throws MessagingException {
         String fromUser = "edamourjr@gmail.com";  //Enter sender email id
-        String fromUserPassword = "**********";  //Enter sender gmail password , this will be authenticated by gmail smtp server
+        String fromUserPassword = "**** **** **** ****";  //Enter sender gmail password , this will be authenticated by gmail smtp server
         String emailHost = "smtp.gmail.com";
         Transport transport = newSession.getTransport("smtp");
         transport.connect(emailHost, fromUser, fromUserPassword);
@@ -57,9 +55,9 @@ public class Email {
     }
 
     private MimeMessage draftEmail() throws AddressException, MessagingException, IOException {
-        String[] emailReceipients = {"clownprince1961@gmail.com"};  //Enter list of email recepients
-        String emailSubject = "Test Mail lived";
-        String emailBody = "Test Body of my email";
+//        String[] emailReceipients = {"clownprince1961@gmail.com","cj100517@gmail.com"};  //Enter list of email recepients
+//        String emailSubject = "Test Mail lived";
+//        String emailBody = "Test Body of my email";
         mimeMessage = new MimeMessage(newSession);
 
         for (int i =0 ;i<emailReceipients.length;i++)
