@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 
 import com.warner.lcs.app.domain.Admin;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.FxmlView;
+import com.warner.lcs.common.util.SceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +38,16 @@ public class FXMLDocumentController implements Initializable {
     @Autowired
     private LcsService lcsService;
 
+    @Autowired
+    private SceneController sceneController;
+
+    private FxmlView fxmlView;
+    private FxmlView MAIN_MENU;
+    public FXMLDocumentController() {
+            fxmlView = FxmlView.MAIN_MENU;
+        this.MAIN_MENU = fxmlView.MAIN_MENU;
+    }
+
     @FXML
     private void handleSubmitButtonAction(ActionEvent event) throws Exception {
         String username = usernameField.getText();
@@ -46,7 +58,9 @@ public class FXMLDocumentController implements Initializable {
             try {
                 admin = lcsService.adminLogin(username, password);
                 // Now you can use the username and password as needed
-        actiontarget.setText("id"+admin.getId()+ " Username: " + admin.getUsername() + ", Password: " + admin.getPassword());
+            actiontarget.setText("id"+admin.getId()+ " Username: " + admin.getUsername() + ", Password: " + admin.getPassword());
+            sceneController.setScene(this.MAIN_MENU.getTitle(),this.MAIN_MENU.getFxmlFilePath());
+            sceneController.switchToScene(event);
                 // Add your logic here
             } catch (Exception e) {
                 e.printStackTrace();
