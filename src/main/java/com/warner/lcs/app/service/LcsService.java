@@ -484,6 +484,17 @@ public interface LcsService {
     public City getCity(City city) throws Exception;
 
     /**
+     * Returns an admin object from the database
+     *
+     * This method uses the repository layer to fetch the admin data based on login crdentials from the database.
+     * @param username used to login admin.
+     * @param password used to login admin.
+     * @return Admin object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Admin adminLogin(String username, String password) throws Exception;
+
+    /**
      * Saves an admin to the database
      *
      * This method uses this repository layer to perisists (save) an Admin object to the database.

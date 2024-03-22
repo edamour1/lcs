@@ -45,7 +45,7 @@ public class Email {
 
     public void sendEmail() throws MessagingException {
         String fromUser = "edamourjr@gmail.com";  //Enter sender email id
-        String fromUserPassword = "**** **** **** ****";  //Enter sender gmail password , this will be authenticated by gmail smtp server
+        String fromUserPassword = "kyih xpco sygp reuz";  //Enter sender gmail password , this will be authenticated by gmail smtp server
         String emailHost = "smtp.gmail.com";
         Transport transport = newSession.getTransport("smtp");
         transport.connect(emailHost, fromUser, fromUserPassword);

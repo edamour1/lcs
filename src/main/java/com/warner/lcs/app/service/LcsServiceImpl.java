@@ -14,6 +14,8 @@ public class LcsServiceImpl implements LcsService {
     LcsRepository lcsRepository;
 
 
+
+
     @Override
     public Business updateBusiness(Business business, Admin admin) throws Exception {
         return this.lcsRepository.updateBusiness(business,admin);
@@ -229,6 +231,11 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public City getCity(City city) throws Exception { return this.lcsRepository.getCity(city); }
+
+    @Override
+    public Admin adminLogin(String username, String password) throws Exception {
+        return this.lcsRepository.adminLogin(username,password);
+    }
 
     @Override
     public Admin saveAdmin(Admin admin) throws Exception { return this.lcsRepository.saveAdmin(admin); }

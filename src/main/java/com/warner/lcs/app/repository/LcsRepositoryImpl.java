@@ -1005,6 +1005,24 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
+    public Admin adminLogin(String username, String password) throws Exception {
+        RowMapper<Admin> mapper = new RowMapper<Admin>() {
+
+            public Admin mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Admin admin = new Admin(rs);
+
+                return admin;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","adminLogin");
+        List<Admin> adminList = this.lcsDataSourceTemplate.query(sql,mapper,username,password);
+
+        return adminList.get(0);
+    }
+
+    @Override
     public Admin saveAdmin(Admin admin) throws Exception {
 
         String sql = SQL.get("lcsSql","saveAdmin");
