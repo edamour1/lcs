@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane alignment="CENTER" prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.MainMenuController">
+    <children>
+        <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefWidth="450.0" text="Contact List Using a TableView" textAlignment="CENTER" textFill="#5F9EA0">
+            <font>
+                <Font name="Arial" size="20.0" />
+            </font>
+        </Label>
+        <TableView fx:id="tvContacts" prefHeight="300.0" prefWidth="300.0">
+            <columns>
+                <TableColumn fx:id="fNameColumn" prefWidth="100.0" text="First Name" />
+                <TableColumn fx:id="lNameColumn" prefWidth="100.0" text="Last Name" />
+                <TableColumn fx:id="cellColumn" prefWidth="100.0" text="Cell Phone Number" />
+            </columns>
+        </TableView>
+        <Label fx:id="response" alignment="CENTER" contentDisplay="CENTER" prefWidth="450.0" text="" textAlignment="CENTER">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</FlowPane>

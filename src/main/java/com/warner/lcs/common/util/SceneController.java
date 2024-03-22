@@ -12,10 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SceneController {
+public class SceneController  {
 
     private Stage stage;
     private Scene scene;
@@ -24,6 +27,10 @@ public class SceneController {
     private File file;
     private URL url;
     private FXMLLoader fxmlLoader;
+
+    @Autowired
+    private ApplicationContext ac;
+
 
     public SceneController() throws MalformedURLException {}
 
@@ -43,10 +50,12 @@ public class SceneController {
         try {
             url = file.toURI().toURL();
             fxmlLoader = new FXMLLoader(url);
+            fxmlLoader.setControllerFactory(ac::getBean);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
     }
+
 }
 
