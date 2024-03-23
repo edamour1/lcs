@@ -29,7 +29,7 @@ public class SQL {
         String key = zpackage + "_" +name;
         String sql = sqlMap.get(key);
 
-        if(sql == null) {
+        if(sql == null || sql.isEmpty()) {
             load(zpackage);
         }
 

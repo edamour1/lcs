@@ -58,7 +58,7 @@ public class FXMLDocumentController implements Initializable {
             try {
                 admin = lcsService.adminLogin(username, password);
                 // Now you can use the username and password as needed
-            actiontarget.setText("id"+admin.getId()+ " Username: " + admin.getUsername() + ", Password: " + admin.getPassword());
+//            actiontarget.setText("id"+admin.getId()+ " Username: " + admin.getUsername() + ", Password: " + admin.getPassword());
             sceneController.setScene(this.MAIN_MENU.getTitle(),this.MAIN_MENU.getFxmlFilePath());
             sceneController.switchToScene(event);
                 // Add your logic here

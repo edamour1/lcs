@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sql>
     <!--*************************************************Invoice Information************************************************************-->
+    <bs>
+        <![CDATA[
+            SELECT b.id AS business_id, b.name AS business_name, b.phone, b.email, b.faxPhoneNo,
+       a.id AS address_id, a.street, a.city_id, a.state_id, a.zipcode_id,
+       a.is_billing, a.is_active, a.quantity, a.unit_id
+FROM business b
+INNER JOIN addresses a ON b.address_id = a.id
+        ]]>
+    </bs>>
     <getInvoiceInformation>
         <![CDATA[
             select * from invoice_information

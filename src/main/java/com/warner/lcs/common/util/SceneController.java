@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -50,7 +49,7 @@ public class SceneController  {
         try {
             url = file.toURI().toURL();
             fxmlLoader = new FXMLLoader(url);
-            fxmlLoader.setControllerFactory(ac::getBean);
+            fxmlLoader.setControllerFactory(ac::getBean);//DO NOT FORGET TO INCLUDE SO THAT JAVAFX SCENE CAN HAVE ACCESS TO THE SPRING BEANS
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

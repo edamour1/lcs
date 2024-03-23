@@ -1,73 +1,83 @@
 package com.warner.lcs.app.controller;
 
-import com.warner.lcs.app.domain.Contact;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Font;
-import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ClientsMenuController {
 
-
-    @FXML
-    private Label title;
-
-    @FXML
-    private TableView<Contact> tvContacts;
-
-    @FXML
-    private Label response;
-
-    public void initialize() {
-        title.setText("Contact List Using a TableView");
-        title.setTextFill(Color.CADETBLUE);
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-        ObservableList<Contact> contactList = FXCollections.observableArrayList(
-                new Contact("Peggy", "Fisher", "717-555-1212"),
-                new Contact("Jim", "Freed", "441-456-1345"),
-                new Contact("Pat", "Keegan", "717-363-1432"),
-                new Contact("Jane", "Slattery", "441-478-4488"),
-                new Contact("Cy", "Young", "970-554-1265"),
-                new Contact("Rob", "Jones", "570-655-1587"),
-                new Contact("Carol", "King", "215-547-5958"),
-                new Contact("Bob", "Kauffman", "215-456-6345"),
-                new Contact("Gloria", "Shilling", "717-785-6092"),
-                new Contact("Bill", "Sigler", "441-444-1345")
-        );
-
-        TableColumn<Contact, String> fNameColumn = new TableColumn<>("First Name");
-        fNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        fNameColumn.setPrefWidth(150); // Set preferred width
-
-        TableColumn<Contact, String> lNameColumn = new TableColumn<>("Last Name");
-        lNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        lNameColumn.setPrefWidth(150); // Set preferred width
-
-        TableColumn<Contact, String> cellColumn = new TableColumn<>("Cell Phone Number");
-        cellColumn.setCellValueFactory(new PropertyValueFactory<>("cellPhone"));
-        cellColumn.setPrefWidth(200); // Set preferred width
-
-        tvContacts.setItems(contactList);
-        tvContacts.getColumns().addAll(fNameColumn, lNameColumn, cellColumn);
-
-        tvContacts.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> changed, Number oldVal, Number newVal) {
-                int index = (int)newVal;
-                response.setText("The cell number for the contact selected is " + contactList.get(index).getCellPhone());
-            }
-        });
-
-        response.setFont(Font.font("Arial", 14));
-    }
+//    @FXML
+//    private TableView<Person> tableView;
+//
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        // Add prepopulated data to the table
+//        tableView.getItems().addAll(
+//                new Person("John", "25"),
+//                new Person("Alice", "30"),
+//                new Person("Bob", "40")
+//        );
+//
+//        // Create button column
+//        TableColumn<Person, Button> buttonColumn = new TableColumn<>("Button");
+//        buttonColumn.setCellValueFactory(param -> new SimpleStringProperty("Click Me"));
+//        buttonColumn.setCellFactory(col -> new ButtonCell());
+//        tableView.getColumns().add(buttonColumn);
+//    }
+//
+//    // Class representing a Person
+//    public static class Person {
+//        private final SimpleStringProperty name;
+//        private final SimpleStringProperty age;
+//
+//        public Person(String name, String age) {
+//            this.name = new SimpleStringProperty(name);
+//            this.age = new SimpleStringProperty(age);
+//        }
+//
+//        public String getName() {
+//            return name.get();
+//        }
+//
+//        public String getAge() {
+//            return age.get();
+//        }
+//    }
+//
+//    // Custom cell factory for the button column
+//    private class ButtonCell extends TableCell<Person, Button> {
+//        private final Button button = new Button("Print");
+//
+//        ButtonCell() {
+//            button.setOnAction(event -> {
+//                Person person = getTableView().getItems().get(getIndex());
+//                System.out.println("Name: " + person.getName() + ", Age: " + person.getAge());
+//            });
+//        }
+//
+//        @Override
+//        protected void updateItem(Button item, boolean empty) {
+//            super.updateItem(item, empty);
+//            if (!empty) {
+//                setGraphic(button);
+//            } else {
+//                setGraphic(null);
+//            }
+//        }
+//    }
 
 
 }
