@@ -11,7 +11,7 @@ public enum FxmlView {
 
         @Override
         public String getFxmlFilePath() {
-            return "com/warner/lcs/FXMLDocument.fxml";
+            return "fxml/FXMLDocument.fxml";
         }
     },
     MAIN_MENU {

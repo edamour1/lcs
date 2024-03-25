@@ -18,7 +18,7 @@ public class StageListener implements ApplicationListener<StageReadyEvent> {
 
     private final String applicationTitle;
     private File file;
-    private String filePath = "C:\\Users\\User\\Documents\\lcs\\lcs\\src\\main\\java\\com\\warner\\lcs\\FXMLDocument.fxml";
+    private String filePath = "src\\main\\resources\\fxml\\FXMLDocument.fxml";
     private ApplicationContext ac;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
