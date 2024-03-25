@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.warner.lcs.app.controller.MainMenuController"
-            prefHeight="600.0" prefWidth="600.0">
-    <children>
-        <TableView
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.warner.lcs.app.controller.ClientsMenuController"
+      prefHeight="400.0" prefWidth="600.0"
+      fx:id="root">
+    <!-- Add TableView with fx:id -->
+    <TableView fx:id="tableView">
+        <!-- Define columns and other configurations here -->
+    </TableView>
 
-                fx:id="table" layoutX="28.0" layoutY="48.0" prefHeight="550.0" prefWidth="545.0">
-            <columns>
-                <TableColumn text="ID" fx:id="colId"/>
-                <TableColumn text="Name" fx:id="colName"/>
-                <TableColumn text="Button Column" fx:id="colBtn"/>
-            </columns>
-        </TableView>
-    </children>
-</AnchorPane>
+    <!-- Add View Client Button -->
+    <Button text="View Client" onAction="#viewClient"/>
+</VBox>

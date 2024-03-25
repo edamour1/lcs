@@ -1,4 +1,4 @@
-package com.warner.lcs.common.util;
+package com.warner.lcs.common.config;
 
 
 import javafx.stage.Stage;
