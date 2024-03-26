@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -13,6 +16,30 @@
         <!-- Define columns and other configurations here -->
     </TableView>
 
-    <!-- Add View Client Button -->
-    <Button text="View Client" onAction="#viewClient"/>
+    <!-- TextField for filtering -->
+    <TextField fx:id="filterTextField" promptText="Enter name to filter"/>
+
+    <!-- Horizontal layout for buttons -->
+    <HBox spacing="10" alignment="CENTER">
+        <!-- Padding between the two HBox layouts -->
+        <padding>
+            <Insets top="20"/>
+        </padding>
+        <!-- Add View Client Button -->
+        <Button text="View Client" onAction="#viewClient" style="-fx-background-color: green;"/>
+        <Button text="Update Client" onAction="#updateClient" style="-fx-background-color: blue;"/>
+        <Button text="Delete Client" onAction="#deleteClient" style="-fx-background-color: red;"/>
+        <Button text="Register Client" onAction="#registerClient" style="-fx-background-color: yellow;"/>
+    </HBox>
+
+
+
+    <!-- Horizontal layout for buttons -->
+    <HBox spacing="10" alignment="CENTER">
+        <!-- Padding between the two HBox layouts -->
+        <padding>
+            <Insets top="20"/>
+        </padding>
+        <Button text="Back" onAction="#backToDefault"/>
+    </HBox>
 </VBox>

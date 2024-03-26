@@ -3,10 +3,13 @@ package com.warner.lcs.app.controller;
 import com.warner.lcs.app.domain.Client;
 import com.warner.lcs.app.service.LcsService;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +33,9 @@ public class ClientsMenuController implements Initializable {
     @FXML
     private TableView<Client> tableView;
 
+    @FXML
+    private TextField filterTextField;
+
     // Field to store selected person
     private Client selectedPerson;
 
@@ -42,23 +48,7 @@ public class ClientsMenuController implements Initializable {
         TableColumn<Client, String> emailColumn = createTableColumn("Email", "email");
         TableColumn<Client, String> phoneNumberColumn = createTableColumn("Phone", "phoneNumber");
 
-//        Person p1 =
-//                new Person(1,"Ashwin", "Sharan", LocalDate.of(2012, 10, 11));
-//        Person p2 =
-//                new Person(2,"Advik", "Sharan", LocalDate.of(2012, 10, 11));
-//        Person p3 =
-//                new Person(3,"Layne", "Estes", LocalDate.of(2011, 12, 16));
-//        Person p4 =
-//                new Person(4,"Mason", "Boyd", LocalDate.of(2003, 4, 20));
-//        Person p5 =
-//                new Person(5,"Babalu", "Sharan", LocalDate.of(1980, 1, 10));
 
-//        List<Person> list = new ArrayList<>();
-//        list.add(p1);
-//        list.add(p2);
-//        list.add(p3);
-//        list.add(p4);
-//        list.add(p5);
 
         List<Client> list = null;
         try {
@@ -70,16 +60,10 @@ public class ClientsMenuController implements Initializable {
         // Converting the list of strings to an observable list of strings
         ObservableList<Client> observableStringList = getObservableList(list);
 
-
         // Create a TableView with a list of persons
         tableView.setItems(observableStringList);
-        // Add columns to the TableView
-//        tableView.getColumns().addAll(
-//                PersonTableUtil.getIdColumn(),
-//                PersonTableUtil.getFirstNameColumn(),
-//                PersonTableUtil.getLastNameColumn(),
-//                PersonTableUtil.getBirthDateColumn());
 
+        // Create a TableView with a list of persons
         tableView.getColumns().addAll(idColumn,firstNameColumn,middleNameColumn,lastNameColumn,emailColumn,phoneNumberColumn);
 
 
@@ -90,6 +74,35 @@ public class ClientsMenuController implements Initializable {
                 printSelectedPerson(selectedPerson);
             }
         });
+
+        // Wrap the observable list in a FilteredList (initially display all data)
+        FilteredList<Client> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
+
+        // Set the filter predicate whenever the filter changes
+        filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Wrap the filtered list in a SortedList
+        SortedList<Client> sortedData = new SortedList<>(filteredData);
+
+        // Bind the SortedList comparator to the TableView comparator
+        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+
+        // Add sorted (and filtered) data to the TableView
+        tableView.setItems(sortedData);
     }
 
     private void printSelectedPerson(Client person) {
@@ -106,4 +119,25 @@ public class ClientsMenuController implements Initializable {
             System.out.println("No client selected.");
         }
     }
+
+    @FXML
+    private void updateClient() {
+        // Your logic for updating client
+    }
+
+    @FXML
+    private void deleteClient() {
+        // Your logic for deleting client
+    }
+
+    @FXML
+    private void registerClient() {
+        // Your logic for registering client
+    }
+
+    @FXML
+    private void backToDefault() {
+        // Your logic for reverting to default state
+    }
+
 }

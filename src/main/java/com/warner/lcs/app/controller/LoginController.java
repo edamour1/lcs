@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FXMLDocumentController implements Initializable {
+public class LoginController implements Initializable {
 
     @FXML
     private Label label;
@@ -43,7 +43,7 @@ public class FXMLDocumentController implements Initializable {
 
     private FxmlView fxmlView;
     private FxmlView MAIN_MENU;
-    public FXMLDocumentController() {
+    public LoginController() {
             fxmlView = FxmlView.MAIN_MENU;
         this.MAIN_MENU = fxmlView.MAIN_MENU;
     }
