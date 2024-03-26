@@ -35,6 +35,28 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/clients_menu.fxml";
         }
+    },
+    CLIENT_VIEW {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("client.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_view.fxml";
+        }
+    },
+    CLIENT_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("client.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_register.fxml";
+        }
     };
 
     public abstract String getTitle();

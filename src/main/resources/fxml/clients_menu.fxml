@@ -6,18 +6,48 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.warner.lcs.app.controller.ClientsMenuController"
       prefHeight="400.0" prefWidth="600.0"
       fx:id="root">
+
+    <!-- Horizontal layout for buttons -->
+    <HBox spacing="10" alignment="TOP_LEFT">
+        <padding>
+            <Insets bottom="70" top="30"/>
+        </padding>
+        <Label text="Filter by First Name: "/>
+        <!-- TextField for filtering -->
+        <TextField fx:id="firstNameFilterTextField" promptText="Enter name to filter"/>
+        <Label text="Filter by Middle Name: "/>
+        <!-- TextField for filtering -->
+        <TextField fx:id="middleNameFilterTextField" promptText="Enter name to filter"/>
+        <Label text="Filter by Last Name: "/>
+        <!-- TextField for filtering -->
+        <TextField fx:id="lastNameFilterTextField" promptText="Enter name to filter"/>
+    </HBox>
+
+    <!-- Horizontal layout for buttons -->
+    <HBox spacing="10" alignment="TOP_LEFT">
+        <padding>
+            <Insets bottom="20" />
+        </padding>
+        <Label text="Filter by Email: "/>
+        <!-- TextField for filtering -->
+        <TextField fx:id="emailFilterTextField" promptText="Enter Email to filter"/>
+        <Label text="Filter by Phone Number: "/>
+        <!-- TextField for filtering -->
+        <TextField fx:id="phoneNumberFilterTextField" promptText="Enter Number to filter"/>
+    </HBox>
+
     <!-- Add TableView with fx:id -->
     <TableView fx:id="tableView">
         <!-- Define columns and other configurations here -->
     </TableView>
 
-    <!-- TextField for filtering -->
-    <TextField fx:id="filterTextField" promptText="Enter name to filter"/>
+
 
     <!-- Horizontal layout for buttons -->
     <HBox spacing="10" alignment="CENTER">
@@ -26,9 +56,9 @@
             <Insets top="20"/>
         </padding>
         <!-- Add View Client Button -->
-        <Button text="View Client" onAction="#viewClient" style="-fx-background-color: green;"/>
-        <Button text="Update Client" onAction="#updateClient" style="-fx-background-color: blue;"/>
-        <Button text="Delete Client" onAction="#deleteClient" style="-fx-background-color: red;"/>
+        <Button text="View Client" onAction="#viewClient" style="-fx-background-color: lightgreen;"/>
+        <Button text="Update Client" onAction="#updateClient" style="-fx-background-color: lightblue;"/>
+        <Button text="Delete Client" onAction="#deleteClient" style="-fx-background-color: pink;"/>
         <Button text="Register Client" onAction="#registerClient" style="-fx-background-color: yellow;"/>
     </HBox>
 

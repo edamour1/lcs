@@ -15,7 +15,6 @@ public class MainMenuController {
     @Autowired
     private LcsService lcsService;
 
-    private FxmlView fxmlView;
     private FxmlView CLIENT_MENU,INVOICE_MENU;
 
     @Autowired

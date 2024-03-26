@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.warner.lcs.app.controller.ClientRegisterController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- First Name Input -->
+    <Label text="First Name:" layoutX="50.0" layoutY="50.0"/>
+    <TextField fx:id="firstNameTextField" layoutX="150.0" layoutY="50.0"/>
+
+    <!-- Last Name Input -->
+    <Label text="Last Name:" layoutX="50.0" layoutY="100.0"/>
+    <TextField fx:id="lastNameTextField" layoutX="150.0" layoutY="100.0"/>
+
+    <!-- Middle Name Input -->
+    <Label text="Middle Name:" layoutX="50.0" layoutY="150.0"/>
+    <TextField fx:id="middleNameTextField" layoutX="150.0" layoutY="150.0"/>
+
+    <!-- Phone Number Input -->
+    <Label text="Phone Number:" layoutX="50.0" layoutY="200.0"/>
+    <TextField fx:id="phoneNumberTextField" layoutX="150.0" layoutY="200.0"/>
+
+    <!-- Email Input -->
+    <Label text="Email:" layoutX="50.0" layoutY="250.0"/>
+    <TextField fx:id="emailTextField" layoutX="150.0" layoutY="250.0"/>
+
+    <!-- Submit Button -->
+    <Button text="Submit" layoutX="200.0" layoutY="300.0" onAction="#submitForm"/>
+
+    <!-- Back Button -->
+    <Button text="Back" layoutX="300.0" layoutY="300.0" onAction="#goBack"/>
+
+</AnchorPane>

@@ -1,10 +1,14 @@
 package com.warner.lcs.app.controller;
 
+import com.warner.lcs.app.domain.Admin;
 import com.warner.lcs.app.domain.Client;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.FxmlView;
+import com.warner.lcs.common.util.SceneController;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -12,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -26,6 +31,16 @@ public class ClientsMenuController implements Initializable {
 
     @Autowired
     private LcsService lcsService;
+    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER;
+
+    @Autowired
+    private SceneController sceneController;
+
+    @Autowired
+    private ClientViewController clientViewController;
+
+    @Autowired
+    private ClientRegisterController clientRegisterController;
 
     @FXML
     private VBox root;
@@ -34,13 +49,30 @@ public class ClientsMenuController implements Initializable {
     private TableView<Client> tableView;
 
     @FXML
-    private TextField filterTextField;
+    private TextField firstNameFilterTextField;
+
+    @FXML
+    private TextField middleNameFilterTextField;
+
+    @FXML
+    private TextField lastNameFilterTextField;
+
+    @FXML
+    private TextField emailFilterTextField;
+
+    @FXML
+    private TextField phoneNumberFilterTextField;
 
     // Field to store selected person
     private Client selectedPerson;
 
+    private Admin admin;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
+        this.CLIENT_REGISTER = FxmlView.CLIENT_REGISTER;
+
         TableColumn<Client, String> idColumn = createTableColumn("Customer ID", "id");
         TableColumn<Client, String> firstNameColumn = createTableColumn("First Name", "firstName");
         TableColumn<Client, String> middleNameColumn = createTableColumn("Middle Name", "middleName");
@@ -79,7 +111,7 @@ public class ClientsMenuController implements Initializable {
         FilteredList<Client> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
 
         // Set the filter predicate whenever the filter changes
-        filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        firstNameFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(client -> {
                 // If filter text is empty, display all clients
                 if (newValue == null || newValue.isEmpty()) {
@@ -89,6 +121,91 @@ public class ClientsMenuController implements Initializable {
                 // Compare client's name with the filter text
                 String lowerCaseFilter = newValue.toLowerCase();
                 if (client.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Set the filter predicate whenever the filter changes
+        middleNameFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getMiddleName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Set the filter predicate whenever the filter changes
+        lastNameFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getLastName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Set the filter predicate whenever the filter changes
+        emailFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getEmail().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Set the filter predicate whenever the filter changes
+        emailFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getEmail().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches client's name
+                }
+                return false; // Filter does not match client's name
+            });
+        });
+
+        // Set the filter predicate whenever the filter changes
+        phoneNumberFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(client -> {
+                // If filter text is empty, display all clients
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare client's name with the filter text
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (client.getPhoneNumber().toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Filter matches client's name
                 }
                 return false; // Filter does not match client's name
@@ -111,10 +228,16 @@ public class ClientsMenuController implements Initializable {
 
     // Method to handle the "View Client" button action
     @FXML
-    private void viewClient() {
+    private void viewClient(ActionEvent event) throws Exception{
         if (selectedPerson != null) {
             System.out.println("Viewing Client: " + selectedPerson.getFirstName());
+            this.clientViewController.initData(selectedPerson);
             // Add your logic to view the selected client
+            this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
+            this.sceneController.switchToScene(event);
+
+
+
         } else {
             System.out.println("No client selected.");
         }
@@ -131,13 +254,20 @@ public class ClientsMenuController implements Initializable {
     }
 
     @FXML
-    private void registerClient() {
+    private void registerClient(ActionEvent event) throws Exception{
         // Your logic for registering client
+        this.clientRegisterController.initData(this.admin);
+        this.sceneController.setScene(this.CLIENT_REGISTER.getTitle(),this.CLIENT_REGISTER.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     @FXML
     private void backToDefault() {
         // Your logic for reverting to default state
+    }
+
+    void initData(Admin admin) {
+        this.admin = admin;
     }
 
 }
