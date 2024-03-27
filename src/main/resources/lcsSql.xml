@@ -490,8 +490,8 @@ INNER JOIN addresses a ON b.address_id = a.id
     <!--**************************************************************Client***********************************************************************-->
     <saveClient>
         <![CDATA[
-            INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`,`lm_user_id`,`lm_date`)
-            VALUES(?, ?, ?, ?, ?,?,NOW())
+            INSERT INTO `CLIENTS` (`first_name`, `middle_name`, `last_name`, `email`, `phone_number`,`lm_user_id`,`lm_date`,`is_active`)
+            VALUES(?, ?, ?, ?, ?,?,NOW(),?)
         ]]>
     </saveClient>
 
@@ -505,6 +505,7 @@ INNER JOIN addresses a ON b.address_id = a.id
                   email = ?,
                   phone_number = ?,
                   lm_user_id = ?,
+                  is_active = ?,
                   lm_date = NOW()
 
                     WHERE
@@ -520,7 +521,7 @@ INNER JOIN addresses a ON b.address_id = a.id
     </getClientById>
 
     <getClients>
-        <![CDATA[ SELECT * FROM clients ]]>
+        <![CDATA[ SELECT * FROM clients WHERE is_active = 1 ]]>
     </getClients>
 <!--*********************************************************Zipcodes************************************************************-->
     <getAllZipcodes>

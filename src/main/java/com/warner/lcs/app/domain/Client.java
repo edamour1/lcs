@@ -11,6 +11,8 @@ public class Client {
     private String email;
     private String phoneNumber;
 
+    private boolean isActive;
+
     public Client(){}
 
     public Client(ResultSet resultSet) throws SQLException {
@@ -20,6 +22,8 @@ public class Client {
         this.middleName = resultSet.getString("middle_name");
         this.email = resultSet.getString("email");
         this.phoneNumber = resultSet.getString("phone_number");
+        int active = resultSet.getInt("is_active");
+        this.isActive = active == 1 ? true : false;
     }
 
 
@@ -69,5 +73,13 @@ public class Client {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

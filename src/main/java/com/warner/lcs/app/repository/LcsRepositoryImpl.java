@@ -1150,6 +1150,8 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setString(4, client.getEmail());
             ps.setString(5, client.getPhoneNumber());
             ps.setString(6, admin.getUsername());
+            int isActive = client.isActive() ? 1 : 0;
+            ps.setInt(7, isActive);
 
             return ps;
         }, keyHolder);
@@ -1162,6 +1164,7 @@ public class LcsRepositoryImpl implements LcsRepository {
     @Override
     public Client updateClient(Client client,Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","updateClient");
+        int isActive = client.isActive() ? 1 : 0;
         this.lcsDataSourceTemplate.update(sql,
                 client.getFirstName(),
                 client.getMiddleName(),
@@ -1169,6 +1172,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 client.getEmail(),
                 client.getPhoneNumber(),
                 admin.getUsername(),
+                isActive,
                 client.getId());
 
         Client retrievedClient = this.getClientById(client.getId());

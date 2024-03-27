@@ -108,6 +108,7 @@ public class ClientRegisterController implements Initializable {
         this.saveClient.setLastName(lastName);
         this.saveClient.setEmail(email);
         this.saveClient.setPhoneNumber(phoneNumber);
+        this.saveClient.setActive(true);
 
         this.lcsService.saveClient(this.saveClient,this.admin);
         this.sceneController.setScene(this.CLIENT_MENU.getTitle(),this.CLIENT_MENU.getFxmlFilePath());

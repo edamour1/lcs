@@ -114,8 +114,9 @@ public class ClientUpdateController implements Initializable  {
         this.saveClient.setLastName(lastName);
         this.saveClient.setEmail(email);
         this.saveClient.setPhoneNumber(phoneNumber);
-
-        this.lcsService.saveClient(this.saveClient,this.admin);
+        this.saveClient.setId(this.client.getId());
+        this.saveClient.setActive(true);
+        this.lcsService.updateClient(this.saveClient,this.admin);
         this.sceneController.setScene(this.CLIENT_MENU.getTitle(),this.CLIENT_MENU.getFxmlFilePath());
         this.sceneController.switchToScene(event);
     }

@@ -90,6 +90,7 @@ CREATE TABLE `CLIENTS`(
     `phone_number` VARCHAR(255) NULL,
     `lm_user_id` VARCHAR(255) NULL,
     `lm_date` DATETIME NULL,
+	`is_active` tinyint(1) NULL,
      PRIMARY KEY (`id`)
 );
 
@@ -103,6 +104,7 @@ CREATE TABLE `INVOICE_INFORMATION`(
     `lm_user_id` VARCHAR(255) NOT NULL,
     `lm_date` DATETIME NOT NULL,
 	`address_id` BIGINT UNSIGNED NULL,
+	`is_active` tinyint(1) NULL,
      PRIMARY KEY (`invoice_no`)
 );
 
@@ -110,7 +112,7 @@ CREATE TABLE TREATMENT_LIST (
     `id` VARCHAR(255) NOT NULL,
     `treatment_id` BIGINT UNSIGNED NOT NULL,
 	`quantity` DECIMAL(8, 2) NULL,
-    `unit_id` BIGINT UNSIGNED NOT NULL,
+    `unit_id` BIGINT UNSIGNED NOT NULL ,
     PRIMARY KEY (id, treatment_id)
 );
 
