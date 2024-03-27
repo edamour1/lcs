@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.warner.lcs.app.controller.ConfirmationDialogController"
+            prefHeight="400.0" prefWidth="600.0">
+    <VBox alignment="CENTER" spacing="10">
+        <Label text="Are you sure you want to delete?" />
+        <HBox alignment="CENTER" spacing="10">
+            <Button text="Yes" onAction="#confirmDelete" />
+            <Button text="No" onAction="#cancelDelete" />
+        </HBox>
+    </VBox>
+</AnchorPane>

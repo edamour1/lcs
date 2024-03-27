@@ -539,6 +539,17 @@ public interface LcsRepository {
     public Client updateClient(Client client, Admin admin) throws Exception;
 
     /**
+     * Deletes a client
+     *
+     * This method uses the jdbc template delete a client.
+     * @param client Has the client data.
+     * @param admin has admin data.
+     * @return Client object.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Client deleteClient(Client client, Admin admin) throws  Exception;
+
+    /**
      * Gets a Client from the database based on id
      *
      * This method uses the jdbc template to fetch the client data by id from the database.

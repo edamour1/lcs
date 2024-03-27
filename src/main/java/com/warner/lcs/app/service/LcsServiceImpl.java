@@ -263,6 +263,11 @@ public class LcsServiceImpl implements LcsService {
     public Client updateClient(Client client, Admin admin) throws Exception { return this.lcsRepository.updateClient(client,admin); }
 
     @Override
+    public Client deleteClient(Client client, Admin admin) throws Exception {
+        return this.lcsRepository.deleteClient(client,admin);
+    }
+
+    @Override
     public Client getClientById(int id) throws Exception { return this.lcsRepository.getClientById(id); }
 
     @Override

@@ -570,6 +570,18 @@ public interface LcsService {
 
 
     /**
+     * Deletes a client
+     *
+     * This method uses the repository layer delete a client.
+     * @param client Has the client data.
+     * @param admin has admin data.
+     * @return Client object.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Client deleteClient(Client client, Admin admin) throws  Exception;
+
+
+    /**
      * Returns a desired client from the database based on provided id
      *
      * This method uses the repository layer to fetch the client data by id from the database.

@@ -90,7 +90,14 @@ public class LcsApplicationTest {
         this.business.setPhoneNo("678-410-9876");
         this.business.setFaxPhoneNo("770-223-0988");
     }
-
+        @Test//means method is meant to be tested
+        public void deleteClientTest() throws Exception {
+            this.client.setActive(false);
+            this.client.setId(6);
+            this.admin.setId(1);
+            Client obj = this.lcsService.deleteClient(this.client,this.admin);
+            assertThat(obj.isActive()).isFalse();
+        }
 
 //    @Test//means method is meant to be tested
 //    public void emailUtilTest() throws Exception {

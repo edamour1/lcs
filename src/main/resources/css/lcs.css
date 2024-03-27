@@ -1,3 +1,17 @@
 .invalid-text-field {
     -fx-border-color: red;
 }
+
+.trash-can-button {
+    -fx-background-image: url('path_to_trash_icon.png');
+    -fx-background-size: 24px 24px; /* Adjust the size according to your icon */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-text-fill: transparent; /* Hide the button text */
+    -fx-padding: 5px; /* Adjust padding as needed */
+    -fx-border-width: 0; /* Remove border if necessary */
+}
+
+.trash-can-button:hover {
+    -fx-background-color: lightgray; /* Change background color on hover if desired */
+}

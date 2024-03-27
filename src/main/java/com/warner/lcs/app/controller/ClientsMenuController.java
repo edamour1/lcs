@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,7 +31,8 @@ public class ClientsMenuController implements Initializable {
 
     @Autowired
     private LcsService lcsService;
-    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER, CLIENT_UPDATE;
+
+    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER, CLIENT_UPDATE, CLIENT_DELETE;
 
     @Autowired
     private SceneController sceneController;
@@ -42,6 +45,9 @@ public class ClientsMenuController implements Initializable {
 
     @Autowired
     private ClientUpdateController clientUpdateController;
+
+    @Autowired
+    private ClientDeleteController clientDeleteController;
 
     @FXML
     private VBox root;
@@ -74,6 +80,7 @@ public class ClientsMenuController implements Initializable {
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_REGISTER = FxmlView.CLIENT_REGISTER;
         this.CLIENT_UPDATE = FxmlView.CLIENT_UPDATE;
+        this.CLIENT_DELETE = FxmlView.CLIENT_DELETE;
 
         TableColumn<Client, String> idColumn = createTableColumn("Customer ID", "id");
         TableColumn<Client, String> firstNameColumn = createTableColumn("First Name", "firstName");
@@ -252,8 +259,12 @@ public class ClientsMenuController implements Initializable {
     }
 
     @FXML
-    private void deleteClient() {
+    private void deleteClient(ActionEvent event) throws IOException {
+
+        this.clientDeleteController.initData(this.selectedPerson,this.admin);
         // Your logic for deleting client
+        this.sceneController.setScene(this.CLIENT_DELETE.getTitle(),this.CLIENT_DELETE.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     @FXML

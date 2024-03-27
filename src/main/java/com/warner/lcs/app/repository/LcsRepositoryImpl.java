@@ -1181,6 +1181,17 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
+    public Client deleteClient(Client client, Admin admin) throws Exception {
+        String sql = SQL.get("lcsSql","deleteClient");
+        int isActive = client.isActive() ? 1 : 0;
+        this.lcsDataSourceTemplate.update(sql, admin.getUsername(), client.getId());
+
+        Client retrievedClient = this.getClientById(client.getId());
+
+        return retrievedClient;
+    }
+
+    @Override
     public Client getClientById(int id) throws Exception {
         RowMapper<Client> mapper = new RowMapper<Client>() {
             public Client mapRow(ResultSet rs, int rowNum) throws SQLException {

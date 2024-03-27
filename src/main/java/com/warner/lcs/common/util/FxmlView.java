@@ -68,6 +68,16 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/client_update.fxml";
         }
+    }, CLIENT_DELETE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("client.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_delete.fxml";
+        }
     };
 
     public abstract String getTitle();

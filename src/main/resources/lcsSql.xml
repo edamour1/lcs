@@ -523,6 +523,17 @@ INNER JOIN addresses a ON b.address_id = a.id
     <getClients>
         <![CDATA[ SELECT * FROM clients WHERE is_active = 1 ]]>
     </getClients>
+
+    <deleteClient>
+        <![CDATA[
+             UPDATE clients
+                SET
+                    is_active = 0,
+                    lm_user_id = ?,
+                    lm_date = NOW()
+                    where id = ?
+         ]]>
+    </deleteClient>
 <!--*********************************************************Zipcodes************************************************************-->
     <getAllZipcodes>
         <![CDATA[
