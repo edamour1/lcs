@@ -57,6 +57,17 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/client_register.fxml";
         }
+    },
+    CLIENT_UPDATE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("client.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_update.fxml";
+        }
     };
 
     public abstract String getTitle();

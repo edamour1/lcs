@@ -16,9 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,7 +29,7 @@ public class ClientsMenuController implements Initializable {
 
     @Autowired
     private LcsService lcsService;
-    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER;
+    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER, CLIENT_UPDATE;
 
     @Autowired
     private SceneController sceneController;
@@ -41,6 +39,9 @@ public class ClientsMenuController implements Initializable {
 
     @Autowired
     private ClientRegisterController clientRegisterController;
+
+    @Autowired
+    private ClientUpdateController clientUpdateController;
 
     @FXML
     private VBox root;
@@ -72,6 +73,7 @@ public class ClientsMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_REGISTER = FxmlView.CLIENT_REGISTER;
+        this.CLIENT_UPDATE = FxmlView.CLIENT_UPDATE;
 
         TableColumn<Client, String> idColumn = createTableColumn("Customer ID", "id");
         TableColumn<Client, String> firstNameColumn = createTableColumn("First Name", "firstName");
@@ -235,17 +237,18 @@ public class ClientsMenuController implements Initializable {
             // Add your logic to view the selected client
             this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
             this.sceneController.switchToScene(event);
-
-
-
         } else {
             System.out.println("No client selected.");
         }
     }
 
     @FXML
-    private void updateClient() {
+    private void updateClient(ActionEvent event) throws Exception {
+        this.clientUpdateController.initData(this.selectedPerson,this.admin);
         // Your logic for updating client
+        this.clientRegisterController.initData(this.admin);
+        this.sceneController.setScene(this.CLIENT_UPDATE.getTitle(),this.CLIENT_UPDATE.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     @FXML

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.warner.lcs.app.controller.ClientUpdateController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- First Name Input -->
+    <Label layoutX="50.0" layoutY="50.0" text="First Name:" />
+    <TextField fx:id="firstNameTextField" layoutX="150.0" layoutY="50.0" styleClass="invalid" stylesheets="@../css/lcs.css" />
+    <Label fx:id="firstNameErrorLabel" layoutX="150.0" layoutY="80.0" textFill="red" />
+
+    <!-- Last Name Input -->
+    <Label layoutX="50.0" layoutY="100.0" text="Last Name:" />
+    <TextField fx:id="lastNameTextField" layoutX="150.0" layoutY="100.0" stylesheets="@../css/lcs.css" />
+    <Label fx:id="lastNameErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
+
+    <!-- Middle Name Input -->
+    <Label layoutX="50.0" layoutY="150.0" text="Middle Name:" />
+    <TextField fx:id="middleNameTextField" layoutX="150.0" layoutY="150.0" stylesheets="@../css/lcs.css" />
+    <Label fx:id="middleNameErrorLabel" layoutX="150.0" layoutY="180.0" textFill="red" />
+
+    <!-- Phone Number Input -->
+    <Label layoutX="50.0" layoutY="200.0" text="Phone Number:" />
+    <TextField fx:id="phoneNumberTextField" layoutX="150.0" layoutY="200.0" stylesheets="@../css/lcs.css" />
+    <Label fx:id="phoneNumberErrorLabel" layoutX="150.0" layoutY="230.0" textFill="red" />
+
+    <!-- Email Input -->
+    <Label layoutX="50.0" layoutY="250.0" text="Email:" />
+    <TextField fx:id="emailTextField" layoutX="150.0" layoutY="250.0" stylesheets="@../css/lcs.css" />
+    <Label fx:id="emailErrorLabel" layoutX="150.0" layoutY="280.0" textFill="red" />
+
+    <!-- Submit Button -->
+    <Button layoutX="200.0" layoutY="330.0" onAction="#submitForm" text="Submit" />
+
+    <!-- Back Button -->
+    <Button layoutX="300.0" layoutY="330.0" onAction="#goBack" text="Back" />
+
+</AnchorPane>
