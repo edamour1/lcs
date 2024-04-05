@@ -132,8 +132,6 @@ public class ClientRegisterController implements Initializable {
     }
 
 
-
-
     private void showError(TextField textField, String errorMessage, Label errorLabel) {
         // Apply CSS style to indicate error
         textField.getStyleClass().add("invalid-text-field");

@@ -16,18 +16,21 @@
           </padding>
           <Label text="Street:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
           <TextField fx:id="streetTextField" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="10.0"/>
+          <Label fx:id="streetErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
           <Label text="Unit:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0"/>
           <ChoiceBox fx:id="unitComboBox" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="40.0"/>
 
           <Label text="City:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="70.0"/>
           <TextField fx:id="cityTextField" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="70.0"/>
+          <Label fx:id="cityErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
           <Label text="State:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0"/>
           <ChoiceBox fx:id="stateComboBox" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="100.0"/>
 
           <Label text="Zipcode:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0"/>
           <TextField fx:id="zipcodeTextField" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="130.0"/>
+          <Label fx:id="zipcodeErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
           <CheckBox fx:id="billingCheckBox" text="Billing Address" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="160.0"/>
 
@@ -37,6 +40,7 @@
               <Button text="+" onAction="#increaseQuantity" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="220.0"/>
               <Button text="-" onAction="#decreaseQuantity" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="2.0"/>
           </HBox>
+          <Label fx:id="quantityErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
           <HBox spacing="10">
               <Button text="Submit" onAction="#handleSubmit" AnchorPane.leftAnchor="100.0" AnchorPane.bottomAnchor="200.0"/>

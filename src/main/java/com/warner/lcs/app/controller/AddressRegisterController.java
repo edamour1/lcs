@@ -17,7 +17,7 @@ import org.controlsfx.control.textfield.TextFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.w3c.dom.events.Event;
+
 
 
 import java.io.IOException;
@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.paint.Color;
 
 @Component
 public class AddressRegisterController implements Initializable {
@@ -70,6 +71,18 @@ public class AddressRegisterController implements Initializable {
 
     @FXML
     private TextField quantityTextField;
+
+    @FXML
+    private Label streetErrorLabel;
+
+    @FXML
+    private Label cityErrorLabel;
+
+    @FXML
+    private Label zipcodeErrorLabel;
+
+    @FXML
+    private Label quantityErrorLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)  {
@@ -134,8 +147,9 @@ public class AddressRegisterController implements Initializable {
 
             // Add a listener to handle changes when the text field loses focus
             cityTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                String cityText = cityTextField.getText();
                 if (!newValue) { // If the field lost focus
-                    if(!cityNames.contains(cityTextField.getText()))
+                    if(!cityNames.contains(cityText))
                     {
                         this.city = this.city == null ? new City() : this.city;
                         this.city.setId(0);
@@ -145,10 +159,13 @@ public class AddressRegisterController implements Initializable {
                         this.zipcodes.clear();
 
                     }
+
+
                     // Do something here, for example:
                     System.out.println("City text field lost focus.");
                     System.out.println(this.city.getId()+" "+this.city.getCity());
                 }
+
             });
 
             // Populate the city names
@@ -223,6 +240,7 @@ public class AddressRegisterController implements Initializable {
                 System.out.println(this.qty);
             }
         });
+
     }
 
     private void getZipcodesByCity(String city){
@@ -272,6 +290,32 @@ public class AddressRegisterController implements Initializable {
 
     @FXML
     private void handleSubmit(ActionEvent event) throws Exception {
+        String street = this.streetTextField.getText(), city = this.cityTextField.getText(), zipcode = this.zipcodeTextField.getText(), qty = this.quantityTextField.getText();
+        System.out.println(qty);
+        if(street.isEmpty())
+        {
+            showError(this.streetTextField,"Street must not be empty. Example: 9322 Melody Circle sw",this.streetErrorLabel);
+            return;
+        } else { this.clearError(this.streetTextField,this.streetErrorLabel); }
+
+        if(city.isEmpty())
+        {
+            showError(this.cityTextField,"City must not be empty. Example: Atlanta",this.cityErrorLabel);
+            return;
+        } else { clearError(this.cityTextField,this.cityErrorLabel); }
+
+        if(zipcode.isEmpty())
+        {
+            showError(this.zipcodeTextField,"Zipcode must not be empty. Example: 30014",this.zipcodeErrorLabel);
+            return;
+        } else { clearError(this.zipcodeTextField,this.zipcodeErrorLabel); }
+
+        if(qty.equals("0.0"))
+        {
+            showError(this.quantityTextField,"Quantity must not be empty. Example: 3.0",this.quantityErrorLabel);
+            return;
+        } else { clearError(this.quantityTextField,this.quantityErrorLabel); }
+
         Address saveAddress = new Address();
         saveAddress.setStreet(this.streetTextField.getText());
         saveAddress.setCity(this.city);
@@ -289,9 +333,30 @@ public class AddressRegisterController implements Initializable {
 
     @FXML
     private void handleBack(ActionEvent event) throws IOException {
-        this.sceneController.setScene(this.CLIENT_VIEW.getFxmlFilePath(), this.CLIENT_VIEW.getTitle());
+        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
         this.sceneController.switchToScene(event);
         System.out.println("Back button clicked");
+    }
+
+    private void showError(TextField textField, String errorMessage, Label errorLabel) {
+        // Apply CSS style to indicate error
+        textField.getStyleClass().add("invalid-text-field");
+
+        // Display error message
+        // You can choose how to display the error message (e.g., tooltip, label)
+        // Here, we'll set the prompt text to the error message temporarily
+        textField.setPromptText(errorMessage);
+
+        // Show error message
+        errorLabel.setText(errorMessage);
+    }
+
+    private void clearError(TextField textField,Label errorLabel) {
+        // Clear CSS style to indicate no error
+        textField.getStyleClass().remove("invalid-text-field");
+        textField.setPromptText(null);
+        // Clear error message
+        errorLabel.setText("");
     }
 
 }
