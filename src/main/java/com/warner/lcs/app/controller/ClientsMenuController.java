@@ -116,6 +116,8 @@ public class ClientsMenuController implements Initializable {
             }
         });
 
+        //*********************************************filters****************************************************
+
         // Wrap the observable list in a FilteredList (initially display all data)
         FilteredList<Client> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
 
@@ -240,7 +242,7 @@ public class ClientsMenuController implements Initializable {
     private void viewClient(ActionEvent event) throws Exception{
         if (selectedPerson != null) {
             System.out.println("Viewing Client: " + selectedPerson.getFirstName());
-            this.clientViewController.initData(selectedPerson);
+            this.clientViewController.initData(selectedPerson,this.admin);
             // Add your logic to view the selected client
             this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
             this.sceneController.switchToScene(event);

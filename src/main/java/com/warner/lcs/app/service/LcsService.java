@@ -364,6 +364,16 @@ public interface LcsService {
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception;
 
     /**
+     * Gets a Zipcode from the database based on zipcode value
+     *
+     * This method uses the jdbc template to fetch the zipcode data by id from the database.
+     * @param zipcode is going to be used to get the specific zipcode.
+     * @return Zipcode object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Zipcode getZipcode(String zipcode) throws Exception;
+
+    /**
      * Returns a desired zipcode from the database based on provided id
      *
      * This method uses the repository layer to fetch the zipcode data by id from the database.
@@ -443,6 +453,16 @@ public interface LcsService {
      * @throws Exception If error occurs in the repo layer.
      */
     public List<Treatment> getAllTreatments() throws Exception;
+
+    /**
+     * Returns a desired state from the database
+     *
+     * This method uses the repository layer to fetch the state data by name from the database.
+     * @param state is going to be used to get the specific State.
+     * @return State object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public State getState(String state) throws Exception;
 
     /**
      * Get a List of all states from the database

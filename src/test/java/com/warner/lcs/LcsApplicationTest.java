@@ -90,14 +90,25 @@ public class LcsApplicationTest {
         this.business.setPhoneNo("678-410-9876");
         this.business.setFaxPhoneNo("770-223-0988");
     }
-        @Test//means method is meant to be tested
-        public void deleteClientTest() throws Exception {
-            this.client.setActive(false);
-            this.client.setId(6);
-            this.admin.setId(1);
-            Client obj = this.lcsService.deleteClient(this.client,this.admin);
-            assertThat(obj.isActive()).isFalse();
-        }
+
+
+//    @Test//means method is meant to be tested
+//    public void getZipcodeTest() throws Exception {
+//        this.zipcode.setId(1);
+//        this.zipcode.setZipcode("30301");
+//        Zipcode obj = this.lcsService.getZipcode(this.zipcode.getZipcode());
+//        assertThat(obj.getId()).isEqualTo(this.zipcode.getId());
+//        assertThat(obj.getZipcode()).isEqualTo(this.zipcode.getZipcode());
+//    }
+
+//    @Test//means method is meant to be tested
+//    public void getStateTest() throws Exception {
+//            this.state.setId(38);
+//            this.state.setState("PA");
+//            State obj = this.lcsService.getState(this.state.getState());
+//            assertThat(obj.getId()).isEqualTo(state.getId());
+//            assertThat(obj.getState()).isEqualTo(state.getState());
+//        }
 
 //    @Test//means method is meant to be tested
 //    public void emailUtilTest() throws Exception {

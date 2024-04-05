@@ -632,10 +632,10 @@ public class LcsRepositoryImpl implements LcsRepository {
     public Address saveAddress(Address address, Client client,Admin admin) throws Exception {
 
         City city = this.getCity(address.getCity());
-        if(city == null) { address.setCity(this.saveCity(address.getCity())); }
+        if(city.getId() == 0) { address.setCity(this.saveCity(address.getCity())); }
 
         Zipcode zipcode = address.getZipcode();
-        if(zipcode == null){ address.setZipcode(this.saveZipcode(zipcode,city)); }
+        if(zipcode.getId() == 0){ address.setZipcode(this.saveZipcode(zipcode,city)); }
 
         String sql = SQL.get("lcsSql","saveAddress");
 
@@ -660,7 +660,7 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setInt(4, address.getState().getId());
             ps.setInt(5, address.getZipcode().getId());
             int isActive = address.getIsActive() ? 1 : 0;
-            int isBilling= address.isBilling() ? 1 : 0;
+            int isBilling = address.isBilling() ? 1 : 0;
             ps.setInt(6,isBilling);
             ps.setInt(7,isActive);
             ps.setDouble(8,address.getQuantity());
@@ -773,6 +773,23 @@ public class LcsRepositoryImpl implements LcsRepository {
         zipcode.setId((Integer) keyHolder.getKey().intValue());
 
         return zipcode;
+    }
+
+    @Override
+    public Zipcode getZipcode(String zipcode) throws Exception {
+        RowMapper<Zipcode> mapper = new RowMapper<Zipcode>() {
+            public Zipcode mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Zipcode zipcode = new Zipcode(rs,false);
+
+                return zipcode;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getZipcode");
+        List<Zipcode> zipcodes = this.lcsDataSourceTemplate.query(sql,mapper,zipcode);
+
+        return zipcodes.get(0);
     }
 
     @Override
@@ -921,6 +938,24 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<Treatment> treatments = this.lcsDataSourceTemplate.query(sql,mapper);
 
         return treatments;
+    }
+
+    @Override
+    public State getState(String state) throws Exception {
+        RowMapper<State> mapper = new RowMapper<State>() {
+
+            public State mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                State state = new State(rs,false);
+
+                return state;
+            }
+        };
+
+        String sql = SQL.get("lcsSql","getState");
+        List<State> states = this.lcsDataSourceTemplate.query(sql,mapper,state.toString().toUpperCase());
+
+        return states.get(0);
     }
 
     @Override

@@ -195,6 +195,11 @@ public class LcsServiceImpl implements LcsService {
     public Zipcode saveZipcode(Zipcode zipcode, City city) throws Exception { return this.lcsRepository.saveZipcode(zipcode,city); }
 
     @Override
+    public Zipcode getZipcode(String zipcode) throws Exception {
+        return this.lcsRepository.getZipcode(zipcode);
+    }
+
+    @Override
     public Zipcode getZipcodesById(int id) throws Exception { return this.lcsRepository.getZipcodesById(id); }
 
     @Override
@@ -219,6 +224,11 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public List<Treatment> getAllTreatments() throws Exception { return this.lcsRepository.getAllTreatments(); }
+
+    @Override
+    public State getState(String state) throws Exception {
+        return this.lcsRepository.getState(state);
+    }
 
     @Override
     public List<State> getAllStates() throws Exception { return this.lcsRepository.getAllStates(); }

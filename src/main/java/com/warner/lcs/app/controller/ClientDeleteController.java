@@ -53,8 +53,6 @@ public class ClientDeleteController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         // Initialize paragraph tags with client information
         if (client != null) {
@@ -64,7 +62,6 @@ public class ClientDeleteController implements Initializable {
             clientPhoneNumberParagraph.setText(client.getPhoneNumber());
             clientEmailParagraph.setText(client.getEmail());
         }
-
     }
 
     @FXML

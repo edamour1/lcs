@@ -217,7 +217,7 @@ INNER JOIN addresses a ON b.address_id = a.id
             JOIN
                 ZIPCODES ON ADDRESSES.zipcode_id = ZIPCODES.id
             WHERE
-                ADDRESSES.client_id = ?
+                ADDRESSES.client_id = ? and is_active = 1
         ]]>
     </getAddressesByClientId>
 
@@ -377,6 +377,18 @@ INNER JOIN addresses a ON b.address_id = a.id
             SELECT * FROM states
         ]]>
     </getAllStates>
+    <getState>
+        <![CDATA[
+            SELECT * FROM states
+            where state = ?
+        ]]>
+    </getState>
+    <getStateById>
+        <![CDATA[
+            SELECT * FROM states
+            WHERE id = ?
+        ]]>
+    </getStateById>
 <!--***************************************************************Cities*********************************************************************************-->
     <getCities>
         <![CDATA[
@@ -540,6 +552,12 @@ INNER JOIN addresses a ON b.address_id = a.id
             SELECT * FROM zipcodes
         ]]>
     </getAllZipcodes>
+    <getZipcode>
+        <![CDATA[
+            SELECT * FROM zipcodes
+            where zipcode = ?
+        ]]>
+    </getZipcode>
 
     <getZipcodesByCity>
         <![CDATA[

@@ -24,14 +24,15 @@ public class SceneController  {
     private Parent root;
     private String sceneTitle;
     private File file;
-    private URL url;
     private FXMLLoader fxmlLoader;
 
     @Autowired
     private ApplicationContext ac;
 
 
-    public SceneController() throws MalformedURLException {}
+    public SceneController() throws MalformedURLException {
+
+    }
 
     public void switchToScene(ActionEvent event) throws IOException {
         root = fxmlLoader.load();

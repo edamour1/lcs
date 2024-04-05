@@ -68,10 +68,55 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/client_update.fxml";
         }
-    }, CLIENT_DELETE {
+    },
+    CLIENT_DELETE {
         @Override
         public String getTitle() {
             return getStringFromResourceBundle("client.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_delete.fxml";
+        }
+    },
+    ADDRESS_VIEW {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("address.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_view.fxml";
+        }
+    },
+    ADDRESS_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("address.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/address_register.fxml";
+        }
+    },
+    ADDRESS_UPDATE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("address.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/client_update.fxml";
+        }
+    },
+    ADDRESS_DELETE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("address.delete.title");
         }
 
         @Override

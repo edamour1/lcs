@@ -13,15 +13,16 @@
     <TextField fx:id="firstNameTextField" layoutX="150.0" layoutY="50.0" styleClass="invalid" stylesheets="@../css/lcs.css" />
     <Label fx:id="firstNameErrorLabel" layoutX="150.0" layoutY="80.0" textFill="red" />
 
-    <!-- Last Name Input -->
-    <Label layoutX="50.0" layoutY="100.0" text="Last Name:" />
-    <TextField fx:id="lastNameTextField" layoutX="150.0" layoutY="100.0" stylesheets="@../css/lcs.css" />
-    <Label fx:id="lastNameErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
     <!-- Middle Name Input -->
-    <Label layoutX="50.0" layoutY="150.0" text="Middle Name:" />
+    <Label layoutX="50.0" layoutY="100.0" text="Middle Name:" />
     <TextField fx:id="middleNameTextField" layoutX="150.0" layoutY="150.0" stylesheets="@../css/lcs.css" />
     <Label fx:id="middleNameErrorLabel" layoutX="150.0" layoutY="180.0" textFill="red" />
+
+    <!-- Last Name Input -->
+    <Label layoutX="50.0" layoutY="150.0" text="Last Name:" />
+    <TextField fx:id="lastNameTextField" layoutX="150.0" layoutY="100.0" stylesheets="@../css/lcs.css" />
+    <Label fx:id="lastNameErrorLabel" layoutX="150.0" layoutY="130.0" textFill="red" />
 
     <!-- Phone Number Input -->
     <Label layoutX="50.0" layoutY="200.0" text="Phone Number:" />

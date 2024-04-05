@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.warner.lcs.app.controller.ClientsMenuController"
+            fx:controller="com.warner.lcs.app.controller.ClientViewController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <!-- Vertical layout for input fields -->
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="700" top="150"/>
+        </padding>
+        <!-- First Name Input -->
+        <Label text="First Name:" />
+
+
+        <!-- Middle Name Input -->
+        <Label text="Middle Name:" />
+
+
+        <!-- Last Name Input -->
+        <Label text="Last Name:" />
+
+
+        <!-- Phone Number Input -->
+        <Label text="Phone Number:" />
+
+
+        <!-- Email Input -->
+        <Label text="Email:" />
+
+    </VBox>
+
+    <!-- Vertical layout for input fields -->
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="800" top="150"/>
+        </padding>
+        <Text fx:id="clientMiddleNameParagraph" />
+        <Text fx:id="clientPhoneNumberParagraph" />
+        <Text fx:id="clientEmailParagraph" />
+        <Text fx:id="clientLastNameParagraph" />
+        <Text fx:id="clientFirstNameParagraph" styleClass="invalid" />
+    </VBox>
+
+    <VBox>
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="100" top="100"/>
+        </padding>
+        <!-- Add TableView with fx:id -->
+        <TableView fx:id="tableView">
+            <!-- Define columns and other configurations here -->
+        </TableView>
+        <HBox spacing="10">
+            <!-- Padding between the two HBox layouts -->
+            <padding>
+                <Insets top="20"/>
+            </padding>
+            <!-- Add View Client Button -->
+            <Button text="View Address" onAction="#viewAddress" style="-fx-background-color: lightgreen;"/>
+            <Button text="Update Address" onAction="#updateAddress" style="-fx-background-color: lightblue;"/>
+            <Button text="Delete Address" onAction="#deleteAddress" style="-fx-background-color: pink;"/>
+            <Button text="Register Address" onAction="#registerAddress" style="-fx-background-color: yellow;"/>
+        </HBox>
+    </VBox>
 </AnchorPane>
