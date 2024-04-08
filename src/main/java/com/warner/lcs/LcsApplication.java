@@ -9,4 +9,5 @@ public class LcsApplication  {
 	public static void main(String[] args) {
 		Application.launch(JavaFx.class,args);
 	}
+
 }

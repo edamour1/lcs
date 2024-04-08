@@ -38,10 +38,14 @@ public class ClientViewController implements Initializable {
 
     @Autowired
     private AddressRegisterController addressRegisterController;
+    @Autowired
+    private AddressUpdateController addressUpdateController;
 
     private Admin admin;
 
     private List<Address> addresses;
+
+//    CLIENT_UPDATE
 
     @FXML
     private AnchorPane anchorPane;
@@ -146,11 +150,19 @@ public class ClientViewController implements Initializable {
 //
     @FXML
     private void updateAddress(ActionEvent event) throws Exception {
-//        this.addressUpdateController.initData(this.selectedPerson,this.admin);
-//        // Your logic for updating client
-//        this.addressRegisterController.initData(this.admin);
-//        this.sceneController.setScene(this.CLIENT_UPDATE.getTitle(),this.CLIENT_UPDATE.getFxmlFilePath());
-//        this.sceneController.switchToScene(event);
+        Address updateAddress = new Address();
+
+        for(Address address : this.addresses) {
+            if(address.getId() == this.selectedAddress.getId())
+            {
+                updateAddress = address;
+            }
+        }
+
+        // Your logic for updating client
+        this.addressUpdateController.initData(this.client,this.admin,updateAddress);
+        this.sceneController.setScene(this.ADDRESS_UPDATE.getTitle(),this.ADDRESS_UPDATE.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     @FXML

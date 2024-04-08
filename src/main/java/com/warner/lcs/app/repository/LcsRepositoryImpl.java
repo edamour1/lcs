@@ -607,15 +607,17 @@ public class LcsRepositoryImpl implements LcsRepository {
 
     @Override
     public Address updateAddress(Address address, Client client, Admin admin) throws Exception {
+        City city = address.getCity().getId() == 0 ? this.saveCity(address.getCity()) : address.getCity();
+        Zipcode zipcode = address.getZipcode().getId() == 0 ? this.saveZipcode(address.getZipcode(),city) : address.getZipcode();
 
         String sql = SQL.get("lcsSql","updateAddress");
         int isActiveArgument = address.getIsActive() ? 1 : 0;
         int isBillingArgument = address.isBilling() ? 1 : 0;
         this.lcsDataSourceTemplate.update(sql,
                 address.getStreet(),
-                address.getCity().getId(),
+                city.getId(),
                 address.getState().getId(),
-                address.getZipcode().getId(),
+                zipcode.getId(),
                 isActiveArgument,
                 isBillingArgument,
                 address.getQuantity(),

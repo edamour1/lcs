@@ -64,13 +64,16 @@ public class ClientUpdateController implements Initializable  {
         // Initialize anything if needed
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         this.saveClient = new Client();
+        if(this.client != null)
+        {
+            // Perform actions with the collected data
+            firstNameTextField.setText(this.client.getFirstName());
+            lastNameTextField.setText(this.client.getLastName());
+            middleNameTextField.setText(this.client.getMiddleName());
+            phoneNumberTextField.setText(this.client.getPhoneNumber());
+            emailTextField.setText(this.client.getEmail());
+        }
 
-        // Perform actions with the collected data
-       firstNameTextField.setText(this.client.getFirstName());
-       lastNameTextField.setText(this.client.getLastName());
-       middleNameTextField.setText(this.client.getMiddleName());
-       phoneNumberTextField.setText(this.client.getPhoneNumber());
-       emailTextField.setText(this.client.getEmail());
     }
 
     @FXML
@@ -122,7 +125,7 @@ public class ClientUpdateController implements Initializable  {
     }
 
     @FXML
-    private void goBack(ActionEvent event) throws  Exception{
+    private void goBack(ActionEvent event) throws  Exception {
         this.sceneController.setScene(this.CLIENT_MENU.getTitle(),this.CLIENT_MENU.getFxmlFilePath());
         this.sceneController.switchToScene(event);
     }
