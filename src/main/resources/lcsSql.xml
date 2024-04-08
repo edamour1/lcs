@@ -177,7 +177,9 @@ INNER JOIN addresses a ON b.address_id = a.id
                 is_billing,
                 is_active,
                  quantity,
-                 unit_id
+                 unit_id,
+                 lm_user_id,
+                 lm_date
             FROM
                 ADDRESSES
             JOIN
@@ -204,8 +206,9 @@ INNER JOIN addresses a ON b.address_id = a.id
                 is_billing,
                 is_active,
                 quantity,
-                unit
-
+                unit,
+                lm_user_id,
+                lm_date
             FROM
                 ADDRESSES
             JOIN
@@ -239,6 +242,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                         payment_due_date,
                         start_date,
                         end_date,
+                        lm_user_id,
+                        lm_date,
                         UNITS.*
                 FROM
                     INVOICE_INFORMATION
@@ -304,7 +309,9 @@ INNER JOIN addresses a ON b.address_id = a.id
                 is_billing,
                 is_active,
                 quantity,
-                unit
+                unit,
+                lm_user_id,
+                lm_date
 
             FROM
                 ADDRESSES
@@ -320,6 +327,17 @@ INNER JOIN addresses a ON b.address_id = a.id
                 ADDRESSES.id = ?
         ]]>
     </getAddressById>
+
+    <deleteAddress>
+        <![CDATA[
+            UPDATE `lawncare_service`.`addresses`
+                SET
+                `is_active` = 0,
+                `lm_user_id` = ?,
+                `lm_date` = Now()
+                WHERE `id` = ?
+        ]]>
+    </deleteAddress>
 <!--******************************************************************Treatment**********************************************************-->
     <getTreatmentById>
         <![CDATA[

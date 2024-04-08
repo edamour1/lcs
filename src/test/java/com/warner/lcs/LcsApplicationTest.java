@@ -84,13 +84,19 @@ public class LcsApplicationTest {
         additionalCostService.setTreatmentDescription("additional treatment description 8");
         additionalCostService.setPrice(89.45);
         this.invoiceInformation = new InvoiceInformation();
-        business = new Business();
+        this.business = new Business();
         this.business.setName("Warner lawncare service");
         this.business.setEmail("edamourjr@gmail.com");
         this.business.setPhoneNo("678-410-9876");
         this.business.setFaxPhoneNo("770-223-0988");
     }
 
+//    @Test//means method is meant to be tested
+//    public void deleteAddressTest() throws Exception {
+//        this.address.setId(11);
+//        Address obj = this.lcsService.deleteAddress(this.address,this.admin);
+//        assertThat(obj.isActive()).isFalse();
+//    }
 
 //    @Test//means method is meant to be tested
 //    public void getZipcodeTest() throws Exception {

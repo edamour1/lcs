@@ -26,10 +26,12 @@ import static com.warner.lcs.common.util.TableUtil.getObservableList;
 
 @Component
 public class ClientViewController implements Initializable {
+
     private FxmlView CLIENT_MENU, ADDRESS_VIEW, ADDRESS_REGISTER, ADDRESS_UPDATE, ADDRESS_DELETE;
     private Client client;
     private AddressTableData selectedAddress;
     private Address address;
+
     @Autowired
     private LcsService lcsService;
 
@@ -41,11 +43,11 @@ public class ClientViewController implements Initializable {
     @Autowired
     private AddressUpdateController addressUpdateController;
 
+    @Autowired AddressDeleteController addressDeleteController;
+
     private Admin admin;
 
     private List<Address> addresses;
-
-//    CLIENT_UPDATE
 
     @FXML
     private AnchorPane anchorPane;
@@ -167,10 +169,20 @@ public class ClientViewController implements Initializable {
 
     @FXML
     private void deleteAddress(ActionEvent event) throws Exception {
-//        this.addressDeleteController.initData(this.selectedPerson,this.admin);
-//        // Your logic for deleting client
-//        this.sceneController.setScene(this.CLIENT_DELETE.getTitle(),this.CLIENT_DELETE.getFxmlFilePath());
-//        this.sceneController.switchToScene(event);
+        Address deleteAddress = new Address();
+
+        for(Address address : this.addresses) {
+            if(address.getId() == this.selectedAddress.getId())
+            {
+                deleteAddress = address;
+            }
+        }
+
+        this.addressDeleteController.initData(this.client,this.admin,deleteAddress);
+
+        // Your logic for deleting client
+        this.sceneController.setScene(this.ADDRESS_DELETE.getTitle(),this.ADDRESS_DELETE.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     @FXML
@@ -205,6 +217,3 @@ public class ClientViewController implements Initializable {
         this.client = client;
     }
 }
-
-
-

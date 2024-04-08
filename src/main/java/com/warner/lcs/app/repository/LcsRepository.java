@@ -312,6 +312,18 @@ public interface LcsRepository {
     public boolean doesAddressExists(Address address) throws Exception;
 
     /**
+     * Deletes address from database.
+     *
+     * This method uses the JDBC template to deactivate an address within database.
+     *
+     * @param address has the client's address data.
+     * @param admin is the user doing the deleting.
+     * @return Address object containing the updated information.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public Address deleteAddress(Address address, Admin admin) throws Exception;
+
+    /**
      * Gets  address by id from database.
      *
      * This method uses the jdbc template to get the address by id from the database.

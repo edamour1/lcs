@@ -1,7 +1,6 @@
 package com.warner.lcs.app.domain;
 
-import com.warner.lcs.common.util.Unit;
-
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,7 +12,8 @@ public class Address {
     private State state;
     private Zipcode zipcode;
     private boolean isActive,isBilling;
-
+    private String lmUser;
+    private Date lmDate;
     private double quantity;
 
     public  Address(){}
@@ -30,6 +30,8 @@ public class Address {
         this.isBilling = billing == 1 ? true : false;
         this.quantity = resultSet.getDouble("quantity");
         this.unit = resultSet.getString("unit");
+        this.lmUser = resultSet.getString("lm_user_id");
+        this.lmDate = resultSet.getDate("lm_date");
     }
 
     public int getId() {
@@ -110,6 +112,22 @@ public class Address {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    public String getLmUser() {
+        return lmUser;
+    }
+
+    public void setLmUser(String lmUser) {
+        this.lmUser = lmUser;
+    }
+
+    public Date getLmDate() {
+        return lmDate;
+    }
+
+    public void setLmDate(Date lmDate) {
+        this.lmDate = lmDate;
     }
 }
 

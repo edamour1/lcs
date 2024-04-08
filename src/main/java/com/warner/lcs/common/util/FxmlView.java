@@ -121,7 +121,7 @@ public enum FxmlView {
 
         @Override
         public String getFxmlFilePath() {
-            return "src/main/resources/fxml/client_delete.fxml";
+            return "src/main/resources/fxml/address_delete.fxml";
         }
     };
 

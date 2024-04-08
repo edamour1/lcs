@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 @Component
 public class ClientUpdateController implements Initializable  {
 
-    private FxmlView CLIENT_MENU;
+    private FxmlView CLIENT_MENU, CLIENT_VIEW;
     @Autowired
     private LcsService lcsService;
     @Autowired
@@ -63,6 +63,8 @@ public class ClientUpdateController implements Initializable  {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize anything if needed
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
+        this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
+
         this.saveClient = new Client();
         if(this.client != null)
         {

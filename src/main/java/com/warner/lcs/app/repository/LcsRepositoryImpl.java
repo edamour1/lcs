@@ -25,8 +25,6 @@ public class LcsRepositoryImpl implements LcsRepository {
     @Autowired
     @Qualifier("lcsDataSourceTemplate")
     private JdbcTemplate lcsDataSourceTemplate;
-
-
     @Override
     public Business updateBusiness(Business business, Admin admin) throws Exception {
         String sql = SQL.get("lcsSql","updateBusiness");
@@ -729,6 +727,17 @@ public class LcsRepositoryImpl implements LcsRepository {
         boolean doesAddressExists = addresses.size() > 0 ? true : false;
 
         return doesAddressExists;
+    }
+
+    @Override
+    public Address deleteAddress(Address address, Admin admin) throws Exception {
+        String sql = SQL.get("lcsSql","deleteAddress");
+        int isActive = address.isActive() ? 1 : 0;
+        this.lcsDataSourceTemplate.update(sql, admin.getUsername(), address.getId());
+
+        Address retrievedAddress = this.getAddressById(address);
+
+        return retrievedAddress;
     }
 
     @Override

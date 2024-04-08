@@ -187,6 +187,11 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
+    public Address deleteAddress(Address address, Admin admin) throws Exception {
+        return this.lcsRepository.deleteAddress(address,admin);
+    }
+
+    @Override
     public Address getAddressById(Address address) throws Exception {
         return this.lcsRepository.getAddressById(address);
     }
