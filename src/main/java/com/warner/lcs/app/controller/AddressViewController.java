@@ -9,30 +9,26 @@ import com.warner.lcs.common.util.SceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class AddressDeleteController implements Initializable {
+public class AddressViewController implements Initializable {
 
     private Client client;
     private Address address;
     private Admin admin;
+    private FxmlView CLIENT_MENU, CLIENT_VIEW;
 
-    @FXML
-    private AnchorPane anchorPane;
-
+    @Autowired
+    private LcsService lcsService;
+    @Autowired
+    private SceneController sceneController;
     // Paragraph tags corresponding to client information
     @FXML
     private Text clientFirstNameParagraph;
@@ -60,17 +56,16 @@ public class AddressDeleteController implements Initializable {
 
     @FXML
     private Text zipcodeParagraph;
+    @FXML
+    private Text lmUserParagraph;
 
-
-    private FxmlView CLIENT_MENU, CLIENT_VIEW;
-
-    @Autowired
-    private LcsService lcsService;
-    @Autowired
-    private SceneController sceneController;
+    @FXML
+    private Text lmDateParagraph;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         // Initialize paragraph tags with client information
@@ -87,33 +82,8 @@ public class AddressDeleteController implements Initializable {
             cityParagraph.setText(address.getCity().getCity());
             stateParagraph.setText(address.getState().getState());
             zipcodeParagraph.setText(address.getZipcode().getZipcode());
-        }
-    }
-
-    @FXML
-    private void handleSubmit(ActionEvent event) throws Exception {
-        Stage stage = (Stage) anchorPane.getScene().getWindow();
-
-        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
-        Alert alert = new Alert(type,"");
-
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(stage);
-        StringBuilder stbr = new StringBuilder("Are you sure you want to delete ");
-        stbr.append(this.streetParagraph.getText()+" \n");
-        stbr.append(this.cityParagraph.getText()+" "+this.stateParagraph.getText()+" "+this.zipcodeParagraph.getText()+"?");
-
-        alert.getDialogPane().setContentText(stbr.toString());
-        alert.getDialogPane().setHeaderText("Delete client");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK){
-            this.lcsService.deleteAddress(this.address,this.admin);
-            this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
-            this.sceneController.switchToScene(event);
-            System.out.println("Ok Button pressed");
-        } else if (result.get() == ButtonType.CANCEL) {
-            System.out.println("Cancel Button pressed");
+            lmUserParagraph.setText(address.getLmUser());
+            lmDateParagraph.setText(address.getLmDate().toString());
         }
     }
 
@@ -129,4 +99,5 @@ public class AddressDeleteController implements Initializable {
         this.admin = admin;
         this.address = address;
     }
+
 }

@@ -88,7 +88,7 @@ public enum FxmlView {
 
         @Override
         public String getFxmlFilePath() {
-            return "src/main/resources/fxml/client_view.fxml";
+            return "src/main/resources/fxml/address_view.fxml";
         }
     },
     ADDRESS_REGISTER {

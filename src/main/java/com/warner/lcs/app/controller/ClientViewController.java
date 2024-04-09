@@ -37,13 +37,15 @@ public class ClientViewController implements Initializable {
 
     @Autowired
     private SceneController sceneController;
-
+    @Autowired
+    private AddressViewController addressViewController;
     @Autowired
     private AddressRegisterController addressRegisterController;
     @Autowired
     private AddressUpdateController addressUpdateController;
 
-    @Autowired AddressDeleteController addressDeleteController;
+    @Autowired
+    private AddressDeleteController addressDeleteController;
 
     private Admin admin;
 
@@ -139,15 +141,22 @@ public class ClientViewController implements Initializable {
     // Method to handle the "View Address" button action
     @FXML
     private void viewAddress(ActionEvent event) throws Exception{
-//        if (selectedAddress != null) {
-//            System.out.println("Viewing Address: " + selectedPerson.getFirstName());
-//            this.addressViewController.initData(selectedPerson,this.admin);
-//            // Add your logic to view the selected client
-//            this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
-//            this.sceneController.switchToScene(event);
-//        } else {
-//            System.out.println("No client selected.");
-//        }
+        Address viewAddress = new Address();
+
+        for(Address address : this.addresses) {
+            if(address.getId() == this.selectedAddress.getId())
+            {
+                viewAddress = address;
+            }
+        }
+        if (selectedAddress != null) {
+            this.addressViewController.initData(this.client,this.admin,viewAddress);
+            // Add your logic to view the selected client
+            this.sceneController.setScene(this.ADDRESS_VIEW.getTitle(), this.ADDRESS_VIEW.getFxmlFilePath());
+            this.sceneController.switchToScene(event);
+        } else {
+            System.out.println("No client selected.");
+        }
     }
 //
     @FXML

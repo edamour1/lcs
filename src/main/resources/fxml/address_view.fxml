@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.warner.lcs.app.controller.AddressViewController"
+            prefHeight="400.0" prefWidth="600.0">
+    <!-- Vertical layout for input fields -->
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="700" top="150"/>
+        </padding>
+        <!-- First Name Input -->
+        <Label text="First Name:" />
+
+
+        <!-- Middle Name Input -->
+        <Label text="Middle Name:" />
+
+
+        <!-- Last Name Input -->
+        <Label text="Last Name:" />
+
+
+        <!-- Phone Number Input -->
+        <Label text="Phone Number:" />
+
+
+        <!-- Email Input -->
+        <Label text="Email:" />
+
+    </VBox>
+
+    <!-- Vertical layout for input fields -->
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="820" top="150"/>
+        </padding>
+        <Text fx:id="clientMiddleNameParagraph" />
+        <Text fx:id="clientPhoneNumberParagraph" />
+        <Text fx:id="clientEmailParagraph" />
+        <Text fx:id="clientLastNameParagraph" />
+        <Text fx:id="clientFirstNameParagraph" styleClass="invalid" />
+    </VBox>
+
+    <!-- Vertical layout for input fields -->
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="700" top="320"/>
+        </padding>
+
+        <!-- Street Input -->
+        <Label text="Street:" />
+
+
+        <!-- City Input -->
+        <Label text="City:" />
+
+
+        <!-- State Input -->
+        <Label text="State:" />
+
+
+        <!-- Zipcode Input -->
+        <Label text="Zipcode:" />
+
+        <!-- LmUser Input -->
+        <Label text="Last Modified By:" />
+
+        <!-- LmUser Input -->
+        <Label text="Last Modified Date:" />
+    </VBox>
+
+    <VBox spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="820" top="320"/>
+        </padding>
+        <Text fx:id="streetParagraph" />
+        <Text fx:id="cityParagraph" />
+        <Text fx:id="stateParagraph" />
+        <Text fx:id="zipcodeParagraph" />
+        <Text fx:id="lmUserParagraph" />
+        <Text fx:id="lmDateParagraph" />
+    </VBox>
+
+    <!-- Back Button -->
+    <Button layoutX="790.0" layoutY="500.0" onAction="#handleBack" text="Back" fx:id="backButton" />
+</AnchorPane>
