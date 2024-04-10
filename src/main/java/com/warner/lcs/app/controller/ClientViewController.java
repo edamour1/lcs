@@ -6,16 +6,21 @@ import com.warner.lcs.app.service.LcsService;
 import com.warner.lcs.common.util.FxmlView;
 import com.warner.lcs.common.util.SceneController;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javafx.event.ActionEvent;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,18 +65,24 @@ public class ClientViewController implements Initializable {
     // Paragraph tags corresponding to client information
     @FXML
     private Text clientFirstNameParagraph;
-
     @FXML
     private Text clientLastNameParagraph;
-
     @FXML
     private Text clientMiddleNameParagraph;
-
     @FXML
     private Text clientPhoneNumberParagraph;
-
     @FXML
     private Text clientEmailParagraph;
+
+    @FXML
+    private TextField streetFilterTextField;
+    @FXML
+    private  TextField cityFilterTextField;
+    @FXML
+    private TextField stateFilterTextField;
+    @FXML
+    private TextField zipcodeFilterTextField;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -133,6 +144,88 @@ public class ClientViewController implements Initializable {
                 }
             });
 
+            //*********************************************filters****************************************************
+
+            // Wrap the observable list in a FilteredList (initially display all data)
+            FilteredList<AddressTableData> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
+
+            // Set the filter predicate whenever the filter changes
+            streetFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(street -> {
+                    // If filter text is empty, display all streets
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare street's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (street.getStreet().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches street's name
+                    }
+                    return false; // Filter does not match street's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            cityFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(city -> {
+                    // If filter text is empty, display all citys
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare city's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (city.getCity().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches city's name
+                    }
+                    return false; // Filter does not match city's name
+                });
+            });
+
+
+            // Set the filter predicate whenever the filter changes
+            stateFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(state -> {
+                    // If filter text is empty, display all states
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare state's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (state.getState().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches state's name
+                    }
+                    return false; // Filter does not match state's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            zipcodeFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(zipcode -> {
+                    // If filter text is empty, display all zipcodes
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare zipcode's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (zipcode.getZipcode().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches zipcode's name
+                    }
+                    return false; // Filter does not match zipcode's name
+                });
+            });
+
+            // Wrap the filtered list in a SortedList
+            SortedList<AddressTableData> sortedData = new SortedList<>(filteredData);
+
+            // Bind the SortedList comparator to the TableView comparator
+            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+
+            // Add sorted (and filtered) data to the TableView
+            tableView.setItems(sortedData);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -219,6 +312,18 @@ public class ClientViewController implements Initializable {
         this.addressRegisterController.initData(this.client,this.admin);
         this.sceneController.setScene(this.ADDRESS_REGISTER.getTitle(),this.ADDRESS_REGISTER.getFxmlFilePath());
         this.sceneController.switchToScene(event);
+
+        // Wrap the observable list in a FilteredList (initially display all data)
+        FilteredList<AddressTableData> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
+
+
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) throws IOException {
+        this.sceneController.setScene(this.CLIENT_MENU.getTitle(), this.CLIENT_MENU.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+        System.out.println("Back button clicked");
     }
 
     void initData(Client client, Admin admin) {

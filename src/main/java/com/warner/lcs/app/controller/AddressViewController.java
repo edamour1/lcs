@@ -66,8 +66,8 @@ public class AddressViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
-        this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
+
         // Initialize paragraph tags with client information
         if (client != null) {
             clientFirstNameParagraph.setText(client.getFirstName());
@@ -85,6 +85,7 @@ public class AddressViewController implements Initializable {
             lmUserParagraph.setText(address.getLmUser());
             lmDateParagraph.setText(address.getLmDate().toString());
         }
+
     }
 
     @FXML
