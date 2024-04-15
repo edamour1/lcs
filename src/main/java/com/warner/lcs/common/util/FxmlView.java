@@ -123,6 +123,51 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/address_delete.fxml";
         }
+    },
+
+    INVOICE_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("invoice.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/invoice_register.fxml";
+        }
+    },
+    INVOICE_VIEW {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("invoice.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/invoice_view.fxml";
+        }
+    },
+    INVOICE_UPDATE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("invoice.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/invoice_update.fxml";
+        }
+    },
+    INVOICE_DELETE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("invoice.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/invoice_delete.fxml";
+        }
     };
 
     public abstract String getTitle();

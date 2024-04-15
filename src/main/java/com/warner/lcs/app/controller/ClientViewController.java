@@ -2,22 +2,22 @@ package com.warner.lcs.app.controller;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.domain.table_ui.AddressTableData;
+import com.warner.lcs.app.domain.table_ui.InvoiceInformationTableData;
 import com.warner.lcs.app.service.LcsService;
 import com.warner.lcs.common.util.FxmlView;
 import com.warner.lcs.common.util.SceneController;
+
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -32,11 +32,15 @@ import static com.warner.lcs.common.util.TableUtil.getObservableList;
 @Component
 public class ClientViewController implements Initializable {
 
-    private FxmlView CLIENT_MENU, ADDRESS_VIEW, ADDRESS_REGISTER, ADDRESS_UPDATE, ADDRESS_DELETE;
+    private FxmlView CLIENT_MENU, ADDRESS_VIEW, ADDRESS_REGISTER, ADDRESS_UPDATE, ADDRESS_DELETE, INVOICE_REGISTER, INVOICE_VIEW, INVOICE_DELETE, INVOICE_UPDATE;
     private Client client;
     private AddressTableData selectedAddress;
+    private InvoiceInformationTableData selectedInvoiceInformationTableData;
     private Address address;
 
+    @FXML
+    private // Create a ScrollPane
+    ScrollPane scrollPane;
     @Autowired
     private LcsService lcsService;
 
@@ -52,15 +56,32 @@ public class ClientViewController implements Initializable {
     @Autowired
     private AddressDeleteController addressDeleteController;
 
+    @Autowired
+    private InvoiceDeleteController invoiceDeleteController;
+
+    @Autowired
+    private InvoiceRegisterController invoiceRegisterController;
+
+    @Autowired
+    private InvoiceUpdateController invoiceUpdateController;
+
+    @Autowired
+    private InvoiceViewController invoiceViewController;
+
     private Admin admin;
 
     private List<Address> addresses;
+
+    private List<InvoiceInformation> invoices;
 
     @FXML
     private AnchorPane anchorPane;
 
     @FXML
     private TableView<AddressTableData> tableView;
+
+    @FXML
+    private TableView<InvoiceInformationTableData> invoicesTableView;
 
     // Paragraph tags corresponding to client information
     @FXML
@@ -86,11 +107,16 @@ public class ClientViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         this.ADDRESS_REGISTER = FxmlView.ADDRESS_REGISTER;
         this.ADDRESS_VIEW = FxmlView.ADDRESS_VIEW;
         this.ADDRESS_UPDATE = FxmlView.ADDRESS_UPDATE;
         this.ADDRESS_DELETE = FxmlView.ADDRESS_DELETE;
+        this.INVOICE_VIEW = FxmlView.INVOICE_VIEW;
+        this.INVOICE_REGISTER = FxmlView.INVOICE_REGISTER;
+        this.INVOICE_UPDATE = FxmlView.INVOICE_UPDATE;
+        this.INVOICE_DELETE = FxmlView.INVOICE_DELETE;
 
         // Initialize paragraph tags with client information
         if (client != null) {
@@ -102,7 +128,7 @@ public class ClientViewController implements Initializable {
         }
         try {
             this.addresses = this.lcsService.getAddressesByClientId((int) this.client.getId());
-
+            this.invoices = this.lcsService.getInvoiceInformationByClientId(this.client);
             if(!addresses.isEmpty())
             {
                 List<AddressTableData> list = new ArrayList<>();
@@ -133,7 +159,7 @@ public class ClientViewController implements Initializable {
                 // Create a TableView with a list of addresses
                 tableView.setItems(observableStringList);
 
-                // Create a TableView with a list of persons
+                // Create a TableView with a list of addresses
                 tableView.getColumns().addAll(streetColumn,cityColumn,stateColumn,zipcodeColumn);
             }
 
@@ -141,6 +167,45 @@ public class ClientViewController implements Initializable {
             tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     this.selectedAddress = newSelection;
+                }
+            });
+
+
+            //*********************************************invoice table**********************************************
+            if(!invoices.isEmpty())
+            {
+                List<InvoiceInformationTableData> invoiceList = new ArrayList<>();
+                for(InvoiceInformation invoice : invoices)
+                {
+                    invoiceList.add(new InvoiceInformationTableData(invoice.getPaymentDueDate().toString(),
+                                                                    invoice.getStartDate().toString(),
+                                                                    invoice.getDate().toString(),
+                                                                    Integer.valueOf(invoice.getTreatments().size()),
+                                                                    Integer.valueOf(invoice.getAdditionalCostServices().size()),
+                                                                    invoice.getNotes(),
+                                                                    invoice.getNo()));
+                }
+
+                TableColumn<InvoiceInformationTableData, String> paymentDueDateColumn = createTableColumn("Payment Due Date", "paymentDueDate");
+                TableColumn<InvoiceInformationTableData, String> startDateColumn = createTableColumn("Start Date", "startDate");
+                TableColumn<InvoiceInformationTableData, String> dateColumn = createTableColumn("Created On Date", "date");
+                TableColumn<InvoiceInformationTableData, Integer> treatmentsQtyColumn = createTableColumn("Number Of Treatments", "treatmentsQty");
+                TableColumn<InvoiceInformationTableData, Integer> additionalCostServicesQtyColumn = createTableColumn("Number Of AD Services", "additionalCostServicesQty");
+                TableColumn<InvoiceInformationTableData, String> notesColumn = createTableColumn("Notes", "notes");
+                TableColumn<InvoiceInformationTableData, String> noColumn = createTableColumn("Inovice No.", "no");
+
+                // Converting the list of strings to an observable list of strings
+                ObservableList<InvoiceInformationTableData> observableStringList = getObservableList(invoiceList);
+
+                // Create a TableView with a list of invoices
+                invoicesTableView.getColumns().addAll(noColumn,dateColumn,paymentDueDateColumn,startDateColumn,notesColumn,treatmentsQtyColumn,additionalCostServicesQtyColumn);
+                invoicesTableView.setItems(observableStringList);
+            }
+
+            // Add listener to handle row selection
+            invoicesTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    this.selectedInvoiceInformationTableData = newSelection;
                 }
             });
 
@@ -229,6 +294,7 @@ public class ClientViewController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
     // Method to handle the "View Address" button action
@@ -316,8 +382,66 @@ public class ClientViewController implements Initializable {
         // Wrap the observable list in a FilteredList (initially display all data)
         FilteredList<AddressTableData> filteredData = new FilteredList<>(tableView.getItems(), p -> true);
 
-
     }
+
+    @FXML
+    private void viewInvoice(ActionEvent event) throws IOException {
+        // Add your logic to handle the "View Invoice" button action
+        System.out.println("View Invoice button clicked");
+        for(InvoiceInformation i : this.invoices)
+        {
+            if(i.getNo().toLowerCase().equals(this.selectedInvoiceInformationTableData.getNo().toLowerCase()))
+            {
+                this.invoiceViewController.initData(this.client,this.admin,i);
+                this.sceneController.setScene(this.INVOICE_VIEW.getTitle(),this.INVOICE_VIEW.getFxmlFilePath());
+                this.sceneController.switchToScene(event);
+                System.out.println(i.getNo());
+            }
+        }
+    }
+
+    @FXML
+    private void updateInvoice(ActionEvent event) throws IOException {
+        // Add your logic to handle the "Update Invoice" button action
+        System.out.println("Update Invoice button clicked");
+        for(InvoiceInformation i : this.invoices)
+        {
+            if(i.getNo().toLowerCase().equals(this.selectedInvoiceInformationTableData.getNo().toLowerCase()))
+            {
+                this.invoiceUpdateController.initData(this.client,this.admin,i);
+                this.sceneController.setScene(this.INVOICE_UPDATE.getTitle(),this.INVOICE_UPDATE.getFxmlFilePath());
+                this.sceneController.switchToScene(event);
+                System.out.println(i.getNo());
+            }
+        }
+    }
+
+    @FXML
+    private void deleteInvoice(ActionEvent event) throws IOException {
+        // Add your logic to handle the "Update Invoice" button action
+        System.out.println("Update Invoice button clicked");
+        for(InvoiceInformation i : this.invoices)
+        {
+            if(i.getNo().toLowerCase().equals(this.selectedInvoiceInformationTableData.getNo().toLowerCase()))
+            {
+                this.invoiceDeleteController.initData(this.client,this.admin,i);
+                this.sceneController.setScene(this.INVOICE_DELETE.getTitle(),this.INVOICE_DELETE.getFxmlFilePath());
+                this.sceneController.switchToScene(event);
+                System.out.println(i.getNo());
+            }
+        }
+    }
+
+    @FXML
+    private void registerInvoice(ActionEvent event) throws IOException {
+        // Add your logic to handle the "Register Invoice" button action
+        System.out.println("Register Invoice button clicked");
+
+                this.invoiceRegisterController.initData(this.client,this.admin);
+                this.sceneController.setScene(this.INVOICE_REGISTER.getTitle(),this.INVOICE_REGISTER.getFxmlFilePath());
+                this.sceneController.switchToScene(event);
+    }
+
 
     @FXML
     private void handleBack(ActionEvent event) throws IOException {
@@ -330,4 +454,5 @@ public class ClientViewController implements Initializable {
         this.admin = admin;
         this.client = client;
     }
+
 }
