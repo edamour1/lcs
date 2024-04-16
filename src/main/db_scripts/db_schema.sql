@@ -104,6 +104,7 @@ CREATE TABLE `INVOICE_INFORMATION`(
     `lm_user_id` VARCHAR(255) NOT NULL,
     `lm_date` DATETIME NOT NULL,
 	`address_id` BIGINT UNSIGNED NULL,
+	`billing_address_id` BIGINT UNSIGNED NULL,
 	`is_active` tinyint(1) NULL,
      PRIMARY KEY (`invoice_no`)
 );

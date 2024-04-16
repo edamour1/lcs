@@ -96,7 +96,6 @@ public class AddressRegisterController implements Initializable {
             this.zipcodes = this.lcsService.getAllZipcodes();
 
             for(State state : this.states) {
-                   this.state = state;
                 stateComboBox.getItems().add(state);
             }
 
@@ -234,8 +233,8 @@ public class AddressRegisterController implements Initializable {
         });
 
         this.quantityTextField.setText(Double.toString(this.qty));
-        this.quantityTextField.focusedProperty().addListener((ob,oldValue,newVallue)->{
-            if(newVallue){
+        this.quantityTextField.focusedProperty().addListener((ob,oldValue,newVallue) -> {
+            if(newVallue) {
                 this.qty = Double.parseDouble(this.quantityTextField.getText());
                 System.out.println(this.qty);
             }
