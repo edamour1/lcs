@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceInformation {
-    private int clientId;
+    private int clientId, addressId,billingAddressId;
     private Date paymentDueDate, startDate, endDate, date;
     private List<Treatment> treatments;
     private List<AdditionalCostService> additionalCostServices;
     private String notes;
-
-    private int addressId;
-
+    private boolean isActive;
     private String no;
 
 
@@ -30,8 +28,11 @@ public class InvoiceInformation {
         this.notes = resultSet.getString("notes");
         this.clientId = resultSet.getInt("client_id");
         this.addressId = resultSet.getInt("address_id");
+        this.billingAddressId = resultSet.getInt("billing_address_id");
         this.no = resultSet.getString("invoice_no");
         this.date = resultSet.getDate("lm_date");
+        int isActiveNumberValue =  resultSet.getInt("is_active");
+        this.isActive = isActiveNumberValue == 1 ? true : false;
     }
 
     public List<AdditionalCostService> getAdditionalCostServices() {
@@ -98,6 +99,14 @@ public class InvoiceInformation {
         this.addressId = addressId;
     }
 
+    public int getBillingAddressId() {
+        return billingAddressId;
+    }
+
+    public void setBillingAddressId(int billingAddressId) {
+        this.billingAddressId = billingAddressId;
+    }
+
     public String getNo() {
         return no;
     }
@@ -112,5 +121,13 @@ public class InvoiceInformation {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

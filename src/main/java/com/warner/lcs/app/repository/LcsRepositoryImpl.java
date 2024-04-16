@@ -226,7 +226,6 @@ public class LcsRepositoryImpl implements LcsRepository {
 
     @Override
     public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception {
-//        this.disableOrEnableForeignKeyChecks(true);
         for(Treatment treatment : invoiceInformation.getTreatments()){//update Treatment
             if(treatment.getRemoveFromList()) {
                 this.removeTreatmentFromList(treatment,invoiceInformation);
@@ -259,6 +258,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 invoiceInformation.getPaymentDueDate(),
                 invoiceInformation.getStartDate(),
                 invoiceInformation.getEndDate(),
+                invoiceInformation.getBillingAddressId(),
                 invoiceInformation.getNotes(),
                 admin.getUsername(),
                 invoiceInformation.getNo());
@@ -444,8 +444,9 @@ public class LcsRepositoryImpl implements LcsRepository {
             ps.setString(5, invoiceInformation.getNotes());
 
             ps.setInt(6,address.getId());
-            ps.setString(7, admin.getUsername());
-            ps.setString(8, invoiceInformation.getNo());
+            ps.setInt(7, invoiceInformation.getBillingAddressId());
+            ps.setString(8, admin.getUsername());
+            ps.setString(9, invoiceInformation.getNo());
 
 
             return ps;

@@ -206,7 +206,7 @@ public class InvoiceRegisterController implements Initializable {
                                 {
                                     if(a.isBilling())
                                     {
-                                        this.selectedAddress = a;
+                                        this.selectedBillingAddress = a;
                                     }
                                 }
                             } catch (Exception e) {
@@ -516,6 +516,7 @@ public class InvoiceRegisterController implements Initializable {
     @FXML
     private void handleSubmit(ActionEvent event) throws Exception
     {
+        this.invoiceNumberGenerator = new InvoiceNumberGenerator();
         // Convert the map to an ArrayList
         List<Treatment> saveTreatmentsArrayList = new ArrayList<>(this.saveTreatments.values());
         List<AdditionalCostService> saveAdditionalCostServicesArrayList = new ArrayList<>(this.saveAdditionalCostServices.values());
@@ -527,7 +528,15 @@ public class InvoiceRegisterController implements Initializable {
         saveInvoice.setTreatments(saveTreatmentsArrayList);
         saveInvoice.setAdditionalCostServices(saveAdditionalCostServicesArrayList);
         saveInvoice.setAddressId(this.selectedAddress.getId());
-
+        int billingAddressId = this.notTheSameAsBillingAddress ? this.selectedBillingAddress.getId() : this.selectedAddress.getId();
+        saveInvoice.setBillingAddressId(billingAddressId);
+        saveInvoice.setClientId(this.client.getId());
+        saveInvoice.setNotes(this.notesTextArea.getText());
+        saveInvoice.setActive(true);
+        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
+        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+        System.out.println("Submit button clicked");
     }
 
     void initData(Client client, Admin admin) {
