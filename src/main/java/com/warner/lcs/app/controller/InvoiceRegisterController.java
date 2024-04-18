@@ -29,6 +29,8 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Component
@@ -45,6 +47,8 @@ public class InvoiceRegisterController implements Initializable {
     private Map<String,AdditionalCostService> saveAdditionalCostServices;
     private Treatment selectedTreatment;
     private List<Treatment> treatments;
+
+    private static final String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
 
     private AdditionalCostService selectedAdditionalCostService;
     private List<AdditionalCostService> additionalCostServices;
@@ -97,6 +101,32 @@ public class InvoiceRegisterController implements Initializable {
 
     @FXML
     private Label billingClientComboBoxLabel;
+
+    //***********************error labels******************************************************
+
+    @FXML
+    private Label treatmentListErrorLabel;
+
+    @FXML
+    private Label additionalCostServicesListErrorLabel;
+
+    @FXML
+    private Label paymentDueDateErrorLabel;
+
+    @FXML
+    private Label startDateErrorLabel;
+
+    @FXML
+    private Label addressComboBoxErrorLabel;
+
+    @FXML
+    private Label billingClientComboBoxErrorLabel;
+
+    @FXML
+    private Label addressErrorLabel;
+
+    @FXML
+    private Label notesErrorLabel;
 
 
     private ToggleGroup toggleGroup;
@@ -533,11 +563,85 @@ public class InvoiceRegisterController implements Initializable {
         saveInvoice.setClientId(this.client.getId());
         saveInvoice.setNotes(this.notesTextArea.getText());
         saveInvoice.setActive(true);
-        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
-        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
-        this.sceneController.switchToScene(event);
+        this.formValid();
+//        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
+//        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
+//        this.sceneController.switchToScene(event);
+
         System.out.println("Submit button clicked");
     }
+
+    private void showError(TextField textField, String errorMessage, Label errorLabel) {
+        // Apply CSS style to indicate error
+        textField.getStyleClass().add("invalid-text-field");
+
+        // Display error message
+        // You can choose how to display the error message (e.g., tooltip, label)
+        // Here, we'll set the prompt text to the error message temporarily
+        textField.setPromptText(errorMessage);
+
+        // Show error message
+        errorLabel.setText(errorMessage);
+    }
+
+    private void clearError(TextField textField,Label errorLabel) {
+        // Clear CSS style to indicate no error
+        textField.getStyleClass().remove("invalid-text-field");
+        textField.setPromptText(null);
+        // Clear error message
+        errorLabel.setText("");
+    }
+
+    private void showDateError(DatePicker datePicker, String errorMessage, Label errorLabel)
+    {
+        // Apply CSS style to indicate error
+        datePicker.getStyleClass().add("invalid-text-field");
+
+        // Display error message
+        // You can choose how to display the error message (e.g., tooltip, label)
+        // Here, we'll set the prompt text to the error message temporarily
+        datePicker.setPromptText(errorMessage);
+
+        // Show error message
+        errorLabel.setText(errorMessage);
+
+    }
+
+    private void clearDateError(DatePicker datePicker,Label errorLabel) {
+        // Clear CSS style to indicate no error
+        datePicker.getStyleClass().remove("invalid-text-field");
+        datePicker.setPromptText(null);
+        // Clear error message
+        errorLabel.setText("");
+    }
+
+    private boolean validateDate(DatePicker datePicker, Label label) {
+        Pattern pattern = Pattern.compile(DATE_REGEX);
+        TextField dateTextField = datePicker.getEditor();
+        String dateText = dateTextField.getText();
+        Matcher matcher = pattern.matcher(dateText);
+        if(!dateText.isEmpty())
+        {
+            this.clearDateError(datePicker,label);
+        } else { // Clear CSS style to indicate no error
+            label.setText("please enter a valid Date example: 04/16/2024");
+        }
+        return matcher.matches();
+    }
+
+    private boolean formValid()
+    {
+        if(this.validateDate(this.paymentDueDatePicker,this.paymentDueDateErrorLabel))
+        {
+            return true;
+        } else{
+            return false;
+        }
+
+
+    }
+
+
 
     void initData(Client client, Admin admin) {
         this.admin = admin;

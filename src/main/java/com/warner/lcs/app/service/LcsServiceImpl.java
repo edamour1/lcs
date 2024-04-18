@@ -168,6 +168,10 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public Address saveAddress(Address address, Client client, Admin admin) throws Exception {
+        if(address.isBilling())//update every other
+        {
+
+        }
         return this.lcsRepository.saveAddress(address,client,admin);
     }
 

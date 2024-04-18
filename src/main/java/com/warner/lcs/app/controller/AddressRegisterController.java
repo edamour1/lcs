@@ -39,6 +39,7 @@ public class AddressRegisterController implements Initializable {
     private List<City> cities;
     private List<State> states;
     private List<Zipcode> zipcodes;
+    private List<String> zipcodeNames;
     private List<Unit> units;
     private Unit unit;
     private double qty;
@@ -126,8 +127,7 @@ public class AddressRegisterController implements Initializable {
             // Set the converter to get corresponding City object when a city is selected
             binding.setOnAutoCompleted(event -> {
                 String cityName = event.getCompletion();
-                AutoCompletionBinding<String> zipBinding;
-                List<String> zipcodeNames;
+
                     for (City city : cities) {
                         if (city.getCity().equals(cityName)) {
                             this.city = city;
@@ -156,7 +156,6 @@ public class AddressRegisterController implements Initializable {
                         this.zipcode.setId(0);
                         this.zipcode.setZipcode(this.zipcodeTextField.getText());
                         this.zipcodes.clear();
-
                     }
 
 
@@ -172,7 +171,7 @@ public class AddressRegisterController implements Initializable {
             // Add a listener to handle changes when the text field loses focus
             zipcodeTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue) { // If the field lost focus
-                    if(this.states != null)
+                    if(this.cities != null)
                     {
                         if(!zipcodesStrings.contains(zipcodeTextField.getText()))
                         {
@@ -242,8 +241,10 @@ public class AddressRegisterController implements Initializable {
 
     }
 
+
+
     private void getZipcodesByCity(String city) {
-        List<String> zipcodeNames;
+
         AutoCompletionBinding<String> zipBinding;
         try {
             this.zipcodes = this.lcsService.getZipcodesByCity(city);
@@ -303,7 +304,7 @@ public class AddressRegisterController implements Initializable {
             return;
         } else { clearError(this.cityTextField,this.cityErrorLabel); }
 
-        if(zipcode.isEmpty())
+        if(zipcode.isEmpty() || !this.checkForNewZipcode())
         {
             showError(this.zipcodeTextField,"Zipcode must not be empty. Example: 30014",this.zipcodeErrorLabel);
             return;
@@ -314,6 +315,8 @@ public class AddressRegisterController implements Initializable {
             showError(this.quantityTextField,"Quantity must not be empty. Example: 3.0",this.quantityErrorLabel);
             return;
         } else { clearError(this.quantityTextField,this.quantityErrorLabel); }
+
+
 
         Address saveAddress = new Address();
         saveAddress.setStreet(this.streetTextField.getText());
@@ -328,6 +331,28 @@ public class AddressRegisterController implements Initializable {
         this.sceneController.setScene(this.CLIENT_VIEW.getTitle(),this.CLIENT_VIEW.getFxmlFilePath());
         this.sceneController.switchToScene(event);
         System.out.println("Submit button clicked");
+    }
+
+    public boolean checkForNewZipcode()
+    {
+        String zipcodeString = this.zipcodeTextField.getText();
+
+        if(this.zipcode == null)
+        {
+            this.zipcode = new Zipcode();
+            this.zipcode.setId(0);
+        }
+
+        if(!this.zipcodeNames.contains(zipcodeString))//check for new zipcode
+        {
+            this.zipcode.setId(0);
+        }
+        else { return true; }
+
+        this.zipcode.setZipcode(zipcodeString);
+        boolean isValid = this.zipcode.getZipcode().length() >= 5;
+
+        return isValid;
     }
 
     @FXML
