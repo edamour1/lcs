@@ -502,7 +502,9 @@ public class InvoiceRegisterController implements Initializable {
             System.out.println("treatment size:"+this.saveTreatments.size());
         }
 
-    } @FXML
+    }
+
+    @FXML
     private void addAdditionalCostService()
     {
         if(!this.saveAdditionalCostServices.containsKey(this.selectedAdditionalCostService.getTreatmentName()))

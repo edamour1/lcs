@@ -40,8 +40,8 @@ public class InvoiceUpdateController implements Initializable {
     private Address selectedAddress, selectedBillingAddress;
     private boolean notTheSameAsBillingAddress, r1Selected;
     private List<Address> addresses, billingClientaddresses;
-    private Map<String, Treatment> saveTreatments;
-    private Map<String,AdditionalCostService> saveAdditionalCostServices;
+    private Map<String, Treatment> updateTreatments;
+    private Map<String,AdditionalCostService> updateAdditionalCostServices;
     private Treatment selectedTreatment;
     private List<Treatment> treatments;
 
@@ -418,8 +418,8 @@ public class InvoiceUpdateController implements Initializable {
         });
         this.treatmentQtyInputTextField.setText("0.0");
         this.additionalCostServiceQtyInputTextField.setText("0.0");
-        this.saveTreatments = new HashMap<>();
-        this.saveAdditionalCostServices = new HashMap<>();
+        this.updateTreatments = new HashMap<>();
+        this.updateAdditionalCostServices = new HashMap<>();
 
         //***************************************** dates ***************************************************
         // Set the default value to today's date
@@ -476,13 +476,15 @@ public class InvoiceUpdateController implements Initializable {
             this.checkBox.setSelected(addressParameter.isBilling());
             for(Treatment t : this.invoiceInformation.getTreatments())
             {
+                t.setOldItems(true);
                 this.treatmentListView.getItems().add(t.getTreatmentName()+" : "+t.getQty()+" "+t.getUnit());
-                this.saveTreatments.put(t.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
+                this.updateTreatments.put(t.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
             }
             for(AdditionalCostService a : this.invoiceInformation.getAdditionalCostServices())
             {
+                a.setOldItems(true);
                 this.additionalCostServicesListView.getItems().add(a.getTreatmentName()+" : "+a.getQty()+" "+a.getUnit());
-                this.saveAdditionalCostServices.put(a.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
+                this.updateAdditionalCostServices.put(a.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
             }
             this.notesTextArea.setText(this.invoiceInformation.getNotes());
         } catch (Exception e) {
@@ -493,14 +495,15 @@ public class InvoiceUpdateController implements Initializable {
     @FXML
     private void addTreatment()
     {
-        if(!this.saveTreatments.containsKey(this.selectedTreatment.getTreatmentName()))
+        if(!this.updateTreatments.containsKey(this.selectedTreatment.getTreatmentName()))
         {
+            this.selectedTreatment.setOldItems(false);
             Unit saveUnit = (Unit) this.unitComboBox.getSelectionModel().getSelectedItem();
             this.selectedTreatment.setUnit(saveUnit.getFullName());
             this.selectedTreatment.setUpdateQty(false);
             this.selectedTreatment.setQty(Double.valueOf(this.treatmentQtyInputTextField.getText()));
-            this.saveTreatments.put(this.selectedTreatment.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
-            System.out.println(this.saveTreatments.toString());
+            this.updateTreatments.put(this.selectedTreatment.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
+            System.out.println(this.updateTreatments.toString());
             this.treatmentListView.getItems().add(this.selectedTreatment.getTreatmentName()+" : "+this.selectedTreatment.getQty()+" "+this.selectedTreatment.getUnit());
         }
     }
@@ -516,24 +519,37 @@ public class InvoiceUpdateController implements Initializable {
             sb.append(letter);
         }
         System.out.println(sb.toString().toLowerCase().trim());
-        if(this.saveTreatments.containsKey(sb.toString().toLowerCase().trim()))
+        String key = sb.toString().toLowerCase().trim();
+        if(this.updateTreatments.containsKey(key))
         {
-            this.saveTreatments.remove(sb.toString().toLowerCase().trim());
+            if(this.updateTreatments.get(key).isOldItems())
+            {
+                Treatment obj = this.updateTreatments.get(sb.toString().toLowerCase().trim());
+                obj.setRemoveFromList(true);
+                this.updateTreatments.put(key,obj);
+            }
+            else
+            {
+                this.updateTreatments.remove(sb.toString().toLowerCase().trim());
+            }
+
+
             this.treatmentListView.getItems().remove(selectId);
-            System.out.println("treatment size:"+this.saveTreatments.size());
+            System.out.println("treatment size:"+this.updateTreatments.size());
         }
 
     } @FXML
     private void addAdditionalCostService()
     {
-        if(!this.saveAdditionalCostServices.containsKey(this.selectedAdditionalCostService.getTreatmentName()))
+        if(!this.updateAdditionalCostServices.containsKey(this.selectedAdditionalCostService.getTreatmentName()))
         {
+            this.selectedAdditionalCostService.setOldItems(false);
             Unit saveUnit = (Unit) this.unitComboBox2.getSelectionModel().getSelectedItem();
             this.selectedAdditionalCostService.setUnit(saveUnit.getFullName());
             this.selectedAdditionalCostService.setUpdateQty(false);
             this.selectedAdditionalCostService.setQty(Double.valueOf(this.additionalCostServiceQtyInputTextField.getText()));
-            this.saveAdditionalCostServices.put(this.selectedAdditionalCostService.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
-            System.out.println(this.saveAdditionalCostServices.toString());
+            this.updateAdditionalCostServices.put(this.selectedAdditionalCostService.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
+            System.out.println(this.updateAdditionalCostServices.toString());
             this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit());
         }
     }
@@ -548,12 +564,23 @@ public class InvoiceUpdateController implements Initializable {
             if(letter == ':') {break;}//we just want the name of the treatmeant
             sb.append(letter);
         }
+        String key = sb.toString().toLowerCase().trim();
         System.out.println(sb.toString().toLowerCase().trim());
-        if(this.saveAdditionalCostServices.containsKey(sb.toString().toLowerCase().trim()))
+        if(this.updateAdditionalCostServices.containsKey(key))
         {
-            this.saveAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
+            if(this.updateAdditionalCostServices.get(key).isOldItems())
+            {
+                AdditionalCostService obj = this.updateAdditionalCostServices.get(sb.toString().toLowerCase().trim());
+                obj.setRemoveFromList(true);
+                this.updateAdditionalCostServices.put(key,obj);
+            }
+            else
+            {
+                this.updateAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
+            }
+            this.updateAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
             this.additionalCostServicesListView.getItems().remove(selectId);
-            System.out.println("additional cost service size:"+this.saveAdditionalCostServices.size());
+            System.out.println("additional cost service size:"+this.updateAdditionalCostServices.size());
         }
 
     }
@@ -570,8 +597,8 @@ public class InvoiceUpdateController implements Initializable {
     {
         this.invoiceNumberGenerator = new InvoiceNumberGenerator();
         // Convert the map to an ArrayList
-        List<Treatment> saveTreatmentsArrayList = new ArrayList<>(this.saveTreatments.values());
-        List<AdditionalCostService> saveAdditionalCostServicesArrayList = new ArrayList<>(this.saveAdditionalCostServices.values());
+        List<Treatment> saveTreatmentsArrayList = new ArrayList<>(this.updateTreatments.values());
+        List<AdditionalCostService> saveAdditionalCostServicesArrayList = new ArrayList<>(this.updateAdditionalCostServices.values());
         InvoiceInformation saveInvoice = new InvoiceInformation();
         saveInvoice.setNo(this.invoiceNumberGenerator.generateInvoiceNo());
         saveInvoice.setPaymentDueDate(java.sql.Date.valueOf(this.paymentDueDatePicker.getValue()));

@@ -9,7 +9,7 @@ public class AdditionalCostService {
     private String treatmentName, treatmentDescription, unit;
     private double price,qty;
 
-    private boolean updateQty, removeFromList;
+    private boolean updateQty, removeFromList, isOldItems;
 
     public AdditionalCostService() {
         this.removeFromList = false;
@@ -87,6 +87,14 @@ public class AdditionalCostService {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public boolean isOldItems() {
+        return isOldItems;
+    }
+
+    public void setOldItems(boolean oldItems) {
+        isOldItems = oldItems;
     }
 }
 

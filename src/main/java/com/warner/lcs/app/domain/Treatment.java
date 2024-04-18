@@ -8,7 +8,7 @@ public class Treatment {
     private int id;
     private String treatmentName, treatmentDescription, unit;
     private double price,qty;
-    private boolean updateQty, removeFromList;
+    private boolean updateQty, removeFromList, isOldItems;
 
     public Treatment(){}
 
@@ -83,5 +83,13 @@ public class Treatment {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public boolean isOldItems() {
+        return isOldItems;
+    }
+
+    public void setOldItems(boolean oldItems) {
+        isOldItems = oldItems;
     }
 }
