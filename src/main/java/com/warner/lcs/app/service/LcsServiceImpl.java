@@ -163,6 +163,16 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public Address updateAddress(Address address, Client client, Admin admin) throws Exception {
+        if(address.isBilling())//update every other
+        {
+            List<Address> clientAddresses = this.lcsRepository.getAddressesByClientId(client.getId());
+            for(Address a : clientAddresses)
+            {
+                if(address.getId() == a.getId()){ continue; }
+                a.setBilling(false);
+                this.lcsRepository.updateAddress(a,client,admin);
+            }
+        }
         return this.lcsRepository.updateAddress(address,client,admin);
     }
 
@@ -170,7 +180,12 @@ public class LcsServiceImpl implements LcsService {
     public Address saveAddress(Address address, Client client, Admin admin) throws Exception {
         if(address.isBilling())//update every other
         {
-
+            List<Address> clientAddresses = this.lcsRepository.getAddressesByClientId(client.getId());
+            for(Address a : clientAddresses)
+            {
+                a.setBilling(false);
+                this.lcsRepository.updateAddress(a,client,admin);
+            }
         }
         return this.lcsRepository.saveAddress(address,client,admin);
     }

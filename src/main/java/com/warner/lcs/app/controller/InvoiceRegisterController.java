@@ -409,7 +409,7 @@ public class InvoiceRegisterController implements Initializable {
 
         unitComboBox2.valueProperty().addListener((observable, oldValue, newValue) -> {
 
-            for(Unit currentUnit : Unit.values()){
+            for(Unit currentUnit : Unit.values()) {
                 if(currentUnit.toString().toLowerCase().equals(newValue.toString().toLowerCase()))
                 {
                     this.unit2 = currentUnit;
