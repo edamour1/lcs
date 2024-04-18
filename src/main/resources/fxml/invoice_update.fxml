@@ -6,9 +6,129 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.warner.lcs.app.controller.InvoiceUpdateController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<ScrollPane fx:id="scrollPane" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.InvoiceUpdateController">
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0">
 
+    <!-- Vertical layout for input fields -->
+    <VBox layoutY="64.0" prefHeight="211.0" prefWidth="779.0" spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="700" top="150" />
+        </padding>
+        <!-- First Name Input -->
+        <Label text="First Name:" />
+
+
+        <!-- Middle Name Input -->
+        <Label text="Middle Name:" />
+
+
+        <!-- Last Name Input -->
+        <Label text="Last Name:" />
+
+
+        <!-- Phone Number Input -->
+        <Label text="Phone Number:" />
+
+
+        <!-- Email Input -->
+        <Label text="Email:" />
+    </VBox>
+
+    <!-- Vertical layout for input fields -->
+    <VBox layoutX="2.0" layoutY="128.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="800" top="88" />
+        </padding>
+        <Text fx:id="clientFirstNameParagraph" styleClass="invalid" />
+        <Text fx:id="clientMiddleNameParagraph" />
+        <Text fx:id="clientLastNameParagraph" />
+        <Text fx:id="clientPhoneNumberParagraph" />
+        <Text fx:id="clientEmailParagraph" />
+    </VBox>
+
+    <VBox layoutX="700" layoutY="500" >
+        <Label text="Treatment:" />
+        <padding>
+            <Insets top="15"/>
+        </padding>
+        <HBox>
+            <padding>
+                <Insets right="100" bottom="100"/>
+            </padding>
+            <ChoiceBox fx:id="treatmentComboBox" />
+            <TextField fx:id="treatmentQtyInputTextField" layoutX="200" layoutY="400" promptText="Enter decimal example: 87.3"/>
+            <ChoiceBox fx:id="unitComboBox"/>
+        </HBox>
+        <HBox>
+            <padding>
+                <Insets right="100" bottom="20"/>
+            </padding>
+            <!-- plus Button -->
+            <Button  onAction="#addTreatment" text="ADD" style="-fx-background-color: green; -fx-text-fill: white;" fx:id="addTButton" />
+            <Button  onAction="#removeTreatment" text="REMOVE" style="-fx-background-color: red; -fx-text-fill: white;" fx:id="removeTButton" />
+        </HBox>
+
+
+        <!-- Existing content above -->
+        <Label text="Treatment List:" />
+        <ListView fx:id="treatmentListView"  prefHeight="100" />
+    </VBox>
+
+    <VBox layoutX="150" layoutY="500" >
+        <Label text="Additional Cost Service:" />
+        <padding>
+            <Insets top="15"/>
+        </padding>
+        <HBox>
+            <padding>
+                <Insets right="100" bottom="100"/>
+            </padding>
+            <ChoiceBox fx:id="additionalCostServiceComboBox" />
+            <TextField fx:id="additionalCostServiceQtyInputTextField" layoutX="200" layoutY="400" promptText="Enter decimal example: 87.3"/>
+            <ChoiceBox fx:id="unitComboBox2"/>
+        </HBox>
+        <HBox>
+            <padding>
+                <Insets right="100" bottom="20"/>
+            </padding>
+            <!-- plus Button -->
+            <Button  onAction="#addAdditionalCostService" text="ADD" style="-fx-background-color: green; -fx-text-fill: white;" fx:id="addAcsButton" />
+            <Button  onAction="#removeAdditionalCostService" text="REMOVE" style="-fx-background-color: red; -fx-text-fill: white;" fx:id="removeAcsButton" />
+        </HBox>
+
+
+        <!-- Add ListView for Additional Cost Treatment -->
+        <Label text="Additional Cost Services List:" />
+        <ListView fx:id="additionalCostServicesListView"  prefHeight="100" />
+    </VBox>
+    <children>
+        <!-- Labels for input fields -->
+        <Label text="Payment Due Date:" layoutX="10" layoutY="50" />
+        <Label text="Start Date:" layoutX="10" layoutY="100" />
+        <Label fx:id="billingClientComboBoxLabel" text="Billing:" layoutX="10" layoutY="300" visible="${notTheSameAsBillingAddress}"/>
+        <Label text="Address:" layoutX="10" layoutY="150" />
+        <Label text="Notes:" layoutX="10" layoutY="400" />
+
+        <DatePicker fx:id="paymentDueDatePicker" layoutX="200" layoutY="50" />
+        <DatePicker fx:id="startDatePicker" layoutX="200" layoutY="100" />
+        <ChoiceBox fx:id="addressComboBox" layoutX="200" layoutY="150" />
+        <CheckBox fx:id="checkBox" text="Not the same as billing address" layoutX="420" layoutY="150"/>
+        <!-- ToggleGroup ensures that only one radio button can be selected at a time -->
+        <TextField fx:id="billingClientComboBox" layoutX="200" layoutY="300" visible="${notTheSameAsBillingAddress}"/>
+        <ChoiceBox fx:id="billingAddressComboBox" layoutX="400" layoutY="300" visible="${notTheSameAsBillingAddress}"/>
+
+        <!-- Input box -->
+        <TextArea fx:id="notesTextArea" prefWidth="300" prefHeight="100"  layoutX="200" layoutY="405"/>
+
+        <HBox spacing="10" layoutX="1000" layoutY="400" >
+            <Button text="Cancel" onAction="#handleBack" AnchorPane.leftAnchor="10.0" AnchorPane.bottomAnchor="200.0" style="-fx-font-size: 16px; -fx-min-width: 120px;"/>
+            <Button text="Update Invoice" onAction="#handleSubmit" AnchorPane.leftAnchor="100.0" AnchorPane.bottomAnchor="200.0" style="-fx-background-color: blue; -fx-text-fill: yellow; -fx-font-size: 16px; -fx-min-width: 160px;"/>
+        </HBox>
+
+    </children>
 </AnchorPane>
+</ScrollPane>
