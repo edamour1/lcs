@@ -98,6 +98,9 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public InvoiceInformation updateInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Admin admin) throws Exception {
+        Address address = new Address();
+        address.setId(invoiceInformation.getAddressId());
+        this.updateAddress(this.lcsRepository.getAddressById(address),client,admin);
         return this.lcsRepository.updateInvoiceInformation(invoiceInformation,client,admin);
     }
 
@@ -123,6 +126,7 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public List<InvoiceInformation> saveInvoiceInformation(InvoiceInformation invoiceInformation, Client client, Address address, Admin admin) throws Exception {
+        this.updateAddress(address,client,admin);
         return this.lcsRepository.saveInvoiceInformation(invoiceInformation,client,address,admin);
     }
 

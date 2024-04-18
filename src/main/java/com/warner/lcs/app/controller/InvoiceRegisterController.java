@@ -169,6 +169,7 @@ public class InvoiceRegisterController implements Initializable {
             this.additionalCostServices = this.lcsService.getAllAdditionalCostServices();
             this.addresses = lcsService.getAddressesByClientId(this.client.getId());
             List<String> clientsNamesList = new ArrayList<>();
+            this.r1Selected = false;
 
 
             for(Client c : this.clients)
@@ -557,90 +558,95 @@ public class InvoiceRegisterController implements Initializable {
         saveInvoice.setEndDate(Date.valueOf(this.startDatePicker.getValue()));
         saveInvoice.setTreatments(saveTreatmentsArrayList);
         saveInvoice.setAdditionalCostServices(saveAdditionalCostServicesArrayList);
-        saveInvoice.setAddressId(this.selectedAddress.getId());
         int billingAddressId = this.notTheSameAsBillingAddress ? this.selectedBillingAddress.getId() : this.selectedAddress.getId();
+        this.selectedAddress.setBilling(!this.notTheSameAsBillingAddress);
+        saveInvoice.setAddressId(this.selectedAddress.getId());
         saveInvoice.setBillingAddressId(billingAddressId);
         saveInvoice.setClientId(this.client.getId());
         saveInvoice.setNotes(this.notesTextArea.getText());
         saveInvoice.setActive(true);
-        this.formValid();
-//        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
-//        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
-//        this.sceneController.switchToScene(event);
+//        this.formValid();
+        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
+        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+        if(this.notTheSameAsBillingAddress)
+        {
+            this.selectedBillingAddress.setBilling(true);
+            if(!this.r1Selected){this.lcsService.updateAddress(this.selectedBillingAddress,this.client,this.admin);}
+        }
 
         System.out.println("Submit button clicked");
     }
 
-    private void showError(TextField textField, String errorMessage, Label errorLabel) {
-        // Apply CSS style to indicate error
-        textField.getStyleClass().add("invalid-text-field");
+//    private void showError(TextField textField, String errorMessage, Label errorLabel) {
+//        // Apply CSS style to indicate error
+//        textField.getStyleClass().add("invalid-text-field");
+//
+//        // Display error message
+//        // You can choose how to display the error message (e.g., tooltip, label)
+//        // Here, we'll set the prompt text to the error message temporarily
+//        textField.setPromptText(errorMessage);
+//
+//        // Show error message
+//        errorLabel.setText(errorMessage);
+//    }
 
-        // Display error message
-        // You can choose how to display the error message (e.g., tooltip, label)
-        // Here, we'll set the prompt text to the error message temporarily
-        textField.setPromptText(errorMessage);
+//    private void clearError(TextField textField,Label errorLabel) {
+//        // Clear CSS style to indicate no error
+//        textField.getStyleClass().remove("invalid-text-field");
+//        textField.setPromptText(null);
+//        // Clear error message
+//        errorLabel.setText("");
+//    }
 
-        // Show error message
-        errorLabel.setText(errorMessage);
-    }
+//    private void showDateError(DatePicker datePicker, String errorMessage, Label errorLabel)
+//    {
+//        // Apply CSS style to indicate error
+//        datePicker.getStyleClass().add("invalid-text-field");
+//
+//        // Display error message
+//        // You can choose how to display the error message (e.g., tooltip, label)
+//        // Here, we'll set the prompt text to the error message temporarily
+//        datePicker.setPromptText(errorMessage);
+//
+//        // Show error message
+//        errorLabel.setText(errorMessage);
+//
+//    }
 
-    private void clearError(TextField textField,Label errorLabel) {
-        // Clear CSS style to indicate no error
-        textField.getStyleClass().remove("invalid-text-field");
-        textField.setPromptText(null);
-        // Clear error message
-        errorLabel.setText("");
-    }
-
-    private void showDateError(DatePicker datePicker, String errorMessage, Label errorLabel)
-    {
-        // Apply CSS style to indicate error
-        datePicker.getStyleClass().add("invalid-text-field");
-
-        // Display error message
-        // You can choose how to display the error message (e.g., tooltip, label)
-        // Here, we'll set the prompt text to the error message temporarily
-        datePicker.setPromptText(errorMessage);
-
-        // Show error message
-        errorLabel.setText(errorMessage);
-
-    }
-
-    private void clearDateError(DatePicker datePicker,Label errorLabel) {
-        // Clear CSS style to indicate no error
-        datePicker.getStyleClass().remove("invalid-text-field");
-        datePicker.setPromptText(null);
-        // Clear error message
-        errorLabel.setText("");
-    }
-
-    private boolean validateDate(DatePicker datePicker, Label label) {
-        Pattern pattern = Pattern.compile(DATE_REGEX);
-        TextField dateTextField = datePicker.getEditor();
-        String dateText = dateTextField.getText();
-        Matcher matcher = pattern.matcher(dateText);
-        if(!dateText.isEmpty())
-        {
-            this.clearDateError(datePicker,label);
-        } else { // Clear CSS style to indicate no error
-            label.setText("please enter a valid Date example: 04/16/2024");
-        }
-        return matcher.matches();
-    }
-
-    private boolean formValid()
-    {
-        if(this.validateDate(this.paymentDueDatePicker,this.paymentDueDateErrorLabel))
-        {
-            return true;
-        } else{
-            return false;
-        }
-
-
-    }
-
+//    private void clearDateError(DatePicker datePicker,Label errorLabel) {
+//        // Clear CSS style to indicate no error
+//        datePicker.getStyleClass().remove("invalid-text-field");
+//        datePicker.setPromptText(null);
+//        // Clear error message
+//        errorLabel.setText("");
+//    }
+//
+//    private boolean validateDate(DatePicker datePicker, Label label) {
+//        Pattern pattern = Pattern.compile(DATE_REGEX);
+//        TextField dateTextField = datePicker.getEditor();
+//        String dateText = dateTextField.getText();
+//        Matcher matcher = pattern.matcher(dateText);
+//        if(!dateText.isEmpty())
+//        {
+//            this.clearDateError(datePicker,label);
+//        } else { // Clear CSS style to indicate no error
+//            label.setText("please enter a valid Date example: 04/16/2024");
+//        }
+//        return matcher.matches();
+//    }
+//
+//    private boolean formValid()
+//    {
+//        if(this.validateDate(this.paymentDueDatePicker,this.paymentDueDateErrorLabel))
+//        {
+//            return true;
+//        } else{
+//            return false;
+//        }
+//
+//
+//    }
 
 
     void initData(Client client, Admin admin) {
