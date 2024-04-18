@@ -40,6 +40,7 @@ public class AddressUpdateController implements Initializable {
     private List<City> cities;
     private List<State> states;
     private List<Zipcode> zipcodes;
+    private List<String> zipcodeNames;
     private List<Unit> units;
     private Unit unit;
     private double qty;
@@ -93,7 +94,7 @@ public class AddressUpdateController implements Initializable {
         try {
             this.cities = this.lcsService.getCities();
             this.states = this.lcsService.getAllStates();
-            this.zipcodes = this.lcsService.getAllZipcodes();
+            getZipcodesByCity(this.address.getCity().getCity());
 
             for(State state : this.states) {
                 this.state = state;
@@ -128,7 +129,7 @@ public class AddressUpdateController implements Initializable {
             binding.setOnAutoCompleted(event -> {
                 String cityName = event.getCompletion();
                 AutoCompletionBinding<String> zipBinding;
-                List<String> zipcodeNames;
+
                 for (City city : cities) {
                     if (city.getCity().equals(cityName)) {
                         this.city = city;
@@ -292,7 +293,7 @@ public class AddressUpdateController implements Initializable {
             return;
         } else { clearError(this.cityTextField,this.cityErrorLabel); }
 
-        if(zipcode.isEmpty())
+        if(zipcode.isEmpty() || !this.checkForNewZipcode())
         {
             showError(this.zipcodeTextField,"Zipcode must not be empty. Example: 30014",this.zipcodeErrorLabel);
             return;
@@ -326,6 +327,28 @@ public class AddressUpdateController implements Initializable {
         System.out.println("Back button clicked");
     }
 
+    public boolean checkForNewZipcode()
+    {
+        String zipcodeString = this.zipcodeTextField.getText();
+
+        if(this.zipcode == null)
+        {
+            this.zipcode = new Zipcode();
+            this.zipcode.setId(0);
+        }
+
+        if(!this.zipcodeNames.contains(zipcodeString))//check for new zipcode
+        {
+            this.zipcode.setId(0);
+        }
+        else { return true; }
+
+        this.zipcode.setZipcode(zipcodeString);
+        boolean isValid = this.zipcode.getZipcode().length() >= 5;
+
+        return isValid;
+    }
+
     void initData(Client client, Admin admin, Address address) {
         this.client = client;
         this.admin = admin;
@@ -354,11 +377,10 @@ public class AddressUpdateController implements Initializable {
     }
 
     private void getZipcodesByCity(String city) {
-        List<String> zipcodeNames;
         AutoCompletionBinding<String> zipBinding;
         try {
             this.zipcodes = this.lcsService.getZipcodesByCity(city);
-            zipcodeNames = zipcodes.stream().map(Zipcode::getZipcode).collect(Collectors.toList());
+            this.zipcodeNames = zipcodes.stream().map(Zipcode::getZipcode).collect(Collectors.toList());
             zipBinding = TextFields.bindAutoCompletion(zipcodeTextField, zipcodeNames);
             zipBinding.setOnAutoCompleted(event -> {
                 String zipcodeString = event.getCompletion();
