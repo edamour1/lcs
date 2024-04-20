@@ -260,6 +260,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 invoiceInformation.getEndDate(),
                 invoiceInformation.getBillingAddressId(),
                 invoiceInformation.getNotes(),
+                invoiceInformation.getAddressId(),
                 admin.getUsername(),
                 invoiceInformation.getNo());
 

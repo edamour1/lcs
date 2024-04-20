@@ -438,8 +438,8 @@ public class InvoiceUpdateController implements Initializable {
         //***************************************** dates ***************************************************
         toggleGroup = new ToggleGroup();
         // create radiobuttons
-         r1 = new RadioButton("Billing Client");
-         r2 = new RadioButton("Billing Address");
+        r1 = new RadioButton("Billing Client");
+        r2 = new RadioButton("Billing Address");
         // add label
         r1.setToggleGroup(toggleGroup);
         r2.setToggleGroup(toggleGroup);
@@ -497,25 +497,49 @@ public class InvoiceUpdateController implements Initializable {
 
             this.notesTextArea.setText(this.invoiceInformation.getNotes());
             this.invoiceNumberParagraph.setText(this.invoiceInformation.getNo());
-            boolean isNotBillingAdrress = !(this.invoiceInformation.getAddressId() == this.invoiceInformation.getBillingAddressId());
+            //***************************************billing addrress***************************************************************** zoom
+            boolean isNotBillingAddress = !(this.invoiceInformation.getAddressId() == this.invoiceInformation.getBillingAddressId());//correct
+            this.checkBox.setSelected(isNotBillingAddress);//correct
+            this.notTheSameAsBillingAddress = isNotBillingAddress;//correct
             Address billingAddress = new Address(), temporaryAddress;
-            billingAddress.setId(this.invoiceInformation.getBillingAddressId());
-            billingAddress = this.lcsService.getAddressById(billingAddress);
-            boolean usingClientForBillingAddress = !this.addresses.contains(billingAddress);
+            billingAddress.setId(this.invoiceInformation.getBillingAddressId());//correct
+            billingAddress = this.lcsService.getAddressById(billingAddress);//correct
+            this.selectedBillingAddress = billingAddress;//correct
 
-            this.checkBox.setSelected(isNotBillingAdrress);
-            if(isNotBillingAdrress)
+            boolean adressesContainsBillingAddress = false;
+
+            for(Address a : this.addresses)
+            {//check if billing
+                if(a.getId() == this.invoiceInformation.getBillingAddressId())
+                {
+                    adressesContainsBillingAddress = true;//corect
+                }
+            }
+            boolean usingClientForBillingAddress = !adressesContainsBillingAddress;//correct
+
+
+            if(isNotBillingAddress)
             {
+                if(adressesContainsBillingAddress)
+                {
+                    toggleGroup.selectToggle(r2); // Select the second radio button as the default
+                    this.billingAddressComboBox.setValue(this.selectedBillingAddress);
+                }
+
                 if(usingClientForBillingAddress)
                 {
-                    toggleGroup.selectToggle(r1); // Select the first radio button as the default
+
+                    this.toggleGroup.selectToggle(r1); // Select the first radio button as the default
                     List<Address> billingClientAddresses = null;
                     for(Client c : this.clients)
                     {
-                       billingClientAddresses = lcsService.getAddressesByClientId(c.getId());
-                       this.billedClient = c;
-                       if(billingAddress.getClientId() == c.getId())
-                       {break;}
+
+                        if(billingAddress.getClientId() == c.getId())
+                        {
+                            billingClientAddresses = lcsService.getAddressesByClientId(c.getId());
+                            this.billedClient = c;
+                            break;
+                        }
                     }
                     if(billingClientAddresses != null)
                     {//it is a billing client address being used
@@ -526,13 +550,14 @@ public class InvoiceUpdateController implements Initializable {
                                 this.selectedBillingAddress = a;
                                 String billedClientString = this.billedClient.getFirstName()+", "+this.billedClient.getMiddleName()+", "+this.billedClient.getLastName();
                                 this.billingClientComboBox.setText(billedClientString);
+                                this.billingAddressComboBox.setValue(null);
                                 break;
                             }
                         }
                     }
                 }
-                this.addresses.contains(billingAddress);
-                this.billingAddressComboBox.setValue(billingAddress);
+//                this.addresses.contains(billingAddress);
+//                this.billingAddressComboBox.setValue(billingAddress);
             }
 
 
@@ -674,76 +699,6 @@ public class InvoiceUpdateController implements Initializable {
 
         System.out.println("Submit button clicked");
     }
-
-//    private void showError(TextField textField, String errorMessage, Label errorLabel) {
-//        // Apply CSS style to indicate error
-//        textField.getStyleClass().add("invalid-text-field");
-//
-//        // Display error message
-//        // You can choose how to display the error message (e.g., tooltip, label)
-//        // Here, we'll set the prompt text to the error message temporarily
-//        textField.setPromptText(errorMessage);
-//
-//        // Show error message
-//        errorLabel.setText(errorMessage);
-//    }
-
-//    private void clearError(TextField textField,Label errorLabel) {
-//        // Clear CSS style to indicate no error
-//        textField.getStyleClass().remove("invalid-text-field");
-//        textField.setPromptText(null);
-//        // Clear error message
-//        errorLabel.setText("");
-//    }
-
-//    private void showDateError(DatePicker datePicker, String errorMessage, Label errorLabel)
-//    {
-//        // Apply CSS style to indicate error
-//        datePicker.getStyleClass().add("invalid-text-field");
-//
-//        // Display error message
-//        // You can choose how to display the error message (e.g., tooltip, label)
-//        // Here, we'll set the prompt text to the error message temporarily
-//        datePicker.setPromptText(errorMessage);
-//
-//        // Show error message
-//        errorLabel.setText(errorMessage);
-//
-//    }
-
-//    private void clearDateError(DatePicker datePicker,Label errorLabel) {
-//        // Clear CSS style to indicate no error
-//        datePicker.getStyleClass().remove("invalid-text-field");
-//        datePicker.setPromptText(null);
-//        // Clear error message
-//        errorLabel.setText("");
-//    }
-//
-//    private boolean validateDate(DatePicker datePicker, Label label) {
-//        Pattern pattern = Pattern.compile(DATE_REGEX);
-//        TextField dateTextField = datePicker.getEditor();
-//        String dateText = dateTextField.getText();
-//        Matcher matcher = pattern.matcher(dateText);
-//        if(!dateText.isEmpty())
-//        {
-//            this.clearDateError(datePicker,label);
-//        } else { // Clear CSS style to indicate no error
-//            label.setText("please enter a valid Date example: 04/16/2024");
-//        }
-//        return matcher.matches();
-//    }
-//
-//    private boolean formValid()
-//    {
-//        if(this.validateDate(this.paymentDueDatePicker,this.paymentDueDateErrorLabel))
-//        {
-//            return true;
-//        } else{
-//            return false;
-//        }
-//
-//
-//    }
 
 
     void initData(Client client, Admin admin,InvoiceInformation invoiceInformation) {

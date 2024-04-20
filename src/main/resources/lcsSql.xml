@@ -131,6 +131,7 @@ INNER JOIN addresses a ON b.address_id = a.id
                     end_date = ?,
                     billing_address_id = ?,
                     notes = ?,
+                    address_id = ?,
                     lm_user_id = ?,
                     lm_date = Now()
 
