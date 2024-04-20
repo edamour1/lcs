@@ -44,11 +44,13 @@ public class InvoiceUpdateController implements Initializable {
     private Map<String,AdditionalCostService> updateAdditionalCostServices;
     private Treatment selectedTreatment;
     private List<Treatment> treatments;
+    private RadioButton r1,r2;
 
     private static final String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
 
     private AdditionalCostService selectedAdditionalCostService;
     private List<AdditionalCostService> additionalCostServices;
+    private List<String> clientsNamesList;
     private Unit unit,unit2;
     private InvoiceInformation invoiceInformation;
     private InvoiceNumberGenerator invoiceNumberGenerator;
@@ -169,7 +171,7 @@ public class InvoiceUpdateController implements Initializable {
             this.treatments = this.lcsService.getAllTreatments();
             this.additionalCostServices = this.lcsService.getAllAdditionalCostServices();
             this.addresses = lcsService.getAddressesByClientId(this.client.getId());
-            List<String> clientsNamesList = new ArrayList<>();
+            clientsNamesList = new ArrayList<>();
             this.r1Selected = false;
 
 
@@ -436,8 +438,8 @@ public class InvoiceUpdateController implements Initializable {
         //***************************************** dates ***************************************************
         toggleGroup = new ToggleGroup();
         // create radiobuttons
-        RadioButton r1 = new RadioButton("Billing Client");
-        RadioButton r2 = new RadioButton("Billing Address");
+         r1 = new RadioButton("Billing Client");
+         r2 = new RadioButton("Billing Address");
         // add label
         r1.setToggleGroup(toggleGroup);
         r2.setToggleGroup(toggleGroup);
@@ -496,12 +498,40 @@ public class InvoiceUpdateController implements Initializable {
             this.notesTextArea.setText(this.invoiceInformation.getNotes());
             this.invoiceNumberParagraph.setText(this.invoiceInformation.getNo());
             boolean isNotBillingAdrress = !(this.invoiceInformation.getAddressId() == this.invoiceInformation.getBillingAddressId());
+            Address billingAddress = new Address(), temporaryAddress;
+            billingAddress.setId(this.invoiceInformation.getBillingAddressId());
+            billingAddress = this.lcsService.getAddressById(billingAddress);
+            boolean usingClientForBillingAddress = !this.addresses.contains(billingAddress);
+
             this.checkBox.setSelected(isNotBillingAdrress);
             if(isNotBillingAdrress)
             {
-                Address billingAddress = new Address();
-                billingAddress.setId(this.invoiceInformation.getBillingAddressId());
-                billingAddress = this.lcsService.getAddressById(billingAddress);
+                if(usingClientForBillingAddress)
+                {
+                    toggleGroup.selectToggle(r1); // Select the first radio button as the default
+                    List<Address> billingClientAddresses = null;
+                    for(Client c : this.clients)
+                    {
+                       billingClientAddresses = lcsService.getAddressesByClientId(c.getId());
+                       this.billedClient = c;
+                       if(billingAddress.getClientId() == c.getId())
+                       {break;}
+                    }
+                    if(billingClientAddresses != null)
+                    {//it is a billing client address being used
+                        for(Address a : billingClientAddresses)//set defualt billing address based off of billed client
+                        {//check all billing addresses
+                            if(a.getId() == this.invoiceInformation.getBillingAddressId())
+                            {
+                                this.selectedBillingAddress = a;
+                                String billedClientString = this.billedClient.getFirstName()+", "+this.billedClient.getMiddleName()+", "+this.billedClient.getLastName();
+                                this.billingClientComboBox.setText(billedClientString);
+                                break;
+                            }
+                        }
+                    }
+                }
+                this.addresses.contains(billingAddress);
                 this.billingAddressComboBox.setValue(billingAddress);
             }
 
@@ -620,8 +650,8 @@ public class InvoiceUpdateController implements Initializable {
         List<AdditionalCostService> saveAdditionalCostServicesArrayList = new ArrayList<>(this.updateAdditionalCostServices.values());
         InvoiceInformation saveInvoice = new InvoiceInformation();
         saveInvoice.setNo(this.invoiceInformation.getNo());
-        saveInvoice.setPaymentDueDate(java.sql.Date.valueOf(this.paymentDueDatePicker.getValue()));
-        saveInvoice.setStartDate(java.sql.Date.valueOf(this.startDatePicker.getValue()));
+        saveInvoice.setPaymentDueDate(Date.valueOf(this.paymentDueDatePicker.getValue()));
+        saveInvoice.setStartDate(Date.valueOf(this.startDatePicker.getValue()));
         saveInvoice.setEndDate(Date.valueOf(this.startDatePicker.getValue()));
         saveInvoice.setTreatments(saveTreatmentsArrayList);
         saveInvoice.setAdditionalCostServices(saveAdditionalCostServicesArrayList);
@@ -632,15 +662,15 @@ public class InvoiceUpdateController implements Initializable {
         saveInvoice.setClientId(this.client.getId());
         saveInvoice.setNotes(this.notesTextArea.getText());
         saveInvoice.setActive(true);
-//        this.formValid();
-        this.lcsService.updateInvoiceInformation(saveInvoice,this.client,this.admin);
-        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
-        this.sceneController.switchToScene(event);
         if(this.notTheSameAsBillingAddress)
         {
             this.selectedBillingAddress.setBilling(true);
             if(!this.r1Selected){this.lcsService.updateAddress(this.selectedBillingAddress,this.client,this.admin);}
         }
+        this.lcsService.updateInvoiceInformation(saveInvoice,this.client,this.admin);
+        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+
 
         System.out.println("Submit button clicked");
     }

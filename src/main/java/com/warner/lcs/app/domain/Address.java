@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Address {
 
-    private int id;
+    private int id, clientId;
     private String street, unit;
     private City city;
     private State state;
@@ -32,6 +32,7 @@ public class Address {
         this.unit = resultSet.getString("unit");
         this.lmUser = resultSet.getString("lm_user_id");
         this.lmDate = resultSet.getDate("lm_date");
+        this.clientId = resultSet.getInt("client_id");
     }
 
     public int getId() {
@@ -40,6 +41,14 @@ public class Address {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getStreet() {
@@ -129,5 +138,6 @@ public class Address {
     public void setLmDate(Date lmDate) {
         this.lmDate = lmDate;
     }
+
 }
 

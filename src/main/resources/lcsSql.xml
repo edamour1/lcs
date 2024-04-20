@@ -182,7 +182,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                  quantity,
                  unit_id,
                  lm_user_id,
-                 lm_date
+                 lm_date,
+                 client_id
             FROM
                 ADDRESSES
             JOIN
@@ -211,7 +212,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                 quantity,
                 unit,
                 lm_user_id,
-                lm_date
+                lm_date,
+                client_id
             FROM
                 ADDRESSES
             JOIN
@@ -247,7 +249,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                         end_date,
                         lm_user_id,
                         lm_date,
-                        UNITS.*
+                        UNITS.*,
+                        client_id
                 FROM
                     INVOICE_INFORMATION
                 JOIN
@@ -280,7 +283,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                 is_billing,
                 is_active,
                 quantity,
-                UNITS.*
+                UNITS.*,
+                client_id
 
             FROM
                 ADDRESSES
@@ -314,7 +318,8 @@ INNER JOIN addresses a ON b.address_id = a.id
                 quantity,
                 unit,
                 lm_user_id,
-                lm_date
+                lm_date,
+                client_id
 
             FROM
                 ADDRESSES

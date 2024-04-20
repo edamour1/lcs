@@ -567,15 +567,15 @@ public class InvoiceRegisterController implements Initializable {
         saveInvoice.setClientId(this.client.getId());
         saveInvoice.setNotes(this.notesTextArea.getText());
         saveInvoice.setActive(true);
-//        this.formValid();
-        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
-        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
-        this.sceneController.switchToScene(event);
         if(this.notTheSameAsBillingAddress)
         {
             this.selectedBillingAddress.setBilling(true);
             if(!this.r1Selected){this.lcsService.updateAddress(this.selectedBillingAddress,this.client,this.admin);}
         }
+        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
+        this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+
 
         System.out.println("Submit button clicked");
     }
