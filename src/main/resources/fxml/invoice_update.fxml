@@ -75,6 +75,7 @@
             <!-- plus Button -->
             <Button  onAction="#addTreatment" text="ADD" style="-fx-background-color: green; -fx-text-fill: white;" fx:id="addTButton" />
             <Button  onAction="#removeTreatment" text="REMOVE" style="-fx-background-color: red; -fx-text-fill: white;" fx:id="removeTButton" />
+            <Button  onAction="#updateTreatment" text="UPDATE" style="-fx-background-color: blue; -fx-text-fill: white;" fx:id="updateTButton" />
         </HBox>
 
 
@@ -103,6 +104,7 @@
             <!-- plus Button -->
             <Button  onAction="#addAdditionalCostService" text="ADD" style="-fx-background-color: green; -fx-text-fill: white;" fx:id="addAcsButton" />
             <Button  onAction="#removeAdditionalCostService" text="REMOVE" style="-fx-background-color: red; -fx-text-fill: white;" fx:id="removeAcsButton" />
+            <Button  onAction="#updateAdditionalCostService" text="UPDATE" style="-fx-background-color: blue; -fx-text-fill: white;" fx:id="updateAcsButton" />
         </HBox>
 
 

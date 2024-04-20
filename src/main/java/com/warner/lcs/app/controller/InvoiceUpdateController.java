@@ -12,6 +12,7 @@ import com.warner.lcs.common.util.Unit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -24,6 +25,7 @@ import org.controlsfx.control.textfield.TextFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -54,6 +56,8 @@ public class InvoiceUpdateController implements Initializable {
     private Unit unit,unit2;
     private InvoiceInformation invoiceInformation;
     private InvoiceNumberGenerator invoiceNumberGenerator;
+    private StringBuilder updateTreatmentQtyKey;
+    private  int updateTreatmentselectionId;
     @Autowired
     private LcsService lcsService;
     @Autowired
@@ -173,6 +177,8 @@ public class InvoiceUpdateController implements Initializable {
             this.addresses = lcsService.getAddressesByClientId(this.client.getId());
             clientsNamesList = new ArrayList<>();
             this.r1Selected = false;
+            this.updateTreatmentQtyKey = new StringBuilder();
+            this.updateTreatmentselectionId = 0;
 
 
             for(Client c : this.clients)
@@ -497,7 +503,7 @@ public class InvoiceUpdateController implements Initializable {
 
             this.notesTextArea.setText(this.invoiceInformation.getNotes());
             this.invoiceNumberParagraph.setText(this.invoiceInformation.getNo());
-            //***************************************billing addrress***************************************************************** zoom
+            //***************************************billing addrress*****************************************************************
             boolean isNotBillingAddress = !(this.invoiceInformation.getAddressId() == this.invoiceInformation.getBillingAddressId());//correct
             this.checkBox.setSelected(isNotBillingAddress);//correct
             this.notTheSameAsBillingAddress = isNotBillingAddress;//correct
@@ -556,8 +562,34 @@ public class InvoiceUpdateController implements Initializable {
                         }
                     }
                 }
-//                this.addresses.contains(billingAddress);
-//                this.billingAddressComboBox.setValue(billingAddress);
+                // Add an event listener to the treatmentListView
+                treatmentListView.setOnMouseClicked((event) -> {
+                    this.updateTreatmentselectionId = this.treatmentListView.getSelectionModel().getSelectedIndex();
+
+                    StringBuilder sb = new StringBuilder();
+                    for(char letter : this.treatmentListView.getSelectionModel().getSelectedItem().toCharArray())
+                    {
+                        if(letter == ':') {break;}//we just want the name of the treatmeant
+                        sb.append(letter);
+                    }
+                    System.out.println(sb.toString().toLowerCase().trim());
+                    String key = sb.toString().toLowerCase().trim();
+                    this.updateTreatmentQtyKey.setLength(0);
+                    this.updateTreatmentQtyKey.append(key);
+                    Treatment obj = this.updateTreatments.get(key);
+
+                    this.treatmentQtyInputTextField.setText(Double.toString(obj.getQty()));
+
+                    for(Unit currentUnit : Unit.values()){
+                        if(currentUnit.toString().toLowerCase().equals(obj.getUnit().toLowerCase()))
+                        {
+                            this.unitComboBox.setValue(currentUnit);
+                            System.out.println(this.unit);
+                            break;
+                        }
+                    }
+                    this.treatmentComboBox.setValue(obj);
+                });
             }
 
 
@@ -581,6 +613,19 @@ public class InvoiceUpdateController implements Initializable {
             this.treatmentListView.getItems().add(this.selectedTreatment.getTreatmentName()+" : "+this.selectedTreatment.getQty()+" "+this.selectedTreatment.getUnit());
         }
     }
+
+    @FXML
+    private void updateTreatment()
+    {
+       Treatment objToUpdate = this.updateTreatments.get(this.updateTreatmentQtyKey.toString());
+       objToUpdate.setQty(Double.parseDouble(this.treatmentQtyInputTextField.getText()));
+       Unit unitObjToUpdate = (Unit) this.unitComboBox.getSelectionModel().getSelectedItem();
+       objToUpdate.setUnit(unitObjToUpdate.getFullName());
+       this.updateTreatments.put(this.updateTreatmentQtyKey.toString(),objToUpdate);
+       String updatedTreatmentListViewItem = objToUpdate.getTreatmentName()+" : "+objToUpdate.getQty()+" "+objToUpdate.getUnit();
+       this.treatmentListView.getItems().set(this.updateTreatmentselectionId,updatedTreatmentListViewItem);
+    }
+
 
     @FXML
     private void removeTreatment()
@@ -612,7 +657,9 @@ public class InvoiceUpdateController implements Initializable {
             System.out.println("treatment size:"+this.updateTreatments.size());
         }
 
-    } @FXML
+    }
+
+    @FXML
     private void addAdditionalCostService()
     {
         if(!this.updateAdditionalCostServices.containsKey(this.selectedAdditionalCostService.getTreatmentName()))
@@ -626,6 +673,12 @@ public class InvoiceUpdateController implements Initializable {
             System.out.println(this.updateAdditionalCostServices.toString());
             this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit());
         }
+    }
+
+    @FXML
+    private void updateAdditionalCostService()
+    {
+
     }
 
     @FXML
