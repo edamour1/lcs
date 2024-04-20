@@ -155,6 +155,10 @@ public class InvoiceUpdateController implements Initializable {
     @FXML
     private CheckBox checkBox;
 
+    @FXML
+    private Text invoiceNumberParagraph;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -477,16 +481,31 @@ public class InvoiceUpdateController implements Initializable {
             for(Treatment t : this.invoiceInformation.getTreatments())
             {
                 t.setOldItems(true);
+                t.setUpdateQty(true);
                 this.treatmentListView.getItems().add(t.getTreatmentName()+" : "+t.getQty()+" "+t.getUnit());
-                this.updateTreatments.put(t.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
+                this.updateTreatments.put(t.getTreatmentName().toLowerCase().trim(),t);
             }
             for(AdditionalCostService a : this.invoiceInformation.getAdditionalCostServices())
             {
                 a.setOldItems(true);
+                a.setUpdateQty(true);
                 this.additionalCostServicesListView.getItems().add(a.getTreatmentName()+" : "+a.getQty()+" "+a.getUnit());
-                this.updateAdditionalCostServices.put(a.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
+                this.updateAdditionalCostServices.put(a.getTreatmentName().toLowerCase().trim(),a);
             }
+
             this.notesTextArea.setText(this.invoiceInformation.getNotes());
+            this.invoiceNumberParagraph.setText(this.invoiceInformation.getNo());
+            boolean isNotBillingAdrress = !(this.invoiceInformation.getAddressId() == this.invoiceInformation.getBillingAddressId());
+            this.checkBox.setSelected(isNotBillingAdrress);
+            if(isNotBillingAdrress)
+            {
+                Address billingAddress = new Address();
+                billingAddress.setId(this.invoiceInformation.getBillingAddressId());
+                billingAddress = this.lcsService.getAddressById(billingAddress);
+                this.billingAddressComboBox.setValue(billingAddress);
+            }
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -600,7 +619,7 @@ public class InvoiceUpdateController implements Initializable {
         List<Treatment> saveTreatmentsArrayList = new ArrayList<>(this.updateTreatments.values());
         List<AdditionalCostService> saveAdditionalCostServicesArrayList = new ArrayList<>(this.updateAdditionalCostServices.values());
         InvoiceInformation saveInvoice = new InvoiceInformation();
-        saveInvoice.setNo(this.invoiceNumberGenerator.generateInvoiceNo());
+        saveInvoice.setNo(this.invoiceInformation.getNo());
         saveInvoice.setPaymentDueDate(java.sql.Date.valueOf(this.paymentDueDatePicker.getValue()));
         saveInvoice.setStartDate(java.sql.Date.valueOf(this.startDatePicker.getValue()));
         saveInvoice.setEndDate(Date.valueOf(this.startDatePicker.getValue()));
@@ -614,7 +633,7 @@ public class InvoiceUpdateController implements Initializable {
         saveInvoice.setNotes(this.notesTextArea.getText());
         saveInvoice.setActive(true);
 //        this.formValid();
-        this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
+        this.lcsService.updateInvoiceInformation(saveInvoice,this.client,this.admin);
         this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
         this.sceneController.switchToScene(event);
         if(this.notTheSameAsBillingAddress)

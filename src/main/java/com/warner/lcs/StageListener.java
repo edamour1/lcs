@@ -41,6 +41,7 @@ public class StageListener implements ApplicationListener<StageReadyEvent> {
             Scene scene = new Scene(root,800,800);
             stage.setScene(scene);
             stage.setTitle(this.applicationTitle);
+            stage.setMaximized(true); // Open the window in maximized mode
             stage.show();
         }catch (IOException e){
             e.printStackTrace();

@@ -214,18 +214,18 @@ public class LcsApplicationTest {
 //        assertThat(retrievedObj.getId()).isEqualTo(this.additionalCostService.getId());
 //    }
 //
-//    @Test//means method is meant to be tested
-//    public void updateTreatmentQtyTest() throws Exception {
-//        this.treatment.setId(2);
-//        this.treatment.setQty(0.75);
-//        this.treatment.setUnit("Milligram");
-//        this.client.setId(4);
-//        this.invoiceInformation.setNo("TE287026");
-//
-//        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,invoiceInformation);
-//
-//        assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
-//    }
+    @Test//means method is meant to be tested
+    public void updateTreatmentQtyTest() throws Exception {
+        this.treatment.setId(1);
+        this.treatment.setQty(0.75);
+        this.treatment.setUnit("Milligram");
+        this.client.setId(1);
+        this.invoiceInformation.setNo("BV552887");
+
+        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,invoiceInformation);
+
+        assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
+    }
 //
 //    @Test//means method is meant to be tested
 //    public void getTreatmentTest() throws Exception {
