@@ -56,8 +56,8 @@ public class InvoiceUpdateController implements Initializable {
     private Unit unit,unit2;
     private InvoiceInformation invoiceInformation;
     private InvoiceNumberGenerator invoiceNumberGenerator;
-    private StringBuilder updateTreatmentQtyKey;
-    private  int updateTreatmentselectionId;
+    private StringBuilder updateTreatmentQtyKey, updateAdditionalCostServiceQtyKey;
+    private  int updateTreatmentSelectionId, updateAdditionalCostServicesSelectionId;
     @Autowired
     private LcsService lcsService;
     @Autowired
@@ -178,7 +178,9 @@ public class InvoiceUpdateController implements Initializable {
             clientsNamesList = new ArrayList<>();
             this.r1Selected = false;
             this.updateTreatmentQtyKey = new StringBuilder();
-            this.updateTreatmentselectionId = 0;
+            this.updateAdditionalCostServiceQtyKey = new StringBuilder();
+            this.updateTreatmentSelectionId = 0;
+            this.updateAdditionalCostServicesSelectionId = 0;
 
 
             for(Client c : this.clients)
@@ -564,7 +566,7 @@ public class InvoiceUpdateController implements Initializable {
                 }
                 // Add an event listener to the treatmentListView
                 treatmentListView.setOnMouseClicked((event) -> {
-                    this.updateTreatmentselectionId = this.treatmentListView.getSelectionModel().getSelectedIndex();
+                    this.updateTreatmentSelectionId = this.treatmentListView.getSelectionModel().getSelectedIndex();
 
                     StringBuilder sb = new StringBuilder();
                     for(char letter : this.treatmentListView.getSelectionModel().getSelectedItem().toCharArray())
@@ -579,18 +581,87 @@ public class InvoiceUpdateController implements Initializable {
                     Treatment obj = this.updateTreatments.get(key);
 
                     this.treatmentQtyInputTextField.setText(Double.toString(obj.getQty()));
+                    String unitStringValue = obj.getUnit();
+                    StringBuilder unitStringBuilder = new StringBuilder();
+
+                    if(unitStringValue.toString().contains(" "))
+                    {
+                        for(char c : unitStringValue.toCharArray())
+                        {
+                            if(c==' ')
+                            {
+                                unitStringBuilder.append("_");
+                            }
+                            else
+                            {
+                                unitStringBuilder.append(c);
+                            }
+                        }
+                    } else { unitStringBuilder.append(unitStringValue); }
 
                     for(Unit currentUnit : Unit.values()){
-                        if(currentUnit.toString().toLowerCase().equals(obj.getUnit().toLowerCase()))
+                        if(currentUnit.toString().toLowerCase().equals(unitStringBuilder.toString().toLowerCase()))
                         {
                             this.unitComboBox.setValue(currentUnit);
-                            System.out.println(this.unit);
+                            System.out.println(unitStringBuilder.toString().toLowerCase());//zoom
+                            System.out.println(currentUnit);//zoom
                             break;
                         }
                     }
                     this.treatmentComboBox.setValue(obj);
                 });
             }
+
+            // Add an event listener to the additionalCostServicesListView
+            additionalCostServicesListView.setOnMouseClicked((event) -> {
+                this.updateAdditionalCostServicesSelectionId = this.additionalCostServicesListView.getSelectionModel().getSelectedIndex();
+
+                StringBuilder sb = new StringBuilder();
+                for(char letter : this.additionalCostServicesListView.getSelectionModel().getSelectedItem().toCharArray())
+                {
+                    if(letter == ':') {break;}//we just want the name of the treatmeant
+                    sb.append(letter);
+                }
+
+                System.out.println(sb.toString().toLowerCase().trim());
+                String key = sb.toString().toLowerCase().trim();
+                this.updateAdditionalCostServiceQtyKey.setLength(0);
+                this.updateAdditionalCostServiceQtyKey.append(key);
+                AdditionalCostService obj = this.updateAdditionalCostServices.get(key);
+
+                this.additionalCostServiceQtyInputTextField.setText(Double.toString(obj.getQty()));
+                String unitStringValue = obj.getUnit();
+                StringBuilder unitStringBuilder = new StringBuilder();
+
+                if(unitStringValue.toString().contains(" "))
+                {
+                    for(char c : unitStringValue.toCharArray())
+                    {
+                        if(c==' ')
+                        {
+                            unitStringBuilder.append("_");
+                        }
+                        else
+                        {
+                            unitStringBuilder.append(c);
+                        }
+                    }
+                } else { unitStringBuilder.append(unitStringValue); }
+
+                for(Unit currentUnit : Unit.values()){
+                    if(currentUnit.toString().toLowerCase().equals(unitStringBuilder.toString().toLowerCase()))
+                    {
+                        this.unitComboBox2.setValue(currentUnit);
+                        System.out.println(unitStringBuilder.toString().toLowerCase());//zoom
+                        System.out.println(currentUnit);//zoom
+                        break;
+                    }
+                }
+
+                this.additionalCostServiceComboBox.setValue(obj);
+
+            });
+
 
 
         } catch (Exception e) {
@@ -623,7 +694,7 @@ public class InvoiceUpdateController implements Initializable {
        objToUpdate.setUnit(unitObjToUpdate.getFullName());
        this.updateTreatments.put(this.updateTreatmentQtyKey.toString(),objToUpdate);
        String updatedTreatmentListViewItem = objToUpdate.getTreatmentName()+" : "+objToUpdate.getQty()+" "+objToUpdate.getUnit();
-       this.treatmentListView.getItems().set(this.updateTreatmentselectionId,updatedTreatmentListViewItem);
+       this.treatmentListView.getItems().set(this.updateTreatmentSelectionId,updatedTreatmentListViewItem);
     }
 
 
@@ -678,7 +749,13 @@ public class InvoiceUpdateController implements Initializable {
     @FXML
     private void updateAdditionalCostService()
     {
-
+        AdditionalCostService objToUpdate = this.updateAdditionalCostServices.get(this.updateAdditionalCostServiceQtyKey.toString());
+        objToUpdate.setQty(Double.parseDouble(this.additionalCostServiceQtyInputTextField.getText()));
+        Unit unitObjToUpdate = (Unit) this.unitComboBox2.getSelectionModel().getSelectedItem();
+        objToUpdate.setUnit(unitObjToUpdate.getFullName());
+        this.updateAdditionalCostServices.put(this.updateAdditionalCostServiceQtyKey.toString(),objToUpdate);
+        String updatedAdditionalCostServiceListViewItem = objToUpdate.getTreatmentName()+" : "+objToUpdate.getQty()+" "+objToUpdate.getUnit();
+        this.additionalCostServicesListView.getItems().set(this.updateAdditionalCostServicesSelectionId,updatedAdditionalCostServiceListViewItem);
     }
 
     @FXML
