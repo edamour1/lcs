@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<ScrollPane fx:id="scrollPane" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.InvoiceViewController">
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.InvoiceViewController">
 <AnchorPane fx:id="anchorPane">
 
     <!-- Vertical layout for input fields -->
@@ -15,7 +20,7 @@
             <Insets left="700" top="150" />
         </padding>
         <!-- Invoice Number Label -->
-        <Label layoutX="50.0" layoutY="300.0" text="Invoice Number:" style="-fx-text-fill: green;" />
+        <Label layoutX="50.0" layoutY="300.0" style="-fx-text-fill: green;" text="Invoice Number:" />
 
         <!-- First Name Input -->
         <Label text="First Name:" />
@@ -35,6 +40,8 @@
 
         <!-- Email Input -->
         <Label text="Email:" />
+
+        <Label text="Address:" />
     </VBox>
 
     <!-- Vertical layout for input fields -->
@@ -50,24 +57,53 @@
         <Text fx:id="clientLastNameParagraph" />
         <Text fx:id="clientPhoneNumberParagraph" />
         <Text fx:id="clientEmailParagraph" />
-    </VBox>
-
-    <VBox layoutX="12.0" layoutY="128.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
-        <!-- Labels for input fields -->
-        <Label text="Payment Due Date:" layoutX="10" layoutY="50" />
-        <Label text="Start Date:" layoutX="10" layoutY="100" />
-        <Label fx:id="billingClientComboBoxLabel" text="Billing:" layoutX="10" layoutY="300" />
-        <Label text="Address:" layoutX="10" layoutY="150" />
-        <Label text="Notes:" layoutX="10" layoutY="400" />
-    </VBox>
-
-    <VBox layoutX="24.0" layoutY="200" prefHeight="275.0" prefWidth="779.0" spacing="10">
-        <Text fx:id="paymentDueDateText" text="Payment Due Date:" />
-        <Text fx:id="startDateText" text="Start Date:"  />
-        <Text fx:id="billingClient" text="Billing:"   />
         <Text fx:id="addressText" text="Address:" />
-        <Text fx:id="notesText" text="Notes:" />
     </VBox>
+
+    <VBox layoutX="150.0" layoutY="220.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+        <!-- Labels for input fields -->
+        <Label text="Payment Due Date:" />
+        <Label text="Start Date:" />
+        <Label text="End Date:" />
+        <Label text="Billed Client:" />
+        <Label text="Bill Address:" />
+        <Label text="Notes:" />
+<!--        <Label text="Last Modified By :" />-->
+<!--        <Label text="Last Date Modified :" />-->
+    </VBox>
+
+    <VBox layoutX="300" layoutY="220" prefHeight="275.0" prefWidth="779.0" spacing="10">
+        <Text fx:id="paymentDueDateText" text="Payment Due Date:" />
+        <Text fx:id="startDateText" text="Start Date:" />
+        <Text fx:id="endDateText" text="Start Date:" />
+        <Text fx:id="billingClientText" text="Billing:" />
+        <Text fx:id="billingAddressText" text="Address:" />
+        <Text fx:id="notesText" text="Notes:" />
+<!--        <Text fx:id="lm_user" text="lm_user :" />-->
+<!--        <Text fx:id="lm_date" text="lm_date:" />-->
+    </VBox>
+
+    <VBox layoutX="700" layoutY="500">
+        <!-- Existing content above -->
+        <Label text="Treatment List:" />
+        <ListView fx:id="treatmentListView" prefHeight="100" />
+    </VBox>
+
+    <VBox layoutX="150" layoutY="500">
+        <!-- Add ListView for Additional Cost Treatment -->
+        <Label text="Additional Cost Services List:" />
+        <ListView fx:id="additionalCostServicesListView" prefHeight="100" />
+    </VBox>
+
+    <VBox layoutX="415" layoutY="420">
+        <HBox>
+            <Button fx:id="generatePDFButton" onAction="#generatePDFButton" style="-fx-background-color: yellow; -fx-text-fill: blue;" text="Generate PDF" />
+            <Button fx:id="viewPDFButton" style="-fx-background-color: green; -fx-text-fill: white;" text="View PDF" />
+            <Button fx:id="emailButton" style="-fx-background-color: purple; -fx-text-fill: white;" text="Email" />
+
+        </HBox>
+    </VBox>
+     <Button fx:id="backButton" onAction="#handleBack" layoutX="523.0" layoutY="489.0" style="-fx-text-fill: black;" text="Back" />
 
 
 </AnchorPane>

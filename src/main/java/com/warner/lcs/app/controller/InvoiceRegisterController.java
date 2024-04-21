@@ -97,6 +97,9 @@ public class InvoiceRegisterController implements Initializable {
     private DatePicker startDatePicker;
 
     @FXML
+    private DatePicker endDatePicker;
+
+    @FXML
     private TextField billingClientComboBox;
 
     @FXML
@@ -428,6 +431,7 @@ public class InvoiceRegisterController implements Initializable {
         // Set the default value to today's date
         this.paymentDueDatePicker.setValue(LocalDate.now());
         this.startDatePicker.setValue(LocalDate.now());
+        this.endDatePicker.setValue(LocalDate.now());
 
         // create a label
         Label l = new Label("This is a Radiobutton example ");
@@ -557,7 +561,7 @@ public class InvoiceRegisterController implements Initializable {
         saveInvoice.setNo(this.invoiceNumberGenerator.generateInvoiceNo());
         saveInvoice.setPaymentDueDate(Date.valueOf(this.paymentDueDatePicker.getValue()));
         saveInvoice.setStartDate(Date.valueOf(this.startDatePicker.getValue()));
-        saveInvoice.setEndDate(Date.valueOf(this.startDatePicker.getValue()));
+        saveInvoice.setEndDate(Date.valueOf(this.endDatePicker.getValue()));
         saveInvoice.setTreatments(saveTreatmentsArrayList);
         saveInvoice.setAdditionalCostServices(saveAdditionalCostServicesArrayList);
         int billingAddressId = this.notTheSameAsBillingAddress ? this.selectedBillingAddress.getId() : this.selectedAddress.getId();

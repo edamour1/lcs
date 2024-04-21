@@ -100,6 +100,9 @@ public class InvoiceUpdateController implements Initializable {
     private DatePicker startDatePicker;
 
     @FXML
+    private DatePicker endDatePicker;
+
+    @FXML
     private TextField billingClientComboBox;
 
     @FXML
@@ -482,7 +485,7 @@ public class InvoiceUpdateController implements Initializable {
         try {
             this.paymentDueDatePicker.setValue(this.invoiceInformation.getPaymentDueDate().toLocalDate());
             this.startDatePicker.setValue(this.invoiceInformation.getStartDate().toLocalDate());
-            this.startDatePicker.setValue(this.invoiceInformation.getStartDate().toLocalDate());
+            this.endDatePicker.setValue(this.invoiceInformation.getEndDate().toLocalDate());
             Address addressParameter = new Address();
             addressParameter.setId(invoiceInformation.getAddressId());
             this.addressComboBox.setValue(this.lcsService.getAddressById(addressParameter));
@@ -492,7 +495,7 @@ public class InvoiceUpdateController implements Initializable {
                 t.setOldItems(true);
                 t.setUpdateQty(true);
                 this.treatmentListView.getItems().add(t.getTreatmentName()+" : "+t.getQty()+" "+t.getUnit());
-                this.updateTreatments.put(t.getTreatmentName().toLowerCase().trim(),t);
+                this.updateTreatments.put(t.getTreatmentName().toLowerCase().trim(),t);//zoom
             }
             for(AdditionalCostService a : this.invoiceInformation.getAdditionalCostServices())
             {
@@ -806,7 +809,7 @@ public class InvoiceUpdateController implements Initializable {
         saveInvoice.setNo(this.invoiceInformation.getNo());
         saveInvoice.setPaymentDueDate(Date.valueOf(this.paymentDueDatePicker.getValue()));
         saveInvoice.setStartDate(Date.valueOf(this.startDatePicker.getValue()));
-        saveInvoice.setEndDate(Date.valueOf(this.startDatePicker.getValue()));
+        saveInvoice.setEndDate(Date.valueOf(this.endDatePicker.getValue()));
         saveInvoice.setTreatments(saveTreatmentsArrayList);
         saveInvoice.setAdditionalCostServices(saveAdditionalCostServicesArrayList);
         int billingAddressId = this.notTheSameAsBillingAddress ? this.selectedBillingAddress.getId() : this.selectedAddress.getId();

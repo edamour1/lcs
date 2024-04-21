@@ -32,10 +32,14 @@ public class PdfGenerator {
 
     private Client client;
     private InvoiceInformation invoiceInformation;
+
+    private String path;
+    private Client billingClient;
+
     private Business business;
     private Address billingAddress,address;
     LocalDate ld = LocalDate.now();
-    private String pdfName = ld+".pdf";
+    private String pdfName = ld+".pdf", pdfTitle;
 
     private Document document;
     private PdfDocument pdfDocument;
@@ -64,6 +68,9 @@ public class PdfGenerator {
     private Table divider = new Table(fullWidth);
     private CodingErrorPdfInvoiceCreator cepdf;
 
+    public PdfGenerator() {
+    }
+
     public PdfGenerator(String path, Client billingClient, Client client, Address billingAddress, Address address, InvoiceInformation invoiceInformation, Business business) throws FileNotFoundException, MalformedURLException{
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
         this.client = client;
@@ -85,7 +92,7 @@ public class PdfGenerator {
         document.add(image);
 
         this.createHeader(invoiceInformation);
-        this.createClientBillingInfo(billingAddress,address,client,client);
+        this.createClientBillingInfo(address,billingAddress,client,client);
         this.createBody(invoiceInformation);
         this.createFooter();
 
@@ -164,16 +171,16 @@ public class PdfGenerator {
         twoColTable3.addCell(getCell10fLeft(billingName,false));
 
         billingAddressString = billingAddress.getStreet() + ", " +billingAddress.getState().getState() +" "+ billingAddress.getCity().getCity() +" "+ billingAddress.getZipcode().getZipcode();
-
-        twoColTable3.addCell(getCell10fLeft(billingAddressString,false));
+        addressString = address.getStreet() + ", " +address.getState().getState() +" "+ address.getCity().getCity() +" "+ address.getZipcode().getZipcode();
+        twoColTable3.addCell(getCell10fLeft(addressString,false));
         document.add(twoColTable3);
 
         float oneColumnWidth[]={twocol150};
 
         Table oneColTable1 = new Table(oneColumnWidth);
         oneColTable1.addCell(getCell10fLeft("Address",true));
-        addressString = address.getStreet() + ", " +address.getState().getState() +" "+ address.getCity().getCity() +" "+ address.getZipcode().getZipcode();
-        oneColTable1.addCell(getCell10fLeft(addressString,false));
+
+        oneColTable1.addCell(getCell10fLeft(billingAddressString,false));
         oneColTable1.addCell(getCell10fLeft("Email",true));
         oneColTable1.addCell(getCell10fLeft(billigClient.getEmail(),false));
         document.add(oneColTable1.setMarginBottom(10f));
@@ -248,7 +255,7 @@ public class PdfGenerator {
         document.add(divider.setBorder(new SolidBorder(Color.GRAY,1)).setMarginBottom(15f));
         String paraText = "Sample company overview\n" +
                 "We provide residential and commercial lawn mowing, edging, trimming, pruning, weed control, yard cleanup, aeration, grass seeding and sodding, and snow shoveling and deicing in the winter months. We put customer happiness above all else and pride ourselves on doing the job right the first time.";
-        document.add(new Paragraph("Notes: "+paraText));
+        document.add(new Paragraph("Notes: "+this.invoiceInformation.getNotes()));
 
         Table tb = new Table(fullWidth);
         tb.addCell(new Cell().add("Terms AND CONDITIONS\n").setBold().setBorder(Border.NO_BORDER));
@@ -287,5 +294,89 @@ public class PdfGenerator {
         }
 
         return sb.toString();
+    }
+
+    public Client getBillingClient() {
+        return billingClient;
+    }
+
+    public void setBillingClient(Client billingClient) {
+        this.billingClient = billingClient;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
+
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public InvoiceInformation getInvoiceInformation() {
+        return invoiceInformation;
+    }
+
+    public void setInvoiceInformation(InvoiceInformation invoiceInformation) {
+        this.invoiceInformation = invoiceInformation;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void generatePdf() throws MalformedURLException, FileNotFoundException {
+        this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
+        this.client = client;
+        this.invoiceInformation = invoiceInformation;
+        this.business = business;
+
+        PdfWriter pdfWriter = new PdfWriter(path);
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+        pdfDocument.setDefaultPageSize(PageSize.A4);
+        document = (Document) new Document(pdfDocument);
+        String imagePath="C:\\Users\\User\\Documents\\lcs\\lcs\\src\\main\\resources\\water_mark_lcs.png";
+        ImageData imageData = ImageDataFactory.create(imagePath);
+        Image image = new Image(imageData);
+
+        float x = pdfDocument.getDefaultPageSize().getWidth()/2;
+        float y = pdfDocument.getDefaultPageSize().getHeight()/2;
+        image.setFixedPosition(x-150, y-150);
+        image.setOpacity(0.18f);
+        document.add(image);
+
+        this.createHeader(invoiceInformation);
+        this.createClientBillingInfo(billingAddress,address,client,client);
+        this.createBody(invoiceInformation);
+        this.createFooter();
+
+        document.close();
     }
 }

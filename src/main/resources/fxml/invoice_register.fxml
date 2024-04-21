@@ -107,13 +107,15 @@
             <!-- Labels for input fields -->
             <Label text="Payment Due Date:" layoutX="10" layoutY="50" />
             <Label text="Start Date:" layoutX="10" layoutY="100" />
+            <Label text="End Date:" layoutX="10" layoutY="150" />
             <Label fx:id="billingClientComboBoxLabel" text="Billing:" layoutX="10" layoutY="300" visible="${notTheSameAsBillingAddress}"/>
-            <Label text="Address:" layoutX="10" layoutY="150" />
+            <Label text="Address:" layoutX="10" layoutY="200" />
             <Label text="Notes:" layoutX="10" layoutY="400" />
 
             <DatePicker fx:id="paymentDueDatePicker" layoutX="200" layoutY="50" />
             <DatePicker fx:id="startDatePicker" layoutX="200" layoutY="100" />
-            <ChoiceBox fx:id="addressComboBox" layoutX="200" layoutY="150" />
+            <DatePicker fx:id="endDatePicker" layoutX="200" layoutY="150" />
+            <ChoiceBox fx:id="addressComboBox" layoutX="200" layoutY="200" />
             <CheckBox fx:id="checkBox" text="Not the same as billing address" layoutX="420" layoutY="150"/>
             <!-- ToggleGroup ensures that only one radio button can be selected at a time -->
             <TextField fx:id="billingClientComboBox" layoutX="200" layoutY="300" visible="${notTheSameAsBillingAddress}"/>
