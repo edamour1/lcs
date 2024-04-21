@@ -182,7 +182,6 @@ public class InvoiceUpdateController implements Initializable {
             this.updateTreatmentSelectionId = 0;
             this.updateAdditionalCostServicesSelectionId = 0;
 
-
             for(Client c : this.clients)
             {
                 clientsNamesList.add(c.getFirstName()+", "+c.getMiddleName()+", "+c.getLastName());

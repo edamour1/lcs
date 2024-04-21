@@ -2,11 +2,13 @@ package com.warner.lcs.app.controller;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
+import com.warner.lcs.common.util.FxmlView;
 import com.warner.lcs.common.util.SceneController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,7 @@ import javafx.collections.ObservableList;
 @Component
 public class InvoiceViewController implements Initializable {
 
+    private FxmlView CLIENT_MENU, CLIENT_VIEW;
     private Admin admin;
     private Client client;
     private InvoiceInformation invoiceInformation;
@@ -25,31 +28,53 @@ public class InvoiceViewController implements Initializable {
     @Autowired
     private SceneController sceneController;
 
-    // Declaring fields for the FXML elements
     @FXML
-    private DatePicker paymentDueDatePicker;
+    private Text paymentDueDateText;
 
     @FXML
-    private DatePicker startDatePicker;
+    private Text startDateText;
 
     @FXML
-    private ComboBox<Client> billingClientComboBox;
+    private Text billingClient;
 
     @FXML
-    private ComboBox<Address> billingAddressComboBox;
+    private Text addressText;
 
     @FXML
-    private ComboBox<Treatment> treatmentComboBox;
-
-    @FXML
-    private ComboBox<AdditionalCostService> additionalCostServiceComboBox;
-
-    @FXML
-    private ComboBox<Address> addressComboBox;
+    private Text notesText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
+        this.CLIENT_MENU = FxmlView.CLIENT_MENU;
+        this.paymentDueDateText.setText(this.invoiceInformation.getPaymentDueDate().toString());
+        this.startDateText.setText(this.invoiceInformation.getStartDate().toString());
+        Address address = new Address(), billingAddress = new Address();
+        address.setId(invoiceInformation.getAddressId());
+        try {
+            address =  this.lcsService.getAddressById(address);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            String fullAddress = address.getStreet()+ " "+ address.getCity().getCity() + ", "+ address.getState().getState() +" "+ address.getZipcode().getZipcode();
+
+            this.addressText.setText(fullAddress);
+            this.notesText.setText(invoiceInformation.getNotes());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+//        String fullAddress =
+//        this.addressText.setText();
 
     }
 
