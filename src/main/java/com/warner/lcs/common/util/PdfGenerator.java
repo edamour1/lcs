@@ -22,6 +22,9 @@ import com.warner.lcs.app.domain.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.sql.Date;
@@ -371,13 +374,26 @@ public class PdfGenerator {
         this.path = path;
     }
 
-    public void generatePdf() throws MalformedURLException, FileNotFoundException {
+    public void generatePdf() throws IOException {
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
         this.client = client;
         this.invoiceInformation = invoiceInformation;
         this.business = business;
 
-        PdfWriter pdfWriter = new PdfWriter(path);
+        // Specify the folder path on the desktop where the PDF will be saved
+        String desktopFolderPath = System.getProperty("user.home") + "/Desktop/invoices/";
+
+        // Create the folder if it doesn't exist
+        Path folderPath = Paths.get(desktopFolderPath);
+        Files.createDirectories(folderPath);
+
+        // Specify the file name
+        String fileName = "invoce_"+this.invoiceInformation.getNo()+"_"+this.invoiceInformation.getDate().toString()+".pdf";
+
+        // Combine folder path and file name to get the full path
+        String fullPath = desktopFolderPath + fileName;
+
+        PdfWriter pdfWriter = new PdfWriter(fullPath);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
         document = (Document) new Document(pdfDocument);
