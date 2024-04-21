@@ -54,18 +54,7 @@ public class InvoiceViewController implements Initializable {
         address.setId(invoiceInformation.getAddressId());
         try {
             address =  this.lcsService.getAddressById(address);
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             String fullAddress = address.getStreet()+ " "+ address.getCity().getCity() + ", "+ address.getState().getState() +" "+ address.getZipcode().getZipcode();
 
             this.addressText.setText(fullAddress);
