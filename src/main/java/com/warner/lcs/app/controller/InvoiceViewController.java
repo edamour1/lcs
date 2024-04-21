@@ -108,6 +108,7 @@ public class InvoiceViewController implements Initializable {
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         this.paymentDueDateText.setText(this.invoiceInformation.getPaymentDueDate().toString());
+
         this.startDateText.setText(this.invoiceInformation.getStartDate().toString());
         this.endDateText.setText(this.invoiceInformation.getEndDate().toString());
         this.address = new Address();

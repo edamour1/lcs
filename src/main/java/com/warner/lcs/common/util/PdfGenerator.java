@@ -253,19 +253,38 @@ public class PdfGenerator {
         document.add(tableDivider2);
         document.add(new Paragraph("\n"));
         document.add(divider.setBorder(new SolidBorder(Color.GRAY,1)).setMarginBottom(15f));
-        String paraText = "Sample company overview\n" +
-                "We provide residential and commercial lawn mowing, edging, trimming, pruning, weed control, yard cleanup, aeration, grass seeding and sodding, and snow shoveling and deicing in the winter months. We put customer happiness above all else and pride ourselves on doing the job right the first time.";
         document.add(new Paragraph("Notes: "+this.invoiceInformation.getNotes()));
 
         Table tb = new Table(fullWidth);
-        tb.addCell(new Cell().add("Terms AND CONDITIONS\n").setBold().setBorder(Border.NO_BORDER));
+        Cell cellFooter = new Cell().add("Make Check Payable To: Warner Lawn Care Service\n")
+                .setBold()
+                .setBorder(null)
+                .setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER)
+                .setPaddingBottom(15);
+
+        tb.addCell(cellFooter);
         List <String> TncList = new ArrayList<>();
-        TncList.add("1. The Seller shall not be liable to the Buyer directly or indirectly or for any loss or damage suffered by the buyer.");
-        TncList.add("1. The Seller warrants the product for one (1) year from the data of shipment.");
+        TncList.add("Other acceptable forms of Payment via: Zelle, Venmo or cash app");
+        TncList.add("Zelle info: Lonnell D Warner");
+        TncList.add("Email:  warnerlawncare@gmail.com");
+        TncList.add("If you have any questions regarding this invoice, call:");
+        TncList.add("678-410-9876 office");
+        TncList.add("*Please Water Lawn");
+        TncList.add(" ");
+        TncList.add(" ");
+        TncList.add("We Appreciate\n" +
+                "\n" +
+                "“Your”\n" +
+                "\n" +
+                "Business");
 
         for(String tnc:TncList){
-            tb.addCell(new Cell().add(tnc).setBorder(Border.NO_BORDER));
+            Cell cell = new Cell().add(tnc);
+            cell.setBorder(null);
+            cell.setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER);
+            tb.addCell(cell);
         }
+
         document.add(tb);
     }
 
