@@ -3,8 +3,12 @@ package com.warner.lcs.app.domain;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class InvoiceInformation {
     private int clientId, addressId,billingAddressId;
@@ -129,5 +133,41 @@ public class InvoiceInformation {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+
+    public String getDateFormatedString() {
+        String output = this.getFormatedDate(this.date);
+        return output;
+    }
+    public String getPaymentDueDateFormatedString() {
+            String output = this.getFormatedDate(this.paymentDueDate);
+            return output;
+    }
+
+    public String getStartDateFormatedString() {
+        String output = this.getFormatedDate(this.startDate);
+        return output;
+    }
+
+    public String getEndDateFormatedString() {
+        String output = this.getFormatedDate(this.endDate);
+        return output;
+    }
+
+
+
+    private String getFormatedDate(Date dateInput)
+    {
+        String input = dateInput.toString();
+        // Parse the input string into a LocalDate object
+        LocalDate date = LocalDate.parse(input);
+
+        // Define the output format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+        // Format the LocalDate object into the desired output format
+        String output = date.format(outputFormatter);
+        return output;
     }
 }

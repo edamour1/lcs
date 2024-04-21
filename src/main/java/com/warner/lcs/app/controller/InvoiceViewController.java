@@ -107,10 +107,6 @@ public class InvoiceViewController implements Initializable {
         //*************************************************************************************get Data*************************************************************
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
-        this.paymentDueDateText.setText(this.invoiceInformation.getPaymentDueDate().toString());
-
-        this.startDateText.setText(this.invoiceInformation.getStartDate().toString());
-        this.endDateText.setText(this.invoiceInformation.getEndDate().toString());
         this.address = new Address();
         this.billingAddress = new Address();
         address.setId(this.invoiceInformation.getAddressId());
@@ -136,7 +132,9 @@ public class InvoiceViewController implements Initializable {
             this.addressText.setText(fullAddress);
             this.billingAddressText.setText(fullBillingAddress);
             this.invoiceNumberParagraph.setText(this.invoiceInformation.getNo());
-            this.paymentDueDateText.setText(this.invoiceInformation.getPaymentDueDate().toString());
+            this.paymentDueDateText.setText(invoiceInformation.getPaymentDueDateFormatedString());
+            this.startDateText.setText(this.invoiceInformation.getStartDateFormatedString());
+            this.endDateText.setText(this.invoiceInformation.getEndDateFormatedString());
             this.startDateText.setText(this.invoiceInformation.getStartDate().toString());
             String billledClientFullname = this.billingClient.getFirstName()+" "+this.billingClient.getMiddleName()+" "+this.billingClient.getLastName();
             this.billingClientText.setText(billledClientFullname);

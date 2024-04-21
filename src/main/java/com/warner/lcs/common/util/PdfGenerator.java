@@ -131,13 +131,13 @@ public class PdfGenerator {
         nestedTable.addCell(this.getHeaderTextCell("Invoice No.").setBold());
         nestedTable.addCell(this.getHeaderTextCell(invoiceInformation.getNo()));
         nestedTable.addCell(this.getHeaderTextCell("Invoice Date").setBold());
-        nestedTable.addCell(this.getHeaderTextCell(sdf.format(date)));
+        nestedTable.addCell(this.getHeaderTextCell(invoiceInformation.getDateFormatedString()));
         nestedTable.addCell(this.getHeaderTextCell("Payment Due Date").setBold());
-        nestedTable.addCell(this.getHeaderTextCell(sdf.format(paymentDate)));
+        nestedTable.addCell(this.getHeaderTextCell(invoiceInformation.getPaymentDueDateFormatedString()));
         nestedTable.addCell(this.getHeaderTextCell("Start Date").setBold());
-        nestedTable.addCell(this.getHeaderTextCell(sdf.format(startDate)));
+        nestedTable.addCell(this.getHeaderTextCell(invoiceInformation.getStartDateFormatedString()));
         nestedTable.addCell(this.getHeaderTextCell("End Date").setBold());
-        nestedTable.addCell(this.getHeaderTextCell(sdf.format(endDate)));
+        nestedTable.addCell(this.getHeaderTextCell(invoiceInformation.getEndDateFormatedString()));
 
         table.addCell(new Cell().add(nestedTable).setBorder(Border.NO_BORDER));
 
