@@ -455,10 +455,12 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         for(Treatment treatment : invoiceInformation.getTreatments()){
             this.saveTreatmentForInvoiceInformation(treatment,client,invoiceInformation);
+            this.updateTreatment(treatment,admin);
         }
 
         for(AdditionalCostService additionalCostService : invoiceInformation.getAdditionalCostServices()) {
             this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client,invoiceInformation);
+            this.updateAdditionalCostService(additionalCostService,admin);
         }
 
 

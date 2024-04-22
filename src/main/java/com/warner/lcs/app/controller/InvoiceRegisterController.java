@@ -150,7 +150,7 @@ public class InvoiceRegisterController implements Initializable {
     private ChoiceBox<Address> addressComboBox, billingAddressComboBox;
 
     @FXML
-    private TextField  treatmentQtyInputTextField, additionalCostServiceQtyInputTextField;
+    private TextField  treatmentQtyInputTextField, additionalCostServiceQtyInputTextField, tPrice, acsPrice;
 
     @FXML
     private TextArea notesTextArea;
@@ -482,9 +482,10 @@ public class InvoiceRegisterController implements Initializable {
             this.selectedTreatment.setUnit(saveUnit.getFullName());
             this.selectedTreatment.setUpdateQty(false);
             this.selectedTreatment.setQty(Double.valueOf(this.treatmentQtyInputTextField.getText()));
+            this.selectedTreatment.setPrice(Double.valueOf(this.tPrice.getText()));
             this.saveTreatments.put(this.selectedTreatment.getTreatmentName().toLowerCase().trim(),this.selectedTreatment);
             System.out.println(this.saveTreatments.toString());
-            this.treatmentListView.getItems().add(this.selectedTreatment.getTreatmentName()+" : "+this.selectedTreatment.getQty()+" "+this.selectedTreatment.getUnit());
+            this.treatmentListView.getItems().add(this.selectedTreatment.getTreatmentName()+" : "+this.selectedTreatment.getQty()+" "+this.selectedTreatment.getUnit()+" $"+this.selectedTreatment.getPrice());
         }
     }
 
@@ -517,9 +518,10 @@ public class InvoiceRegisterController implements Initializable {
             this.selectedAdditionalCostService.setUnit(saveUnit.getFullName());
             this.selectedAdditionalCostService.setUpdateQty(false);
             this.selectedAdditionalCostService.setQty(Double.valueOf(this.additionalCostServiceQtyInputTextField.getText()));
+            this.selectedAdditionalCostService.setPrice(Double.valueOf(this.acsPrice.getText()));
             this.saveAdditionalCostServices.put(this.selectedAdditionalCostService.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
             System.out.println(this.saveAdditionalCostServices.toString());
-            this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit());
+            this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit()+" $"+this.selectedAdditionalCostService.getPrice());
         }
     }
 
@@ -579,7 +581,6 @@ public class InvoiceRegisterController implements Initializable {
         this.lcsService.saveInvoiceInformation(saveInvoice,this.client,this.selectedAddress,this.admin);
         this.sceneController.setScene(this.CLIENT_VIEW.getTitle(), this.CLIENT_VIEW.getFxmlFilePath());
         this.sceneController.switchToScene(event);
-
 
         System.out.println("Submit button clicked");
     }

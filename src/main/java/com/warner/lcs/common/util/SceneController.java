@@ -40,6 +40,7 @@ public class SceneController  {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle(this.sceneTitle);
+        stage.setFullScreen(true);
         stage.setMaximized(true); // Open the window in maximized mode
         stage.show();
     }

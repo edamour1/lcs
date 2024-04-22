@@ -36,7 +36,7 @@ public class PdfGenerator {
     private Client client;
     private InvoiceInformation invoiceInformation;
 
-    private String path;
+    private String path, fullPath;
     private Client billingClient;
 
     private Business business;
@@ -267,19 +267,9 @@ public class PdfGenerator {
 
         tb.addCell(cellFooter);
         List <String> TncList = new ArrayList<>();
-        TncList.add("Other acceptable forms of Payment via: Zelle, Venmo or cash app");
-        TncList.add("Zelle info: Lonnell D Warner");
-        TncList.add("Email:  warnerlawncare@gmail.com");
         TncList.add("If you have any questions regarding this invoice, call:");
         TncList.add("678-410-9876 office");
-        TncList.add("*Please Water Lawn");
-        TncList.add(" ");
-        TncList.add(" ");
-        TncList.add("We Appreciate\n" +
-                "\n" +
-                "“Your”\n" +
-                "\n" +
-                "Business");
+        TncList.add("We Appreciate \"Your\" Business.");
 
         for(String tnc:TncList){
             Cell cell = new Cell().add(tnc);
@@ -374,6 +364,11 @@ public class PdfGenerator {
         this.path = path;
     }
 
+    public String getPdfFullPath()
+    {
+        return this.fullPath;
+    }
+
     public void generatePdf() throws IOException {
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
         this.client = client;
@@ -391,7 +386,7 @@ public class PdfGenerator {
         String fileName = "invoce_"+this.invoiceInformation.getNo()+"_"+this.invoiceInformation.getDate().toString()+".pdf";
 
         // Combine folder path and file name to get the full path
-        String fullPath = desktopFolderPath + fileName;
+        this.fullPath = desktopFolderPath + fileName;//zoom
 
         PdfWriter pdfWriter = new PdfWriter(fullPath);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);

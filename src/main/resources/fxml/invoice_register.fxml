@@ -61,6 +61,11 @@
                 <TextField fx:id="treatmentQtyInputTextField" layoutX="200" layoutY="400" promptText="Enter decimal example: 87.3"/>
                 <ChoiceBox fx:id="unitComboBox"/>
             </HBox>
+            <HBox layoutX="200" layoutY="400">
+                <!-- Existing content above -->
+                <Label text="Treatmeant Price $ " />
+                <TextField fx:id="tPrice"  promptText="Enter decimal ex: 87.3"/>
+            </HBox>
             <HBox>
                 <padding>
                     <Insets right="100" bottom="20"/>
@@ -88,6 +93,11 @@
                 <ChoiceBox fx:id="additionalCostServiceComboBox" />
                 <TextField fx:id="additionalCostServiceQtyInputTextField" layoutX="200" layoutY="400" promptText="Enter decimal example: 87.3"/>
                 <ChoiceBox fx:id="unitComboBox2"/>
+            </HBox>
+            <HBox layoutX="200" layoutY="400">
+                <!-- Existing content above -->
+                <Label text="Additional Cost Service Price $ " />
+                <TextField fx:id="acsPrice"  promptText="Enter decimal ex: 87.3"/>
             </HBox>
             <HBox>
                 <padding>

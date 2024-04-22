@@ -2,24 +2,25 @@ package com.warner.lcs.app.controller;
 
 import com.warner.lcs.app.domain.*;
 import com.warner.lcs.app.service.LcsService;
-import com.warner.lcs.common.util.FxmlView;
-import com.warner.lcs.common.util.PdfGenerator;
-import com.warner.lcs.common.util.SceneController;
+import com.warner.lcs.common.util.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import javax.mail.MessagingException;
 
 @Component
 public class InvoiceViewController implements Initializable {
@@ -32,6 +33,8 @@ public class InvoiceViewController implements Initializable {
     private  Address address, billingAddress;
 
     private Business business;
+
+    private String pdfFilePath;
     @Autowired
     private LcsService lcsService;
     @Autowired
@@ -100,6 +103,9 @@ public class InvoiceViewController implements Initializable {
     @FXML
     private Button backButton;
 
+    @FXML
+    private AnchorPane anchorPane;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -153,7 +159,7 @@ public class InvoiceViewController implements Initializable {
     }
 
     @FXML
-    public void generatePDFButton() throws Exception {
+    public void generatePDFButton(ActionEvent event) throws Exception {
         // Method for handling Generate PDF button click
         // Implement your logic here
         this.pdfGenerator.setAddress(this.address);
@@ -164,12 +170,59 @@ public class InvoiceViewController implements Initializable {
         this.pdfGenerator.setBusiness(this.business);
         this.pdfGenerator.setPath("invoice.pdf");
         this.pdfGenerator.generatePdf();
+        this.pdfFilePath = this.pdfGenerator.getPdfFullPath();
+
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+
+        Alert.AlertType type = Alert.AlertType.INFORMATION;
+        Alert alert = new Alert(type,"");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+        StringBuilder stbr = new StringBuilder("Invoice: "+this.invoiceInformation.getNo()+" Generated successfully! \nFor: ");
+        stbr.append(this.client.getFirstName()+" ");
+        stbr.append(this.client.getMiddleName()+" ");
+        stbr.append(this.client.getLastName());
+
+        alert.getDialogPane().setContentText(stbr.toString());
+        alert.getDialogPane().setHeaderText("Generate Invoice");
+
+        Optional<ButtonType> result = alert.showAndWait();
     }
 
     @FXML
-    public void handleEmail() {
+    public void handleEmail(ActionEvent event) throws Exception {
         // Method for handling Email button click
         // Implement your logic here
+        String emailSubject = "Invoice", emailString = SQL.get("lcsSql","getEmailText"),pdfFilePath = this.pdfFilePath,companyAddress;
+        String[] emailReceipients = {this.client.getEmail(), "warnerlf@gmail.com"};
+
+        companyAddress = "\n\t   "+this.business.getAddress().getStreet()+",\n\t    "+business.getAddress().getCity().getCity()+" "+business.getAddress().getState().getState()+" "+business.getAddress().getZipcode().getZipcode();
+        String emailBody =  String.format(emailString, this.client.getFirstName(), business.getName(), business.getEmail(), business.getPhoneNo(), business.getFaxPhoneNo(),companyAddress);
+        System.out.println(emailBody);
+        Email email = new Email(emailSubject,emailBody,emailReceipients,pdfFilePath);
+        email.sendEmail();
+
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+
+        Alert.AlertType type = Alert.AlertType.INFORMATION;
+        Alert alert = new Alert(type,"");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+        StringBuilder stbr = new StringBuilder("Invoice: "+this.invoiceInformation.getNo()+" email was sent to "+this.client.getEmail()+" successfully! \nFor: ");
+        stbr.append(this.client.getFirstName()+" ");
+        stbr.append(this.client.getMiddleName()+" ");
+        stbr.append(this.client.getLastName());
+
+        alert.getDialogPane().setContentText(stbr.toString());
+        alert.getDialogPane().setHeaderText("Email Invoice");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        this.sceneController.setScene(this.CLIENT_MENU.getTitle(),this.CLIENT_MENU.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+
     }
 
     @FXML
