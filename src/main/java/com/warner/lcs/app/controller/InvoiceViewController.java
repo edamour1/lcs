@@ -126,11 +126,11 @@ public class InvoiceViewController implements Initializable {
 
             for(Treatment t : this.invoiceInformation.getTreatments())
             {
-                this.treatmentListView.getItems().add(t.getTreatmentName()+" : "+t.getQty()+" "+t.getUnit());
+                this.treatmentListView.getItems().add(t.getTreatmentName()+" : "+t.getQty()+" "+t.getUnit()+" $"+t.getPrice());
             }
             for(AdditionalCostService a : this.invoiceInformation.getAdditionalCostServices())
             {
-                this.additionalCostServicesListView.getItems().add(a.getTreatmentName()+" : "+a.getQty()+" "+a.getUnit());
+                this.additionalCostServicesListView.getItems().add(a.getTreatmentName()+" : "+a.getQty()+" "+a.getUnit()+" $"+a.getPrice());
             }
             this.business = this.lcsService.getBusiness();
 

@@ -642,7 +642,7 @@ public class InvoiceUpdateController implements Initializable {
                 AdditionalCostService obj = this.updateAdditionalCostServices.get(key);
 
                 this.additionalCostServiceQtyInputTextField.setText(Double.toString(obj.getQty()));
-                this.acsPrice.setText(Double.toString(obj.getQty()));
+                this.acsPrice.setText(Double.toString(obj.getPrice()));
                 String unitStringValue = obj.getUnit();
                 StringBuilder unitStringBuilder = new StringBuilder();
 
@@ -735,7 +735,7 @@ public class InvoiceUpdateController implements Initializable {
             }
             else
             {
-                this.updateTreatments.remove(sb.toString().toLowerCase().trim());
+                this.updateTreatments.remove(key);
             }
 
 
@@ -758,7 +758,7 @@ public class InvoiceUpdateController implements Initializable {
             this.selectedAdditionalCostService.setPrice(Double.valueOf(this.acsPrice.getText()));
             this.updateAdditionalCostServices.put(this.selectedAdditionalCostService.getTreatmentName().toLowerCase().trim(),this.selectedAdditionalCostService);
             System.out.println(this.updateAdditionalCostServices.toString());
-            this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit());
+            this.additionalCostServicesListView.getItems().add(this.selectedAdditionalCostService.getTreatmentName()+" : "+this.selectedAdditionalCostService.getQty()+" "+this.selectedAdditionalCostService.getUnit()+" $"+this.selectedAdditionalCostService.getPrice());
         }
     }
 
@@ -791,15 +791,18 @@ public class InvoiceUpdateController implements Initializable {
         {
             if(this.updateAdditionalCostServices.get(key).isOldItems())
             {
-                AdditionalCostService obj = this.updateAdditionalCostServices.get(sb.toString().toLowerCase().trim());
+                AdditionalCostService obj = this.updateAdditionalCostServices.get(key);
                 obj.setRemoveFromList(true);
                 this.updateAdditionalCostServices.put(key,obj);
             }
             else
             {
-                this.updateAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
+                AdditionalCostService obj = this.updateAdditionalCostServices.get(key);
+                this.updateAdditionalCostServices.remove(key);
+//                obj.setRemoveFromList(true);
+//                this.updateAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
             }
-            this.updateAdditionalCostServices.remove(sb.toString().toLowerCase().trim());
+
             this.additionalCostServicesListView.getItems().remove(selectId);
             System.out.println("additional cost service size:"+this.updateAdditionalCostServices.size());
         }

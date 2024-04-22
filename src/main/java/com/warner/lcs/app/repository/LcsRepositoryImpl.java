@@ -233,7 +233,10 @@ public class LcsRepositoryImpl implements LcsRepository {
             else {
                 if(!treatment.isUpdateQty()){
                     this.saveTreatmentForInvoiceInformation(treatment,client,invoiceInformation);
-                }else{ this.updateTreatmentQty(treatment,invoiceInformation); }
+                }else{
+                    this.updateTreatmentQty(treatment,invoiceInformation);
+                    this.updateTreatment(treatment,admin);
+                }
             }
         }
 
@@ -246,6 +249,8 @@ public class LcsRepositoryImpl implements LcsRepository {
                     this.saveAdditionalCostServiceForInvoiceInformation(additionalCostService,client,invoiceInformation);
                 } else {
                     this.updateAdditionalCostServiceQty(additionalCostService,invoiceInformation);
+                    this.updateAdditionalCostService(additionalCostService,admin);
+
                 }
 
             }
