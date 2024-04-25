@@ -106,6 +106,15 @@ public class InvoiceViewController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    @FXML
+    private TextField inputTotalTextField;
+
+    @FXML
+    private CheckBox useCalculatedTotalCheckBox;
+
+    @FXML
+    private Text calculatedTotalText;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -150,8 +159,10 @@ public class InvoiceViewController implements Initializable {
             this.clientLastNameParagraph.setText(this.client.getLastName());
             this.clientEmailParagraph.setText(this.client.getEmail());
             this.clientPhoneNumberParagraph.setText(this.client.getPhoneNumber());
-//            this.lm_date.setText(this.invoiceInformation);
             this.pdfGenerator = new PdfGenerator();
+            this.pdfGenerator.setInvoiceInformation(this.invoiceInformation);
+            this.calculatedTotalText.setText(Float.toString(this.pdfGenerator.getTotal()));
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -166,11 +177,15 @@ public class InvoiceViewController implements Initializable {
         this.pdfGenerator.setBillingAddress(this.billingAddress);
         this.pdfGenerator.setClient(this.client);
         this.pdfGenerator.setBillingClient(this.billingClient);
-        this.pdfGenerator.setInvoiceInformation(this.invoiceInformation);
+
         this.pdfGenerator.setBusiness(this.business);
         this.pdfGenerator.setPath("invoice.pdf");
         this.pdfGenerator.generatePdf();
         this.pdfFilePath = this.pdfGenerator.getPdfFullPath();
+
+        this.pdfGenerator.setTotal(Float.valueOf(this.inputTotalTextField.getText()));
+        this.pdfGenerator.setUseEnteredTotal(this.useCalculatedTotalCheckBox.isSelected());
+
 
         Stage stage = (Stage) anchorPane.getScene().getWindow();
 

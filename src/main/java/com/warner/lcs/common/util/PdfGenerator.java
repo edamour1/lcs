@@ -46,6 +46,8 @@ public class PdfGenerator {
 
     private Document document;
     private PdfDocument pdfDocument;
+    private boolean useEnteredTotal;
+    private float enteredTotal;
 
     private InvoiceNumberGenerator invoiceNumberGenerator;
 
@@ -71,8 +73,7 @@ public class PdfGenerator {
     private Table divider = new Table(fullWidth);
     private CodingErrorPdfInvoiceCreator cepdf;
 
-    public PdfGenerator() {
-    }
+    public PdfGenerator() { this.useEnteredTotal = false; }
 
     public PdfGenerator(String path, Client billingClient, Client client, Address billingAddress, Address address, InvoiceInformation invoiceInformation, Business business) throws FileNotFoundException, MalformedURLException{
         this.cepdf = new CodingErrorPdfInvoiceCreator(pdfName);
@@ -247,6 +248,9 @@ public class PdfGenerator {
         Table threeColTable3 = new Table(threecolumnWidth);
         threeColTable3.addCell(new Cell().add("").setBorder(Border.NO_BORDER)).setMarginLeft(10f);
         threeColTable3.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
+
+        totalSum = this.useEnteredTotal ? totalSum : this.enteredTotal;
+        System.out.println("useEnteredTotal: "+useEnteredTotal+" "+" totalSum: "+totalSum+" this.enteredTotal: "+this.enteredTotal);
         threeColTable3.addCell(new Cell().add("$"+String.valueOf(totalSum)).setPaddingLeft(150f).setBorder(Border.NO_BORDER)).setMarginRight(15f);
 
         document.add(threeColTable3);
@@ -408,5 +412,32 @@ public class PdfGenerator {
         this.createFooter();
 
         document.close();
+    }
+
+    public void setUseEnteredTotal(boolean useEnteredTotal)
+    {
+        this.useEnteredTotal = useEnteredTotal;
+    }
+
+    public void setTotal(float enteredTotal)
+    {
+        this.enteredTotal = enteredTotal;
+    }
+
+    public float getTotal()
+    {
+        float totalSum=0f;
+        for(Treatment treatment:this.invoiceInformation.getTreatments())
+        {
+            double total = treatment.getPrice();
+            totalSum+=total;
+        }
+
+        for(AdditionalCostService additionalCostService: invoiceInformation.getAdditionalCostServices())
+        {
+            double total = additionalCostService.getPrice();
+            totalSum+=total;
+        }
+        return totalSum;
     }
 }
