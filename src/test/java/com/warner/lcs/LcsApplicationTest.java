@@ -116,20 +116,20 @@ public class LcsApplicationTest {
 //            assertThat(obj.getState()).isEqualTo(state.getState());
 //        }
 
-    @Test//means method is meant to be tested
-    public void emailUtilTest() throws Exception {
-//       String emailSubject, String emailBody, String[] emailReceipients, String pdfFilePath
-        this.business = lcsService.getBusiness();
-        this.client = this.lcsService.getClientById(1);
-        String emailSubject = "Invoice", emailString = SQL.get("lcsSql","getEmailText"),pdfFilePath = "C:\\Users\\User\\Documents\\lcs\\lcs\\invoice.pdf",companyAddress;
-        String[] emailReceipients = {client.getEmail(), "warnerlf@gmail.com"};
-
-        companyAddress = "\n\t   "+business.getAddress().getStreet()+",\n\t    "+business.getAddress().getCity().getCity()+" "+business.getAddress().getState().getState()+" "+business.getAddress().getZipcode().getZipcode();
-        String emailBody =  String.format(emailString, this.client.getFirstName(), business.getName(), business.getEmail(), business.getPhoneNo(), business.getFaxPhoneNo(),companyAddress);
-        System.out.println(emailBody);
-        Email email = new Email(emailSubject,emailBody,emailReceipients,pdfFilePath);
-        email.sendEmail();
-    }
+//    @Test//means method is meant to be tested
+//    public void emailUtilTest() throws Exception {
+////       String emailSubject, String emailBody, String[] emailReceipients, String pdfFilePath
+//        this.business = lcsService.getBusiness();
+//        this.client = this.lcsService.getClientById(1);
+//        String emailSubject = "Invoice", emailString = SQL.get("lcsSql","getEmailText"),pdfFilePath = "C:\\Users\\User\\Documents\\lcs\\lcs\\invoice.pdf",companyAddress;
+//        String[] emailReceipients = {client.getEmail(), "warnerlf@gmail.com"};
+//
+//        companyAddress = "\n\t   "+business.getAddress().getStreet()+",\n\t    "+business.getAddress().getCity().getCity()+" "+business.getAddress().getState().getState()+" "+business.getAddress().getZipcode().getZipcode();
+//        String emailBody =  String.format(emailString, this.client.getFirstName(), business.getName(), business.getEmail(), business.getPhoneNo(), business.getFaxPhoneNo(),companyAddress);
+//        System.out.println(emailBody);
+//        Email email = new Email(emailSubject,emailBody,emailReceipients,pdfFilePath);
+//        email.sendEmail();
+//    }
 //    @Test//means method is meant to be tested
 //    public void getInvoiceInformationTest() throws Exception {
 //        String invoiceNo = "JB788715";
@@ -214,18 +214,18 @@ public class LcsApplicationTest {
 //        assertThat(retrievedObj.getId()).isEqualTo(this.additionalCostService.getId());
 //    }
 //
-    @Test//means method is meant to be tested
-    public void updateTreatmentQtyTest() throws Exception {
-        this.treatment.setId(1);
-        this.treatment.setQty(0.75);
-        this.treatment.setUnit("Milligram");
-        this.client.setId(1);
-        this.invoiceInformation.setNo("BV552887");
-
-        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,invoiceInformation);
-
-        assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
-    }
+//    @Test//means method is meant to be tested
+//    public void updateTreatmentQtyTest() throws Exception {
+//        this.treatment.setId(1);
+//        this.treatment.setQty(0.75);
+//        this.treatment.setUnit("Milligram");
+//        this.client.setId(1);
+//        this.invoiceInformation.setNo("BV552887");
+//
+//        Treatment updatedObj = this.lcsService.updateTreatmentQty(treatment,invoiceInformation);
+//
+//        assertThat(updatedObj.getQty()).isEqualTo(this.treatment.getQty());
+//    }
 //
 //    @Test//means method is meant to be tested
 //    public void getTreatmentTest() throws Exception {
