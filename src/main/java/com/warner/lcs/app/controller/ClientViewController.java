@@ -104,6 +104,24 @@ public class ClientViewController implements Initializable {
     @FXML
     private TextField zipcodeFilterTextField;
 
+    @FXML
+    private TextField noColumnFilterTextField;
+
+    @FXML
+    private TextField paymentDueDateColumnFilterTextField;
+
+    @FXML
+    private TextField startDateColumnFilterTextField;
+
+    @FXML
+    private TextField notesColumnFilterTextField;
+
+    @FXML
+    private TextField treatmentsQtyColumnFilterTextField;
+
+    @FXML
+    private TextField additionalCostServicesQtyColumnFilterTextField;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -291,6 +309,127 @@ public class ClientViewController implements Initializable {
 
             // Add sorted (and filtered) data to the TableView
             tableView.setItems(sortedData);
+
+            //***************************************************invoice table filters***********************************************************************************
+            // Wrap the observable list in a FilteredList (initially display all data)
+
+            FilteredList<InvoiceInformationTableData> filteredInvoiceData = new FilteredList<>(invoicesTableView.getItems(), p -> true);
+
+            // Set the filter predicate whenever the filter changes
+            noColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (invoiceNo.getNo().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            paymentDueDateColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (invoiceNo.getPaymentDueDate().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            startDateColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (invoiceNo.getStartDate().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            treatmentsQtyColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    String value = Integer.toString(invoiceNo.getTreatmentsQty());
+                    if (value.toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            additionalCostServicesQtyColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (Integer.toString(invoiceNo.getAdditionalCostServicesQty()).toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+            // Set the filter predicate whenever the filter changes
+            notesColumnFilterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvoiceData.setPredicate(invoiceNo -> {
+                    // If filter text is empty, display all invoiceNos
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    // Compare invoiceNo's name with the filter text
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if (invoiceNo.getNotes().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Filter matches invoiceNo's name
+                    }
+                    return false; // Filter does not match invoiceNo's name
+                });
+            });
+
+
+
+
+
+            // Wrap the filtered list in a SortedList
+            SortedList<InvoiceInformationTableData> invoiceSortedData = new SortedList<>(filteredInvoiceData);
+
+            // Bind the SortedList comparator to the TableView comparator
+            invoiceSortedData.comparatorProperty().bind(invoicesTableView.comparatorProperty());
+
+            // Add sorted (and filtered) data to the TableView
+            invoicesTableView.setItems(invoiceSortedData);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

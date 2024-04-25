@@ -14,7 +14,7 @@
 <AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0">
 
     <!-- Filter Text Inputs -->
-    <HBox spacing="10">
+    <HBox spacing="10" layoutY="100" layoutX="80" >
         <!-- Padding to the left -->
         <padding>
             <Insets left="20" top="20" />
@@ -76,35 +76,79 @@
     </VBox>
 
     <VBox layoutY="100.0" prefHeight="445.0" prefWidth="628.0">
-        <!-- Padding to the left -->
-        <padding>
-            <Insets left="100" top="100" />
-        </padding>
-        <!-- Add TableView with fx:id -->
-        <TableView fx:id="tableView" prefHeight="385.0" prefWidth="421.0">
-            <!-- Define columns and other configurations here -->
-        </TableView>
         <HBox spacing="10">
-            <!-- Padding between the two HBox layouts -->
-            <padding>
-                <Insets top="20" />
-            </padding>
             <!-- Add View Client Button -->
             <Button onAction="#viewAddress" style="-fx-background-color: lightgreen;" text="View Address" />
             <Button onAction="#updateAddress" style="-fx-background-color: lightblue;" text="Update Address" />
             <Button onAction="#deleteAddress" style="-fx-background-color: pink;" text="Delete Address" />
             <Button onAction="#registerAddress" style="-fx-background-color: yellow;" text="Register Address" />
+            <!-- Padding between the two HBox layouts -->
+            <padding>
+                <Insets bottom="20" />
+            </padding>
         </HBox>
+        <!-- Padding to the left -->
+        <padding>
+            <Insets left="100" top="100" />
+        </padding>
+        <!-- Filter Text Inputs -->
+
+        <!-- Add TableView with fx:id -->
+        <TableView fx:id="tableView" prefHeight="385.0" prefWidth="421.0">
+            <!-- Define columns and other configurations here -->
+        </TableView>
     </VBox>
-    <VBox layoutX="50.0" layoutY="700.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+
+    <VBox layoutX="100" layoutY="580">
+        <!-- No Column Filter Input -->
+        <Label text="No Column Filter:" />
+        <TextField fx:id="noColumnFilterTextField" promptText="Enter filter for No Column" />
+    </VBox>
+
+    <VBox layoutX="100" layoutY="640">
+        <!-- Payment Due Date Column Filter Input -->
+        <Label text="Payment Due Date Column Filter:" />
+        <TextField fx:id="paymentDueDateColumnFilterTextField" promptText="Enter filter for Payment Due Date Column" />
+    </VBox>
+
+    <VBox layoutX="300" layoutY="580">
+                    <!-- Start Date Column Filter Input -->
+                    <Label text="Start Date Column Filter:" />
+                    <TextField fx:id="startDateColumnFilterTextField" promptText="Enter filter for Start Date Column" />
+    </VBox>
+
+    <VBox layoutX="300" layoutY="640">
+                    <!-- Notes Column Filter Input -->
+                    <Label text="Notes Column Filter:" />
+                    <TextField fx:id="notesColumnFilterTextField" promptText="Enter filter for Notes Column" />
+    </VBox>
+
+    <VBox layoutX="100" layoutY="690">
+                    <!-- Treatments Quantity Column Filter Input -->
+                    <Label text="Treatments Quantity Column Filter:" />
+                    <TextField fx:id="treatmentsQtyColumnFilterTextField" promptText="Enter filter for Treatments Quantity Column" />
+    </VBox>
+
+    <VBox layoutX="300" layoutY="690">
+                    <!-- Additional Cost Services Quantity Column Filter Input -->
+                    <Label text="Additional Cost Services Quantity Column Filter:" />
+                    <TextField fx:id="additionalCostServicesQtyColumnFilterTextField" promptText="Enter filter for Additional Cost Services Quantity Column" />
+    </VBox>
+
+    <VBox prefHeight="385.0" prefWidth="1015.0" layoutX="100" layoutY="750">
+        <!-- Add TableView with fx:id -->
+        <TableView fx:id="invoicesTableView" prefHeight="385.0" prefWidth="1015.0">
+            <!-- Define columns and other configurations here -->
+        </TableView>
+    </VBox>
+
+
+    <VBox layoutX="600.0"  layoutY="610.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
         <!-- Padding to the left -->
         <padding>
             <Insets left="100" top="75" />
         </padding>
-        <!-- Add TableView with fx:id -->
-        <TableView fx:id="invoicesTableView" prefHeight="385.0" prefWidth="421.0">
-            <!-- Define columns and other configurations here -->
-        </TableView>
+
         <HBox spacing="10">
             <!-- Padding between the two HBox layouts -->
             <padding>
@@ -118,11 +162,8 @@
         </HBox>
     </VBox>
 
-
-
-
     <!-- Back Button -->
     <Button fx:id="backButton" layoutX="790.0" layoutY="500.0" onAction="#handleBack" text="Back" />
 
 </AnchorPane>
-        </ScrollPane>
+</ScrollPane>

@@ -220,8 +220,8 @@ public class PdfGenerator {
             threeColTable2.addCell(new Cell().add(treatment.getTreatmentDescription()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
             Unit unit = Unit.valueOf(getUnitSerachString(treatment.getUnit().toUpperCase()));
             threeColTable2.addCell(new Cell().add(treatment.getQty()+" "+unit.getAbbreviation()).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
-            threeColTable2.addCell(new Cell().add(String.valueOf(treatment.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
-            threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add("$"+String.valueOf(treatment.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add("$"+String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
         }
 
         for(AdditionalCostService additionalCostService:additionalCostServices)
@@ -233,8 +233,8 @@ public class PdfGenerator {
             threeColTable2.addCell(new Cell().add(additionalCostService.getTreatmentDescription()).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
             Unit unit = Unit.valueOf(getUnitSerachString(additionalCostService.getUnit().toUpperCase()));
             threeColTable2.addCell(new Cell().add(additionalCostService.getQty()+" "+unit.getAbbreviation()).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER)).setMarginLeft(10f);
-            threeColTable2.addCell(new Cell().add(String.valueOf(additionalCostService.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
-            threeColTable2.addCell(new Cell().add(String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add("$"+String.valueOf(additionalCostService.getPrice())).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+            threeColTable2.addCell(new Cell().add("$"+String.valueOf(total)).setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER)).setMarginRight(15f);
         }
 
         document.add(threeColTable2.setMarginBottom(20f));
@@ -247,7 +247,7 @@ public class PdfGenerator {
         Table threeColTable3 = new Table(threecolumnWidth);
         threeColTable3.addCell(new Cell().add("").setBorder(Border.NO_BORDER)).setMarginLeft(10f);
         threeColTable3.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
-        threeColTable3.addCell(new Cell().add(String.valueOf(totalSum)).setPaddingLeft(150f).setBorder(Border.NO_BORDER)).setMarginRight(15f);
+        threeColTable3.addCell(new Cell().add("$"+String.valueOf(totalSum)).setPaddingLeft(150f).setBorder(Border.NO_BORDER)).setMarginRight(15f);
 
         document.add(threeColTable3);
     }
@@ -267,8 +267,8 @@ public class PdfGenerator {
 
         tb.addCell(cellFooter);
         List <String> TncList = new ArrayList<>();
-        TncList.add("If you have any questions regarding this invoice, call:");
-        TncList.add("678-410-9876 office");
+        TncList.add("If you have any questions regarding this invoice, call: 678-410-9876 office");
+        TncList.add("*Please Water Lawn");
         TncList.add("We Appreciate \"Your\" Business.");
 
         for(String tnc:TncList){
