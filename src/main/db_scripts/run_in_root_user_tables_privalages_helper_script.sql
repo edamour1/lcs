@@ -1,0 +1,9 @@
+GRANT REFERENCES ON `lawncare_service`.`invoice_information` TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.treatments TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.additional_services TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.ZIPCODES TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.units TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.addresses TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.clients TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.cities TO 'wlcs'@'localhost';
+GRANT REFERENCES ON lawncare_service.states TO 'wlcs'@'localhost';
