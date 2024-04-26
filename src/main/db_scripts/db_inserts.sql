@@ -2,138 +2,141 @@ USE lawncare_service;
 
 -- ******************************************States****************************************************
 INSERT INTO STATES (state) VALUES
-    ('AL'), -- Alabama
-    ('AK'), -- Alaska
-    ('AZ'), -- Arizona
-    ('AR'), -- Arkansas
-    ('CA'), -- California
-    ('CO'), -- Colorado
-    ('CT'), -- Connecticut
-    ('DE'), -- Delaware
-    ('FL'), -- Florida
-    ('GA'), -- Georgia
-    ('HI'), -- Hawaii
-    ('ID'), -- Idaho
-    ('IL'), -- Illinois
-    ('IN'), -- Indiana
-    ('IA'), -- Iowa
-    ('KS'), -- Kansas
-    ('KY'), -- Kentucky
-    ('LA'), -- Louisiana
-    ('ME'), -- Maine
-    ('MD'), -- Maryland
-    ('MA'), -- Massachusetts
-    ('MI'), -- Michigan
-    ('MN'), -- Minnesota
-    ('MS'), -- Mississippi
-    ('MO'), -- Missouri
-    ('MT'), -- Montana
-    ('NE'), -- Nebraska
-    ('NV'), -- Nevada
-    ('NH'), -- New Hampshire
-    ('NJ'), -- New Jersey
-    ('NM'), -- New Mexico
-    ('NY'), -- New York
-    ('NC'), -- North Carolina
-    ('ND'), -- North Dakota
-    ('OH'), -- Ohio
-    ('OK'), -- Oklahoma
-    ('OR'), -- Oregon
-    ('PA'), -- Pennsylvania
-    ('RI'), -- Rhode Island
-    ('SC'), -- South Carolina
-    ('SD'), -- South Dakota
-    ('TN'), -- Tennessee
-    ('TX'), -- Texas
-    ('UT'), -- Utah
-    ('VT'), -- Vermont
-    ('VA'), -- Virginia
-    ('WA'), -- Washington
-    ('WV'), -- West Virginia
-    ('WI'), -- Wisconsin
-    ('WY'); -- Wyoming
-	
+                               ('AL'), -- Alabama
+                               ('AK'), -- Alaska
+                               ('AZ'), -- Arizona
+                               ('AR'), -- Arkansas
+                               ('CA'), -- California
+                               ('CO'), -- Colorado
+                               ('CT'), -- Connecticut
+                               ('DE'), -- Delaware
+                               ('FL'), -- Florida
+                               ('GA'), -- Georgia
+                               ('HI'), -- Hawaii
+                               ('ID'), -- Idaho
+                               ('IL'), -- Illinois
+                               ('IN'), -- Indiana
+                               ('IA'), -- Iowa
+                               ('KS'), -- Kansas
+                               ('KY'), -- Kentucky
+                               ('LA'), -- Louisiana
+                               ('ME'), -- Maine
+                               ('MD'), -- Maryland
+                               ('MA'), -- Massachusetts
+                               ('MI'), -- Michigan
+                               ('MN'), -- Minnesota
+                               ('MS'), -- Mississippi
+                               ('MO'), -- Missouri
+                               ('MT'), -- Montana
+                               ('NE'), -- Nebraska
+                               ('NV'), -- Nevada
+                               ('NH'), -- New Hampshire
+                               ('NJ'), -- New Jersey
+                               ('NM'), -- New Mexico
+                               ('NY'), -- New York
+                               ('NC'), -- North Carolina
+                               ('ND'), -- North Dakota
+                               ('OH'), -- Ohio
+                               ('OK'), -- Oklahoma
+                               ('OR'), -- Oregon
+                               ('PA'), -- Pennsylvania
+                               ('RI'), -- Rhode Island
+                               ('SC'), -- South Carolina
+                               ('SD'), -- South Dakota
+                               ('TN'), -- Tennessee
+                               ('TX'), -- Texas
+                               ('UT'), -- Utah
+                               ('VT'), -- Vermont
+                               ('VA'), -- Virginia
+                               ('WA'), -- Washington
+                               ('WV'), -- West Virginia
+                               ('WI'), -- Wisconsin
+                               ('WY'); -- Wyoming
+
 -- *********************************************Cities*********************************************
 INSERT INTO `CITIES` (`city`) VALUES
-('Atlanta'),
-('Augusta'),
-('Columbus'),
-('Conyers'),
-('Covington'),
-('Savannah'),
-('Athens'),
-('Macon'),
-('Roswell'),
-('Albany'),
-('Johns Creek'),
-('Warner Robins'),
-('Alpharetta'),
-('Marietta'),
-('Valdosta'),
-('Smyrna'),
-('Dunwoody'),
-('Rome'),
-('East Point'),
-('Peachtree City'),
-('Gainesville'),
-('Hinesville'),
-('Newnan'),
-('Milton'),
-('Douglasville'),
-('Kennesaw'),
-('LaGrange'),
-('Lawrenceville'),
-('Statesboro'),
-('Tucker'),
-('Duluth'),
-('Stockbridge'),
-('Carrollton'),
-('Woodstock'),
-('Griffin'),
-('Canton'),
-('McDonough'),
-('Acworth'),
-('Cartersville'),
-('Union City'),
-('Decatur'),
-('Pooler'),
-('Sugar Hill'),
-('Forest Park'),
-('Thomasville'),
-('Snellville'),
-('Milledgeville'),
-('St. Marys'),
-('Americus'),
-('Tifton'),
-('Dublin'),
-('Kingsland');
+                                  ('Atlanta'),
+                                  ('Augusta'),
+                                  ('Columbus'),
+                                  ('Conyers'),
+                                  ('Covington'),
+                                  ('Savannah'),
+                                  ('Athens'),
+                                  ('Macon'),
+                                  ('Roswell'),
+                                  ('Albany'),
+                                  ('Johns Creek'),
+                                  ('Warner Robins'),
+                                  ('Alpharetta'),
+                                  ('Marietta'),
+                                  ('Valdosta'),
+                                  ('Smyrna'),
+                                  ('Dunwoody'),
+                                  ('Rome'),
+                                  ('East Point'),
+                                  ('Peachtree City'),
+                                  ('Gainesville'),
+                                  ('Hinesville'),
+                                  ('Newnan'),
+                                  ('Milton'),
+                                  ('Douglasville'),
+                                  ('Kennesaw'),
+                                  ('LaGrange'),
+                                  ('Lawrenceville'),
+                                  ('Statesboro'),
+                                  ('Tucker'),
+                                  ('Duluth'),
+                                  ('Stockbridge'),
+                                  ('Carrollton'),
+                                  ('Woodstock'),
+                                  ('Griffin'),
+                                  ('Canton'),
+                                  ('McDonough'),
+                                  ('Acworth'),
+                                  ('Cartersville'),
+                                  ('Union City'),
+                                  ('Decatur'),
+                                  ('Pooler'),
+                                  ('Sugar Hill'),
+                                  ('Forest Park'),
+                                  ('Thomasville'),
+                                  ('Snellville'),
+                                  ('Milledgeville'),
+                                  ('St. Marys'),
+                                  ('Americus'),
+                                  ('Tifton'),
+                                  ('Dublin'),
+                                  ('Kingsland');
 
-	
+
 -- *********************************************Treatments*********************************************
 INSERT INTO TREATMENTS (treatment_name, treatment_description, price)
 VALUES
-    ('treatment name 1', 'treatment 1 description', 75.00),
-    ('treatment name 2', 'treatment 2 description', 125.00),
-    ('treatment name 3', 'treatment 3 description', 95.00),
-    ('treatment name 4', 'treatment 4 description', 75.00),
-    ('treatment name 5', 'treatment 5 description', 325.00),
-    ('treatment name 6', 'treatment 6 description', 23.00),
-    ('treatment name 7', 'treatment 7 description', 73.00)
-	
-	
--- *********************************************Additional_Services*********************************************
+    ('Treatment # 1', 'PRE-M #1/Spring', 0.00),
+    ('Treatment # 2', 'Pre-M #2/Spring', 0.00),
+    ('Treatment # 3', 'Urea Post-M', 0.00),
+    ('Treatment # 4', 'Fertilizer #1/Post-M', 0.00),
+    ('Treatment # 5', 'Fertilizer #2/Post-M', 0.00),
+    ('Treatment # 6', 'Pre-M/Fall', 0.00),
+    ('Treatment # 7', 'Pre-M #2/Fall', 0.00),
+    ('Treatment # 8', 'Lime/Potassium', 0.00);
+
+
+
+
 INSERT INTO ADDITIONAL_SERVICES (treatment_name, treatment_description, price)
 VALUES
-    ('treatment name 1', 'treatment 1 description', 65.00),
-    ('treatment name 2', 'treatment 2 description', 105.00),
-    ('treatment name 3', 'treatment 3 description', 85.00),
-    ('treatment name 4', 'treatment 4 description', 65.00),
-    ('treatment name 5', 'treatment 5 description', 305.00),
-    ('treatment name 6', 'treatment 6 description', 13.00),
-    ('treatment name 7', 'treatment 7 description', 63.00)
+    ('Aeration', '', 0.00),
+    ('Top dressing', '', 0.00),
+    ('Soil test', '', 0.00),
+    ('Fungicide', '', 0.00),
+    ('Insect control', '', 0.00),
+    ('Shrub fertilization', '', 0.00),
+    ('Shrub fungicide', '', 0.00),
+    ('Dethaching', '', 0.00);
 
 
---*********************************************Zipcodes*********************************************
+-- *********************************************Zipcodes*********************************************
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30301, 1); -- Atlanta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30302, 1); -- Atlanta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30303, 1); -- Atlanta
@@ -227,30 +230,43 @@ INSERT INTO zipcodes (zipcode, city_id) VALUES (30918, 2); -- Augusta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30919, 2); -- Augusta
 INSERT INTO zipcodes (zipcode, city_id) VALUES (30999, 2); -- Augusta
 
---*********************************************units*********************************************
+
 INSERT INTO units (unit) VALUES
-('Feet'),       -- ft
-('Inches'),     -- in
-('Kilometer'),  -- km
-('Meter'),      -- m
-('Centimeter'), -- cm
-('Millimeter'), -- mm
-('Kilogram'),   -- kg
-('Gram'),       -- g
-('Milligram'),  -- mg
-('Kilolitre'),  -- kl
-('Litre'),      -- l
-('Milliliter'), -- ml
-('Centilitre'), -- cl
-('Fluid Ounce'),-- fl oz
-('Minute'),     -- min
-('Hour'),       -- hr
-('Second'),     -- sec
-('Days'),       -- days
-('Week'),       -- week
-('Month'),      -- month
-('Year'),       -- year
-('Kelvin'),     -- K
-('Celsius'),    -- °C
-('Fahrenheit'), -- °F
-('Square Feet'); -- sqft
+                             ('Feet'),       -- ft
+                             ('Inches'),     -- in
+                             ('Kilometer'),  -- km
+                             ('Meter'),      -- m
+                             ('Centimeter'), -- cm
+                             ('Millimeter'), -- mm
+                             ('Kilogram'),   -- kg
+                             ('Gram'),       -- g
+                             ('Milligram'),  -- mg
+                             ('Kilolitre'),  -- kl
+                             ('Litre'),      -- l
+                             ('Milliliter'), -- ml
+                             ('Centilitre'), -- cl
+                             ('Fluid Ounce'),-- fl oz
+                             ('Minute'),     -- min
+                             ('Hour'),       -- hr
+                             ('Second'),     -- sec
+                             ('Days'),       -- days
+                             ('Week'),       -- week
+                             ('Month'),      -- month
+                             ('Year'),       -- year
+                             ('Kelvin'),     -- K
+                             ('Celsius'),    -- °C
+                             ('Fahrenheit'), -- °F
+                             ('Square Feet'); -- sqft
+
+INSERT INTO `lawncare_service`.`admin`
+(`username`,
+ `password`,
+ `role`,
+ `hint`)
+VALUES
+    ('admin',
+     'password',
+     'p@ssword',
+     'master admin');
+
+commit;
