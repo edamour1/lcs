@@ -575,54 +575,55 @@ public class InvoiceUpdateController implements Initializable {
                         }
                     }
                 }
-                // Add an event listener to the treatmentListView
-                treatmentListView.setOnMouseClicked((event) -> {
-                    this.updateTreatmentSelectionId = this.treatmentListView.getSelectionModel().getSelectedIndex();
-
-                    StringBuilder sb = new StringBuilder();
-                    for(char letter : this.treatmentListView.getSelectionModel().getSelectedItem().toCharArray())
-                    {
-                        if(letter == ':') {break;}//we just want the name of the treatmeant
-                        sb.append(letter);
-                    }
-                    System.out.println(sb.toString().toLowerCase().trim());
-                    String key = sb.toString().toLowerCase().trim();
-                    this.updateTreatmentQtyKey.setLength(0);
-                    this.updateTreatmentQtyKey.append(key);
-                    Treatment obj = this.updateTreatments.get(key);
-
-                    this.treatmentQtyInputTextField.setText(Double.toString(obj.getQty()));
-                    this.tPrice.setText(Double.toString(obj.getPrice()));
-                    String unitStringValue = obj.getUnit();
-                    StringBuilder unitStringBuilder = new StringBuilder();
-
-                    if(unitStringValue.toString().contains(" "))
-                    {
-                        for(char c : unitStringValue.toCharArray())
-                        {
-                            if(c==' ')
-                            {
-                                unitStringBuilder.append("_");
-                            }
-                            else
-                            {
-                                unitStringBuilder.append(c);
-                            }
-                        }
-                    } else { unitStringBuilder.append(unitStringValue); }
-
-                    for(Unit currentUnit : Unit.values()){
-                        if(currentUnit.toString().toLowerCase().equals(unitStringBuilder.toString().toLowerCase()))
-                        {
-                            this.unitComboBox.setValue(currentUnit);
-                            System.out.println(unitStringBuilder.toString().toLowerCase());
-                            System.out.println(currentUnit);
-                            break;
-                        }
-                    }
-                    this.treatmentComboBox.setValue(obj);
-                });
             }
+
+            // Add an event listener to the treatmentListView
+            treatmentListView.setOnMouseClicked((event) -> {
+                this.updateTreatmentSelectionId = this.treatmentListView.getSelectionModel().getSelectedIndex();
+
+                StringBuilder sb = new StringBuilder();
+                for(char letter : this.treatmentListView.getSelectionModel().getSelectedItem().toCharArray())
+                {
+                    if(letter == ':') {break;}//we just want the name of the treatmeant
+                    sb.append(letter);
+                }
+                System.out.println(sb.toString().toLowerCase().trim());
+                String key = sb.toString().toLowerCase().trim();
+                this.updateTreatmentQtyKey.setLength(0);
+                this.updateTreatmentQtyKey.append(key);
+                Treatment obj = this.updateTreatments.get(key);
+
+                this.treatmentQtyInputTextField.setText(Double.toString(obj.getQty()));
+                this.tPrice.setText(Double.toString(obj.getPrice()));
+                String unitStringValue = obj.getUnit();
+                StringBuilder unitStringBuilder = new StringBuilder();
+
+                if(unitStringValue.toString().contains(" "))
+                {
+                    for(char c : unitStringValue.toCharArray())
+                    {
+                        if(c==' ')
+                        {
+                            unitStringBuilder.append("_");
+                        }
+                        else
+                        {
+                            unitStringBuilder.append(c);
+                        }
+                    }
+                } else { unitStringBuilder.append(unitStringValue); }
+
+                for(Unit currentUnit : Unit.values()){
+                    if(currentUnit.toString().toLowerCase().equals(unitStringBuilder.toString().toLowerCase()))
+                    {
+                        this.unitComboBox.setValue(currentUnit);
+                        System.out.println(unitStringBuilder.toString().toLowerCase());
+                        System.out.println(currentUnit);
+                        break;
+                    }
+                }
+                this.treatmentComboBox.setValue(obj);
+            });
 
             // Add an event listener to the additionalCostServicesListView
             additionalCostServicesListView.setOnMouseClicked((event) -> {
@@ -674,8 +675,6 @@ public class InvoiceUpdateController implements Initializable {
                 this.additionalCostServiceComboBox.setValue(obj);
 
             });
-
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);

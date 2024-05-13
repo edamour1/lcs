@@ -116,6 +116,7 @@ public class AddressRegisterController implements Initializable {
                     {
                         stateComboBox.setValue(s); // Assuming the first state is the default
                     }
+
                 }
             }
 

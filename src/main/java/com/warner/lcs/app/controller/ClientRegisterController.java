@@ -77,29 +77,29 @@ public class ClientRegisterController implements Initializable {
         String email = emailTextField.getText();
 
         // Validate first name
-        if (firstName.isEmpty()) {
-            showError(firstNameTextField, "First name cannot be empty",firstNameErrorLabel);
-            return;
-        } else { clearError(firstNameTextField,firstNameErrorLabel); }
-
-        // Validate last name
-        if (lastName.isEmpty()) {
-            showError(lastNameTextField, "Last name cannot be empty",lastNameErrorLabel);
-            return;
-        } else { clearError(lastNameTextField,lastNameErrorLabel); }
+//        if (firstName.isEmpty()) {
+//            showError(firstNameTextField, "First name cannot be empty",firstNameErrorLabel);
+//            return;
+//        } else { clearError(firstNameTextField,firstNameErrorLabel); }
+//
+//        // Validate last name
+//        if (lastName.isEmpty()) {
+//            showError(lastNameTextField, "Last name cannot be empty",lastNameErrorLabel);
+//            return;
+//        } else { clearError(lastNameTextField,lastNameErrorLabel); }
 
         // Validate email
-        if (!isValidEmail(email)) {
-            showError(emailTextField, "Invalid email format",emailErrorLabel);
-            return;
-        } else { clearError(emailTextField,emailErrorLabel); }
+//        if (!isValidEmail(email)) {
+//            showError(emailTextField, "Invalid email format",emailErrorLabel);
+//            return;
+//        } else { clearError(emailTextField,emailErrorLabel); }
 
         // Validate phone number
-        if (!isValidPhoneNumber(phoneNumber)) {
-            showError(phoneNumberTextField, "Invalid phone number format",phoneNumberErrorLabel);
-            return;
-        } else { clearError(phoneNumberTextField,phoneNumberErrorLabel); }
-
+//        if (!isValidPhoneNumber(phoneNumber)) {
+//            showError(phoneNumberTextField, "Invalid phone number format",phoneNumberErrorLabel);
+//            return;
+//        } else { clearError(phoneNumberTextField,phoneNumberErrorLabel); }
+//
 
 
         // For example, you can validate the data or send it to a service

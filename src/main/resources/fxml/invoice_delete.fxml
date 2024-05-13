@@ -6,9 +6,103 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.warner.lcs.app.controller.InvoiceDeleteController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.InvoiceDeleteController">
 
-</AnchorPane>
+    <AnchorPane fx:id="anchorPane">
+
+        <!-- Vertical layout for input fields -->
+        <VBox layoutY="64.0" prefHeight="211.0" prefWidth="900.0" spacing="10">
+            <!-- Padding to the left -->
+            <padding>
+                <Insets left="700" top="150" />
+            </padding>
+            <!-- Invoice Number Label -->
+            <Label layoutX="50.0" layoutY="300.0" style="-fx-text-fill: red;" text="Invoice Number:" />
+
+            <!-- First Name Input -->
+            <Label text="First Name:" />
+
+
+            <!-- Middle Name Input -->
+            <Label text="Middle Name:" />
+
+
+            <!-- Last Name Input -->
+            <Label text="Last Name:" />
+
+
+            <!-- Phone Number Input -->
+            <Label text="Phone Number:" />
+
+
+            <!-- Email Input -->
+            <Label text="Email:" />
+
+            <Label text="Address:" />
+        </VBox>
+
+        <!-- Vertical layout for input fields -->
+        <VBox layoutX="12.0" layoutY="128.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+            <!-- Padding to the left -->
+            <padding>
+                <Insets left="800" top="88" />
+            </padding>
+
+            <Text fx:id="invoiceNumberParagraph" style="-fx-fill: red;" />
+            <Text fx:id="clientFirstNameParagraph" styleClass="invalid" />
+            <Text fx:id="clientMiddleNameParagraph" />
+            <Text fx:id="clientLastNameParagraph" />
+            <Text fx:id="clientPhoneNumberParagraph" />
+            <Text fx:id="clientEmailParagraph" />
+            <Text fx:id="addressText" text="Address:" />
+        </VBox>
+
+        <VBox layoutX="150.0" layoutY="220.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+            <!-- Labels for input fields -->
+            <Label text="Payment Due Date:" />
+            <Label text="Start Date:" />
+            <Label text="End Date:" />
+            <Label text="Billed Client:" />
+            <Label text="Bill Address:" />
+            <Label text="Notes:" />
+            <!--        <Label text="Last Modified By :" />-->
+            <!--        <Label text="Last Date Modified :" />-->
+        </VBox>
+
+        <VBox layoutX="300" layoutY="220" prefHeight="275.0" prefWidth="779.0" spacing="10">
+            <Text fx:id="paymentDueDateText" text="Payment Due Date:" />
+            <Text fx:id="startDateText" text="Start Date:" />
+            <Text fx:id="endDateText" text="Start Date:" />
+            <Text fx:id="billingClientText" text="Billing:" />
+            <Text fx:id="billingAddressText" text="Address:" />
+            <Text fx:id="notesText" text="Notes:" />
+            <!--        <Text fx:id="lm_user" text="lm_user :" />-->
+            <!--        <Text fx:id="lm_date" text="lm_date:" />-->
+        </VBox>
+
+        <VBox layoutX="700" layoutY="600">
+            <!-- Existing content above -->
+            <Label text="Treatment List:" />
+            <ListView fx:id="treatmentListView" prefHeight="100" />
+        </VBox>
+
+        <VBox layoutX="150" layoutY="600">
+            <!-- Add ListView for Additional Cost Treatment -->
+            <Label text="Additional Cost Services List:" />
+            <ListView fx:id="additionalCostServicesListView" prefHeight="100" />
+        </VBox>
+
+        <VBox layoutX="523.0" layoutY="489.0">
+            <HBox spacing="10">
+                <Button fx:id="deleteButton" onAction="#handleDelete" style="-fx-background-color: red; -fx-text-fill: white;" text="Delete" />
+                <Button fx:id="backButton" onAction="#handleBack"  style="-fx-text-fill: black;" text="Back" />
+            </HBox>
+        </VBox>
+
+
+
+
+    </AnchorPane>
+</ScrollPane>

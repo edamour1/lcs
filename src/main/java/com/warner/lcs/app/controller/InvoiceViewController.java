@@ -17,10 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javax.mail.MessagingException;
+import java.util.ResourceBundle;
 
 @Component
 public class InvoiceViewController implements Initializable {

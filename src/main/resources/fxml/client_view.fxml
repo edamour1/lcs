@@ -55,7 +55,7 @@
 
 
         <!-- Phone Number Input -->
-        <Label text="Phone Number:" />
+        <Label text="Phone Number:" prefWidth="100.0" />
 
 
         <!-- Email Input -->
@@ -63,16 +63,16 @@
     </VBox>
 
     <!-- Vertical layout for input fields -->
-    <VBox layoutX="2.0" layoutY="128.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
+    <VBox layoutX="20.0" layoutY="128.0" prefHeight="275.0" prefWidth="779.0" spacing="10">
         <!-- Padding to the left -->
         <padding>
             <Insets left="800" top="88" />
         </padding>
-        <Text fx:id="clientMiddleNameParagraph" />
-        <Text fx:id="clientPhoneNumberParagraph" />
-        <Text fx:id="clientEmailParagraph" />
-        <Text fx:id="clientLastNameParagraph" />
         <Text fx:id="clientFirstNameParagraph" styleClass="invalid" />
+        <Text fx:id="clientMiddleNameParagraph" />
+        <Text fx:id="clientLastNameParagraph" />
+        <Text fx:id="clientPhoneNumberParagraph" />
+        <Text fx:id="clientEmailParagraph"/>
     </VBox>
 
     <VBox layoutY="100.0" prefHeight="445.0" prefWidth="628.0">
