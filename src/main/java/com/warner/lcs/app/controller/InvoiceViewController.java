@@ -159,7 +159,7 @@ public class InvoiceViewController implements Initializable {
             this.pdfGenerator = new PdfGenerator();
             this.pdfGenerator.setInvoiceInformation(this.invoiceInformation);
             this.calculatedTotalText.setText(Float.toString(this.pdfGenerator.getTotal()));
-
+            this.inputTotalTextField.setText("0.0");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

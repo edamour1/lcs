@@ -100,10 +100,10 @@ public class ClientUpdateController implements Initializable  {
         } else { clearError(lastNameTextField,lastNameErrorLabel); }
 
         // Validate email
-        if (!isValidEmail(email)) {
-            showError(emailTextField, "Invalid email format",emailErrorLabel);
-            return;
-        } else { clearError(emailTextField,emailErrorLabel); }
+//        if (!isValidEmail(email)) {
+//            showError(emailTextField, "Invalid email format",emailErrorLabel);
+//            return;
+//        } else { clearError(emailTextField,emailErrorLabel); }
 
         // Validate phone number
         if (!isValidPhoneNumber(phoneNumber)) {
@@ -132,10 +132,10 @@ public class ClientUpdateController implements Initializable  {
         this.sceneController.switchToScene(event);
     }
 
-    private boolean isValidEmail(String email) {
-        // Basic email validation: Check if it contains '@'
-        return email.contains("@");
-    }
+//    private boolean isValidEmail(String email) {
+//        // Basic email validation: Check if it contains '@'
+//        return email.contains("@");
+//    }
 
     private boolean isValidPhoneNumber(String phoneNumber) {
         // Phone number validation: Format "467-777-9000"

@@ -610,7 +610,7 @@ INNER JOIN addresses a ON b.address_id = a.id
     <!-- **************************************************** Business *********************************************************************************** -->
     <getBusiness>
         <![CDATA[
-            SELECT  business.id business_id, business.name, business.phone, business.address_id, business.lm_user_id,  business.lm_date, business.faxPhoneNo as fax_phone_No , email, addresses.*
+            SELECT  business.id business_id, business.name, business.phone, business.address_id, business.lm_user_id,  business.lm_date, business.fax_phone_No , email, addresses.*
                 FROM business
                 JOIN addresses on address_id = addresses.id
 
@@ -624,7 +624,7 @@ INNER JOIN addresses a ON b.address_id = a.id
                 SET
                     `name` = ?,
                     `phone` = ?,
-                    `faxPhoneNo` = ?,
+                    `fax_phone_No` = ?,
                     `email` = ?,
                     `lm_user_id` = ?,
                     `lm_date` = NOW()

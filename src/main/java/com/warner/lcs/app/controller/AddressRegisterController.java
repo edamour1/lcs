@@ -250,6 +250,7 @@ public class AddressRegisterController implements Initializable {
         try {
             this.zipcodes = this.lcsService.getZipcodesByCity(city);
             zipcodeNames = zipcodes.stream().map(Zipcode::getZipcode).collect(Collectors.toList());
+            
             zipBinding = TextFields.bindAutoCompletion(zipcodeTextField, zipcodeNames);
             zipBinding.setOnAutoCompleted(event -> {
                 String zipcodeString = event.getCompletion();
@@ -344,7 +345,7 @@ public class AddressRegisterController implements Initializable {
             this.zipcode.setId(0);
         }
 
-        if(!this.zipcodeNames.contains(zipcodeString))//check for new zipcode
+        if(this.zipcodeNames == null|| !this.zipcodeNames.contains(zipcodeString))//check for new zipcode
         {
             this.zipcode.setId(0);
         }

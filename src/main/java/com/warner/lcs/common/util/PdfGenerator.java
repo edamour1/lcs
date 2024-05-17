@@ -85,7 +85,8 @@ public class PdfGenerator {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
         document = (Document) new Document(pdfDocument);
-        String imagePath="C:\\Users\\User\\Documents\\lcs\\lcs\\src\\main\\resources\\water_mark_lcs.png";
+        String imagePath = "src/main/resources/water_mark_lcs.png";
+
         ImageData imageData = ImageDataFactory.create(imagePath);
         Image image = new Image(imageData);
 
@@ -186,10 +187,10 @@ public class PdfGenerator {
 
         oneColTable1.addCell(getCell10fLeft(billingAddressString,false));
         oneColTable1.addCell(getCell10fLeft("Email",true));
-        oneColTable1.addCell(getCell10fLeft(billigClient.getEmail(),false));
+        String email = billingClient.getEmail().length() > 1 ?  billingClient.getEmail() : "N/A" ;
+        oneColTable1.addCell(getCell10fLeft(email,false));
         document.add(oneColTable1.setMarginBottom(10f));
     }
-
 
     private void createBody(InvoiceInformation invoiceInformation) {
         Border dgb = new DashedBorder(Color.GRAY,0.5f);
@@ -380,7 +381,7 @@ public class PdfGenerator {
         this.business = business;
 
         // Specify the folder path on the desktop where the PDF will be saved
-        String desktopFolderPath = System.getProperty("user.home") + "/Desktop/invoices/";
+        String desktopFolderPath = System.getProperty("user.home") + "\\Desktop\\invoices\\";
 
         // Create the folder if it doesn't exist
         Path folderPath = Paths.get(desktopFolderPath);
@@ -396,7 +397,8 @@ public class PdfGenerator {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
         document = (Document) new Document(pdfDocument);
-        String imagePath="C:\\Users\\User\\Documents\\lcs\\lcs\\src\\main\\resources\\water_mark_lcs.png";
+        String imagePath = "src/main/resources/water_mark_lcs.png";
+
         ImageData imageData = ImageDataFactory.create(imagePath);
         Image image = new Image(imageData);
 

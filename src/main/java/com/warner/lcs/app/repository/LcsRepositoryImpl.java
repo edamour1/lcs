@@ -51,7 +51,7 @@ public class LcsRepositoryImpl implements LcsRepository {
                 return business;
             }
         };
-        int businessId = 3;
+        int businessId = 1;
 
         List<Business> businesses  = this.lcsDataSourceTemplate.query(sql,mapper,businessId);
 
@@ -1055,6 +1055,12 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         String sql = SQL.get("lcsSql","getCity");
         List<City> cities = this.lcsDataSourceTemplate.query(sql,mapper,city.getCity());
+
+        if(cities.size() == 0)
+        {
+            cities = new ArrayList<>();
+            cities.add(city);
+        }
 
         return cities.get(0);
     }
