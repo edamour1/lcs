@@ -163,7 +163,6 @@ public class InvoiceViewController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @FXML
