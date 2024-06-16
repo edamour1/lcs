@@ -102,7 +102,6 @@
                 <Button fx:id="generatePDFButton" onAction="#generatePDFButton" style="-fx-background-color: yellow; -fx-text-fill: blue;" text="Generate PDF" />
                 <Button fx:id="viewPDFButton" style="-fx-background-color: green; -fx-text-fill: white;" text="View PDF" />
                 <Button fx:id="emailButton" onAction="#handleEmail" style="-fx-background-color: purple; -fx-text-fill: white;" text="Email" />
-
             </HBox>
         </VBox>
 
@@ -120,8 +119,6 @@
             <Label text="Calculated Total:"/>
             <Text fx:id="calculatedTotalText"/>
         </VBox>
-
-        <Button fx:id="backButton" onAction="#handleBack" layoutX="523.0" layoutY="489.0" style="-fx-text-fill: black;" text="Back" />
 
 
     </AnchorPane>

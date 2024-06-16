@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
-
 <?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -61,8 +60,6 @@
         <Button text="Delete Client" onAction="#deleteClient" style="-fx-background-color: pink;"/>
         <Button text="Register Client" onAction="#registerClient" style="-fx-background-color: yellow;"/>
     </HBox>
-
-
 
     <!-- Horizontal layout for buttons -->
     <HBox spacing="10" alignment="CENTER">

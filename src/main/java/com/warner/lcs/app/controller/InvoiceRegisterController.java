@@ -59,6 +59,7 @@ public class InvoiceRegisterController implements Initializable {
     private LcsService lcsService;
     @Autowired
     private SceneController sceneController;
+
     @FXML
     private AnchorPane anchorPane;
 
@@ -654,7 +655,6 @@ public class InvoiceRegisterController implements Initializable {
 //
 //
 //    }
-
 
     void initData(Client client, Admin admin) {
         this.admin = admin;

@@ -7,6 +7,7 @@
         <VBox layoutX="233.0" layoutY="59.0" spacing="20.0">
             <Button fx:id="clientsButton" text="Clients" onAction="#handleClientsButtonClick"/>
             <Button fx:id="invoicesButton" text="Invoices" onAction="#handleInvoicesButtonClick"/>
+            <Button fx:id="treatmentsButton" text="Treatments" onAction="#handleTreatments"/>
             <Button fx:id="logoutButton" text="Logout" onAction="#handleLogoutButtonClick"/>
         </VBox>
     </children>

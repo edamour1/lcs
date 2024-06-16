@@ -168,6 +168,79 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/invoice_delete.fxml";
         }
+    },
+    INVOICE_MAIN_MENU {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("invoice.menu.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/invoices_menu.fxml";
+        }
+    },
+
+    TREATMENT_MENU {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("treatment.menu.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/treatment_menu.fxml";
+        }
+    },
+
+    TREATMENT_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("treatment.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/treatment_register.fxml";
+        }
+    },
+
+    TREATMENT_UPDATE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("treatment.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/treatment_update.fxml";
+        }
+    },
+
+    TREATMENT_DELETE {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("treatment.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/treatment_delete.fxml";
+        }
+    },
+
+    TREATMENT_VIEW {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("treatment.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/treatment_view.fxml";
+        }
     };
 
     public abstract String getTitle();

@@ -57,6 +57,7 @@ public class InvoiceViewController implements Initializable {
 
     @FXML
     private Text notesText;
+
     @FXML
     private ListView<String> treatmentListView;
 
@@ -111,6 +112,7 @@ public class InvoiceViewController implements Initializable {
 
     @FXML
     private Text calculatedTotalText;
+
 
 
     @Override
@@ -203,8 +205,6 @@ public class InvoiceViewController implements Initializable {
 
     @FXML
     public void handleEmail(ActionEvent event) throws Exception {
-        // Method for handling Email button click
-        // Implement your logic here
         String emailSubject = "Invoice", emailString = SQL.get("lcsSql","getEmailText"),pdfFilePath = this.pdfFilePath,companyAddress;
         String[] emailReceipients = {this.client.getEmail(), "warnerlf@gmail.com"};
 

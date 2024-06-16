@@ -17,8 +17,7 @@ import org.controlsfx.control.textfield.TextFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
-
-
+import java.util.prefs.Preferences;
 
 import java.io.IOException;
 import java.net.URL;
@@ -85,8 +84,12 @@ public class AddressRegisterController implements Initializable {
     @FXML
     private Label quantityErrorLabel;
 
+    private Preferences prefs;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)  {
+        // Create a Preferences instance
+        this.prefs = Preferences.userNodeForPackage(AddressRegisterController.class);
         this.qty = 0.0;
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         this.CLIENT_VIEW = FxmlView.CLIENT_VIEW;
@@ -158,7 +161,6 @@ public class AddressRegisterController implements Initializable {
                         this.zipcode.setZipcode(this.zipcodeTextField.getText());
                         this.zipcodes.clear();
                     }
-
 
                     // Do something here, for example:
                     System.out.println("City text field lost focus.");

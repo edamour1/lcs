@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.InvoiceMenuController">
+
+    <!-- Existing content above -->
+    <Label text="Treatment List:" />
+    <ListView fx:id="treatmentListView"  prefHeight="100" />
+
+    <AnchorPane fx:id="anchorPane">
+        <VBox layoutX="100" layoutY="580">
+            <!-- No Column Filter Input -->
+            <Label text="No Column Filter:" />
+            <TextField fx:id="noColumnFilterTextField" promptText="Enter filter for No Column" />
+        </VBox>
+
+        <VBox layoutX="100" layoutY="640">
+            <!-- Payment Due Date Column Filter Input -->
+            <Label text="Payment Due Date Column Filter:" />
+            <TextField fx:id="paymentDueDateColumnFilterTextField" promptText="Enter filter for Payment Due Date Column" />
+        </VBox>
+
+        <VBox layoutX="300" layoutY="580">
+            <!-- Start Date Column Filter Input -->
+            <Label text="Start Date Column Filter:" />
+            <TextField fx:id="startDateColumnFilterTextField" promptText="Enter filter for Start Date Column" />
+        </VBox>
+
+        <VBox layoutX="300" layoutY="640">
+            <!-- Notes Column Filter Input -->
+            <Label text="Notes Column Filter:" />
+            <TextField fx:id="notesColumnFilterTextField" promptText="Enter filter for Notes Column" />
+        </VBox>
+
+        <VBox layoutX="100" layoutY="690">
+            <!-- Treatments Quantity Column Filter Input -->
+            <Label text="Treatments Quantity Column Filter:" />
+            <TextField fx:id="treatmentsQtyColumnFilterTextField" promptText="Enter filter for Treatments Quantity Column" />
+        </VBox>
+
+        <VBox layoutX="300" layoutY="690">
+            <!-- Additional Cost Services Quantity Column Filter Input -->
+            <Label text="Additional Cost Services Quantity Column Filter:" />
+            <TextField fx:id="additionalCostServicesQtyColumnFilterTextField" promptText="Enter filter for Additional Cost Services Quantity Column" />
+        </VBox>
+
+        <VBox prefHeight="385.0" prefWidth="1015.0" layoutX="100" layoutY="750">
+            <!-- Add TableView with fx:id -->
+            <TableView fx:id="invoicesTableView" prefHeight="385.0" prefWidth="1015.0">
+                <!-- Define columns and other configurations here -->
+            </TableView>
+        </VBox>
+
+        <!-- Existing content above -->
+        <Label text="Email Que:" layoutX="750" layoutY="255"/>
+        <ListView fx:id="emailQueListView"  prefHeight="400" layoutX="750" layoutY="275" />
+
+        <Button fx:id="emailButton" onAction="#handleEmail" style="-fx-background-color: purple; -fx-text-fill: white;" text="Email" layoutX="850" layoutY="685"/>
+
+        <!-- Add View Inoice Button -->
+        <Button onAction="#viewInvoice" style="-fx-background-color: lightgreen;" text="View Invoice" layoutX="575" layoutY="720" />
+        <Button onAction="#updateInvoice" style="-fx-background-color: lightblue;" text="Update Invoice" layoutX="675" layoutY="720" />
+        <Button onAction="#deleteInvoice" style="-fx-background-color: pink;" text="Delete Invoice" layoutX="785" layoutY="720" />
+        <Button onAction="#handleEmailQue" style="-fx-background-color: yellow;" text="Add To Que" layoutX="890" layoutY="720" />
+
+    </AnchorPane>
+</ScrollPane>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.TreatmentMenuController">
+    <AnchorPane fx:id="anchorPane">
+
+        <!-- Add View Inoice Button -->
+        <Button onAction="#viewTreatment" style="-fx-background-color: lightgreen;" text="View Treatment" layoutX="100" layoutY="370" />
+        <Button onAction="#updateTreatment" style="-fx-background-color: lightblue;" text="Update Treatment" layoutX="200" layoutY="370" />
+        <Button onAction="#deleteTreatment" style="-fx-background-color: pink;" text="Delete Treatment" layoutX="315" layoutY="370" />
+        <Button onAction="#registerTreatment" style="-fx-background-color: yellow;" text="Register Treatment" layoutX="420" layoutY="370" />
+        <TableView fx:id="treatmentTableView" prefHeight="385.0" prefWidth="350.0" layoutX="135" layoutY="400">
+            <!-- Define columns and other configurations here -->
+        </TableView>
+    </AnchorPane>
+</ScrollPane>
+

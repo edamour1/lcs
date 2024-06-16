@@ -51,7 +51,8 @@ public class LcsRepositoryImpl implements LcsRepository {
                 return business;
             }
         };
-        int businessId = 1;
+        int businessId = 3;
+//        int businessId = 1;
 
         List<Business> businesses  = this.lcsDataSourceTemplate.query(sql,mapper,businessId);
 

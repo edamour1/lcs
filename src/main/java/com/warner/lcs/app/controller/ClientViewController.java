@@ -32,7 +32,7 @@ import static com.warner.lcs.common.util.TableUtil.getObservableList;
 @Component
 public class ClientViewController implements Initializable {
 
-    private FxmlView CLIENT_MENU, ADDRESS_VIEW, ADDRESS_REGISTER, ADDRESS_UPDATE, ADDRESS_DELETE, INVOICE_REGISTER, INVOICE_VIEW, INVOICE_DELETE, INVOICE_UPDATE;
+    private FxmlView CLIENT_MENU, ADDRESS_VIEW, ADDRESS_REGISTER, ADDRESS_UPDATE, ADDRESS_DELETE, INVOICE_REGISTER, INVOICE_VIEW, INVOICE_DELETE, INVOICE_UPDATE, MAIN_MENU;
     private Client client;
     private AddressTableData selectedAddress;
     private InvoiceInformationTableData selectedInvoiceInformationTableData;
@@ -135,6 +135,7 @@ public class ClientViewController implements Initializable {
         this.INVOICE_REGISTER = FxmlView.INVOICE_REGISTER;
         this.INVOICE_UPDATE = FxmlView.INVOICE_UPDATE;
         this.INVOICE_DELETE = FxmlView.INVOICE_DELETE;
+        this.MAIN_MENU = FxmlView.MAIN_MENU;
 
         // Initialize paragraph tags with client information
         if (client != null) {
@@ -201,7 +202,9 @@ public class ClientViewController implements Initializable {
                                                                     Integer.valueOf(invoice.getTreatments().size()),
                                                                     Integer.valueOf(invoice.getAdditionalCostServices().size()),
                                                                     invoice.getNotes(),
-                                                                    invoice.getNo()));
+                                                                    invoice.getNo(),
+                                                                    this.client.getFirstName(),
+                                                                    this.client.getLastName()));
                 }
 
                 TableColumn<InvoiceInformationTableData, String> paymentDueDateColumn = createTableColumn("Payment Due Date", "paymentDueDate");
@@ -589,7 +592,7 @@ public class ClientViewController implements Initializable {
         System.out.println("Back button clicked");
     }
 
-    void initData(Client client, Admin admin) {
+    public void initData(Client client, Admin admin) {
         this.admin = admin;
         this.client = client;
     }

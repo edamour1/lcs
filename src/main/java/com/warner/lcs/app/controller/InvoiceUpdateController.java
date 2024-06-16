@@ -186,7 +186,7 @@ public class InvoiceUpdateController implements Initializable {
             this.clients = this.lcsService.getClients();
             this.treatments = this.lcsService.getAllTreatments();
             this.additionalCostServices = this.lcsService.getAllAdditionalCostServices();
-            this.addresses = lcsService.getAddressesByClientId(this.client.getId());
+            this.addresses = this.lcsService.getAddressesByClientId(this.client.getId());
             clientsNamesList = new ArrayList<>();
             this.r1Selected = false;
             this.updateTreatmentQtyKey = new StringBuilder();

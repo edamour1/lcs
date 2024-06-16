@@ -117,7 +117,11 @@
 			<version>11.1.0</version> <!-- Or the latest version available -->
 		</dependency>
 
-
+		<!-- Spring Boot Starter Web includes Jackson -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

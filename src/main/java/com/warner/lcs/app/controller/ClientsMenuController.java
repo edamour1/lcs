@@ -32,7 +32,7 @@ public class ClientsMenuController implements Initializable {
     @Autowired
     private LcsService lcsService;
 
-    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER, CLIENT_UPDATE, CLIENT_DELETE;
+    private FxmlView CLIENT_MENU,CLIENT_VIEW, CLIENT_REGISTER, CLIENT_UPDATE, CLIENT_DELETE, MAIN_MENU;
 
     @Autowired
     private SceneController sceneController;
@@ -81,6 +81,7 @@ public class ClientsMenuController implements Initializable {
         this.CLIENT_REGISTER = FxmlView.CLIENT_REGISTER;
         this.CLIENT_UPDATE = FxmlView.CLIENT_UPDATE;
         this.CLIENT_DELETE = FxmlView.CLIENT_DELETE;
+        this.MAIN_MENU = FxmlView.MAIN_MENU;
 
         TableColumn<Client, String> idColumn = createTableColumn("Customer ID", "id");
         TableColumn<Client, String> firstNameColumn = createTableColumn("First Name", "firstName");
@@ -270,7 +271,7 @@ public class ClientsMenuController implements Initializable {
     }
 
     @FXML
-    private void registerClient(ActionEvent event) throws Exception{
+    private void registerClient(ActionEvent event) throws Exception {
         // Your logic for registering client
         this.clientRegisterController.initData(this.admin);
         this.sceneController.setScene(this.CLIENT_REGISTER.getTitle(),this.CLIENT_REGISTER.getFxmlFilePath());
@@ -278,8 +279,11 @@ public class ClientsMenuController implements Initializable {
     }
 
     @FXML
-    private void backToDefault() {
-        // Your logic for reverting to default state
+    private void backToDefault(ActionEvent event) throws Exception {
+        // Your logic for registering client
+        this.clientRegisterController.initData(this.admin);
+        this.sceneController.setScene(this.MAIN_MENU.getTitle(),this.MAIN_MENU.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
     }
 
     void initData(Admin admin) {

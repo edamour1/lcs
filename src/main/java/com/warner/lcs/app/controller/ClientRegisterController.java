@@ -102,12 +102,6 @@ public class ClientRegisterController implements Initializable {
 //
 
 
-        // For example, you can validate the data or send it to a service
-        this.saveClient.setFirstName(firstName);
-        this.saveClient.setMiddleName(middleName);
-        this.saveClient.setLastName(lastName);
-        this.saveClient.setEmail(email);
-        this.saveClient.setPhoneNumber(phoneNumber);
         this.saveClient.setActive(true);
 
         this.lcsService.saveClient(this.saveClient,this.admin);
@@ -153,7 +147,8 @@ public class ClientRegisterController implements Initializable {
         errorLabel.setText("");
     }
 
-    private void clearErrorMessages() {
+    private void clearErrorMessages()
+    {
         // Remove CSS style and clear prompt text for all text fields
         firstNameTextField.getStyleClass().remove("invalid-text-field");
         firstNameTextField.setPromptText(null);

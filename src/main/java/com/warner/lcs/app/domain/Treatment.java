@@ -1,16 +1,18 @@
 package com.warner.lcs.app.domain;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Treatment {
 
     private int id;
-    private String treatmentName, treatmentDescription, unit;
+    private String treatmentName, treatmentDescription, unit, lmUser;
+    private Date lmDate;
     private double price,qty;
     private boolean updateQty, removeFromList, isOldItems;
 
-    public Treatment(){}
+    public Treatment() {}
 
     public Treatment(ResultSet resultSet) throws SQLException {
         this.id = resultSet.getInt("id");
@@ -92,4 +94,21 @@ public class Treatment {
     public void setOldItems(boolean oldItems) {
         isOldItems = oldItems;
     }
+
+    public String getLmUser() {
+        return lmUser;
+    }
+
+    public void setLmUser(String lmUser) {
+        this.lmUser = lmUser;
+    }
+
+    public Date getLmDate() {
+        return lmDate;
+    }
+
+    public void setLmDate(Date lmDate) {
+        this.lmDate = lmDate;
+    }
+
 }

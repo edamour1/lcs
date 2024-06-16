@@ -1,5 +1,8 @@
 package com.warner.lcs.app.domain.table_ui;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class InvoiceInformationTableData {
 
     private String paymentDueDate, startDate, date;
@@ -7,10 +10,29 @@ public class InvoiceInformationTableData {
     private int additionalCostServicesQty;
     private String notes;
     private String no;
+    private String lmUser;
+    private String lmDate;
+    private String firstName;
+    private String lastName;
+
+    private BooleanProperty selected = new SimpleBooleanProperty(false);
 
     public InvoiceInformationTableData() {}
 
-    public InvoiceInformationTableData(String paymentDueDate, String startDate, String date, int treatmentsQty, int additionalCostServicesQty, String notes, String no) {
+
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
+    }
+
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public InvoiceInformationTableData(String paymentDueDate, String startDate, String date, int treatmentsQty, int additionalCostServicesQty, String notes, String no, String firstName, String lastName) {
         this.paymentDueDate = paymentDueDate;
         this.startDate = startDate;
         this.date = date;
@@ -18,6 +40,8 @@ public class InvoiceInformationTableData {
         this.additionalCostServicesQty = additionalCostServicesQty;
         this.notes = notes;
         this.no = no;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getPaymentDueDate() {
@@ -74,5 +98,37 @@ public class InvoiceInformationTableData {
 
     public void setNo(String no) {
         this.no = no;
+    }
+
+    public String getLmUser() {
+        return lmUser;
+    }
+
+    public void setLmUser(String lmUser) {
+        this.lmUser = lmUser;
+    }
+
+    public String getLmDate() {
+        return lmDate;
+    }
+
+    public void setLmDate(String lmDate) {
+        this.lmDate = lmDate;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
