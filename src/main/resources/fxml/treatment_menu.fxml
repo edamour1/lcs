@@ -9,7 +9,6 @@
 <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.TreatmentMenuController">
     <AnchorPane fx:id="anchorPane">
 
-        <!-- Add View Inoice Button -->
         <Button onAction="#viewTreatment" style="-fx-background-color: lightgreen;" text="View Treatment" layoutX="100" layoutY="370" />
         <Button onAction="#updateTreatment" style="-fx-background-color: lightblue;" text="Update Treatment" layoutX="200" layoutY="370" />
         <Button onAction="#deleteTreatment" style="-fx-background-color: pink;" text="Delete Treatment" layoutX="315" layoutY="370" />
@@ -17,6 +16,15 @@
         <TableView fx:id="treatmentTableView" prefHeight="385.0" prefWidth="350.0" layoutX="135" layoutY="400">
             <!-- Define columns and other configurations here -->
         </TableView>
+
+        <Button onAction="#viewService" style="-fx-background-color:  lightgreen;" text="View Service" layoutX="734" layoutY="370" />
+        <Button onAction="#updateService" style="-fx-background-color: lightblue;" text="Update Service" layoutX="839" layoutY="370" />
+        <Button onAction="#deleteService" style="-fx-background-color: pink;" text="Delete Service" layoutX="959" layoutY="370" />
+        <Button onAction="#registerService" style="-fx-background-color: yellow;" text="Register Service" layoutX="1074" layoutY="370" />
+        <TableView fx:id="additionalCostServiceTableView" prefHeight="385.0" prefWidth="440.0" layoutX="732" layoutY="400">
+            <!-- Define columns and other configurations here -->
+        </TableView>
+        <Button text="Back" layoutX="600" layoutY="500" onAction="#handleBack" />
     </AnchorPane>
 </ScrollPane>
 

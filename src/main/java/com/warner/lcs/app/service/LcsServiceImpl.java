@@ -37,6 +37,11 @@ public class LcsServiceImpl implements LcsService {
     }
 
     @Override
+    public List<AdditionalCostService> deleteAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        return this.lcsRepository.deleteAdditionalCostService(additionalCostService);
+    }
+
+    @Override
     public Treatment getTreatment(Treatment treatment, InvoiceInformation invoiceInformation) throws Exception {
         return this.lcsRepository.getTreatment(treatment,invoiceInformation);
     }
@@ -254,6 +259,9 @@ public class LcsServiceImpl implements LcsService {
     public List<Treatment> getAllTreatments() throws Exception { return this.lcsRepository.getAllTreatments(); }
 
     @Override
+    public List<Treatment> deleteTreatment(Treatment treatment) throws Exception { return this.lcsRepository.deleteTreatment(treatment); }
+
+    @Override
     public State getState(String state) throws Exception {
         return this.lcsRepository.getState(state);
     }
@@ -280,6 +288,9 @@ public class LcsServiceImpl implements LcsService {
 
     @Override
     public Admin getAdminById(int id) throws Exception { return this.lcsRepository.getAdminById(id); }
+
+    @Override
+    public Admin deleteByIdAdmin(int id) throws Exception { return this.lcsRepository.deleteByIdAdmin(id); }
 
     @Override
     public List<Admin> getAllAdmin() throws Exception { return this.lcsRepository.getAllAdmin(); }

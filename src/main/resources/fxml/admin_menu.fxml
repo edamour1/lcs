@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.AdminMenuController">
+    <AnchorPane fx:id="anchorPane">
+        <!-- Add TableView with fx:id -->
+        <Button onAction="#viewAdmin" style="-fx-background-color: lightgreen;" text="View Admin" layoutX="420" layoutY="520" />
+        <Button onAction="#updateAdmin" style="-fx-background-color: lightblue;" text="Update Admin" layoutX="420" layoutY="480" />
+        <Button onAction="#deleteAdmin" style="-fx-background-color: pink;" text="Delete Admin" layoutX="420" layoutY="440" />
+        <Button onAction="#registerAdmin" style="-fx-background-color: yellow;" text="Register Admin" layoutX="420" layoutY="400" />
+        <TableView fx:id="tableView" layoutX="100" layoutY="400">
+            <!-- Define columns and other configurations here -->
+        </TableView>
+    </AnchorPane>
+</ScrollPane>

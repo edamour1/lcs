@@ -353,7 +353,7 @@ public class InvoiceMenuController implements Initializable {
 
         this.invoicesTableView.setItems(this.observableStringList);
     }
-    void initData(Client client) {
+    void initData(Admin admin) {
         this.admin = admin;
     }
 }

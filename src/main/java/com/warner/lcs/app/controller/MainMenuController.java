@@ -21,13 +21,19 @@ public class MainMenuController {
     @Autowired
     private LcsService lcsService;
 
-    private FxmlView CLIENT_MENU,INVOICE_MENU, MAIN_MENU, TREATMENT_MENU;
+    private FxmlView CLIENT_MENU,INVOICE_MENU, MAIN_MENU, TREATMENT_MENU, ADMIN_MENU;
 
     @Autowired
     private SceneController sceneController;
 
     @Autowired
     private TreatmentMenuController treatmentMenuController;
+
+    @Autowired
+    private InvoiceMenuController invoiceMenuController;
+
+    @Autowired
+    private AdminMenuController adminMenuController;
 
     @FXML
     private Button clientsButton;
@@ -46,6 +52,7 @@ public class MainMenuController {
         this.CLIENT_MENU = FxmlView.CLIENT_MENU;
         this.INVOICE_MENU = FxmlView.INVOICE_MAIN_MENU;
         this.TREATMENT_MENU = FxmlView.TREATMENT_MENU;
+        this.ADMIN_MENU = FxmlView.ADMIN_MENU;
     }
 
     @FXML
@@ -80,8 +87,16 @@ public class MainMenuController {
     }
 
     @FXML
+    private void handlAdmin(ActionEvent event) throws Exception {
+        this.adminMenuController.initData(this.admin);
+        this.sceneController.setScene(this.ADMIN_MENU.getTitle(),this.ADMIN_MENU.getFxmlFilePath());
+        this.sceneController.switchToScene(event);
+    }
+
+    @FXML
     private void handleInvoicesButtonClick(ActionEvent event) throws Exception {
         // Add action for handling the "Invoices" button click
+        this.invoiceMenuController.initData(this.admin);
         this.sceneController.setScene(this.INVOICE_MENU.getTitle(),this.INVOICE_MENU.getFxmlFilePath());
         this.sceneController.switchToScene(event);
         System.out.println("Invoices button clicked");

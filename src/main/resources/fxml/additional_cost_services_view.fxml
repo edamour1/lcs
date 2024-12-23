@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.AdditionalCostServiceViewController">
+    <AnchorPane fx:id="anchorPane">
+        <Label layoutX="40.0" layoutY="100.0" text="Service NO:" style="-fx-text-fill: green;"/>
+        <Text fx:id="treatmentNo" layoutX="175" layoutY="115" style="-fx-fill: green;"/>
+
+        <Label layoutX="40.0" layoutY="200.0" text="Service Description:" />
+        <Text fx:id="treatmentName" layoutX="175" layoutY="215.0" />
+
+        <Label layoutX="40.0" layoutY="300" text="Treatment Description:" />
+        <Text fx:id="treatmentDescription" layoutX="175" layoutY="315" />
+
+        <Label layoutX="40.0" layoutY="400.0" text="Price:" />
+        <Text fx:id="price" layoutX="100.0" layoutY="415.0" />
+
+        <Button text="Back" layoutX="120" layoutY="500" onAction="#handleBack" />
+    </AnchorPane>
+</ScrollPane>

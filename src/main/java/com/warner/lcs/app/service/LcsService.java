@@ -50,6 +50,16 @@ public interface LcsService {
     public AdditionalCostService updateAdditionalCostServiceQty(AdditionalCostService additionalCostService, InvoiceInformation invoiceInformation) throws Exception;
 
     /**
+     * Delete AdditionalCostService from the database
+     *
+     * This method uses this repository layer to additionalCostService's data from the database.
+     *
+     * @return All AdditionalCostService objects from th database.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<AdditionalCostService> deleteAdditionalCostService(AdditionalCostService additionalCostService) throws Exception;
+
+    /**
      * Gets specific treatment for invoiceInformation.
      *
      * This method uses the repository layer to fetch a treatment from the database for invoiceInformation.
@@ -469,6 +479,16 @@ public interface LcsService {
     public List<Treatment> getAllTreatments() throws Exception;
 
     /**
+     * Delete Treatment from the database
+     *
+     * This method uses this repository layer to treatment's data from the database.
+     *
+     * @return All Treatment objects from th database.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<Treatment> deleteTreatment(Treatment treatment) throws Exception;
+
+    /**
      * Returns a desired state from the database
      *
      * This method uses the repository layer to fetch the state data by name from the database.
@@ -548,6 +568,15 @@ public interface LcsService {
      * @throws Exception If error occurs in the repo layer.
      */
     public Admin getAdminById(int id) throws Exception;
+
+    /**
+     * Returns an updated admin from the database based on provided id which is marked as deleted
+     * This method uses the repository layer to mark the admin data by id to deleted in the database.
+     * @param id is going to be used to get the specific admin.
+     * @return Admin object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     * */
+    public Admin deleteByIdAdmin(int id) throws Exception;
 
     /**
      * Get a List of all administrators from the database
@@ -634,5 +663,7 @@ public interface LcsService {
      * @throws Exception If error occurs in the repo layer.
      */
     public List<Client> getClients() throws Exception;
+
+
 
 }

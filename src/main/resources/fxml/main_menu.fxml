@@ -8,6 +8,7 @@
             <Button fx:id="clientsButton" text="Clients" onAction="#handleClientsButtonClick"/>
             <Button fx:id="invoicesButton" text="Invoices" onAction="#handleInvoicesButtonClick"/>
             <Button fx:id="treatmentsButton" text="Treatments" onAction="#handleTreatments"/>
+            <Button fx:id="adminButton" text="Admin" onAction="#handlAdmin"/>
             <Button fx:id="logoutButton" text="Logout" onAction="#handleLogoutButtonClick"/>
         </VBox>
     </children>

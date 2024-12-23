@@ -163,6 +163,18 @@ public class LcsRepositoryImpl implements LcsRepository {
     }
 
     @Override
+    public List<Treatment> deleteTreatment(Treatment treatment) throws Exception {
+        String deleteSql = SQL.get("lcsSql","deleteTreatment");
+
+        // Perform the DELETE operation
+        this.lcsDataSourceTemplate.update(deleteSql,treatment.getId());
+
+        List<Treatment> treatments = this.getAllTreatments();
+
+        return treatments;
+    }
+
+    @Override
     public InvoiceInformation getInvoiceInformation(String invoiceNo) throws Exception {
         RowMapper<InvoiceInformation> mapper = new RowMapper<InvoiceInformation>(){
             public InvoiceInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -612,6 +624,18 @@ public class LcsRepositoryImpl implements LcsRepository {
 
         return additionalCostServices.get(0);
     }
+
+    @Override
+    public List<AdditionalCostService> deleteAdditionalCostService(AdditionalCostService additionalCostService) throws Exception {
+        String deleteSql = SQL.get("lcsSql","deleteAdditionalCostService");
+
+        // Perform the DELETE operation
+        this.lcsDataSourceTemplate.update(deleteSql,additionalCostService.getId());
+
+        List<AdditionalCostService> additionalCostServices = this.getAllAdditionalCostServices();
+
+        return additionalCostServices;
+    }//zoom
 
     @Override
     public Address updateAddress(Address address, Client client, Admin admin) throws Exception {
@@ -1132,6 +1156,15 @@ public class LcsRepositoryImpl implements LcsRepository {
         List<Admin> admin = this.lcsDataSourceTemplate.query(sql,mapper,id);
 
         return admin.get(0);
+    }
+
+    @Override
+    public Admin deleteByIdAdmin(int id) throws Exception {
+        String sql = SQL.get("lcsSql","deleteByIdAdmin");
+        this.lcsDataSourceTemplate.update(sql, id);
+        Admin admin = this.getAdminById(id);
+
+        return admin;
     }
 
     @Override

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.Button?>
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.AdminViewController">
+    <AnchorPane fx:id="anchorPane">
+        <Label layoutX="40.0" layoutY="100.0" text="ID NO:" style="-fx-text-fill: green;"/>
+        <Text fx:id="id" layoutX="175" layoutY="115" style="-fx-fill: green;"/>
+
+        <Label layoutX="40.0" layoutY="200.0" text="username:" />
+        <Text fx:id="username" layoutX="175" layoutY="215.0" />
+
+        <Label layoutX="40.0" layoutY="300" text="password:" />
+        <Text fx:id="password" layoutX="175" layoutY="315" />
+
+        <Label layoutX="40.0" layoutY="400.0" text="role:" />
+        <Text fx:id="role" layoutX="100.0" layoutY="415.0" />
+
+        <Label layoutX="40.0" layoutY="515.0" text="hint:" />
+        <Text fx:id="hint" layoutX="100.0" layoutY="523.0" />
+
+        <Button text="Back" layoutX="120" layoutY="600" onAction="#handleBack" />
+    </AnchorPane>
+</ScrollPane>

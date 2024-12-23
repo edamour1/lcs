@@ -100,9 +100,5 @@
                 <Button fx:id="backButton" onAction="#handleBack"  style="-fx-text-fill: black;" text="Back" />
             </HBox>
         </VBox>
-
-
-
-
     </AnchorPane>
 </ScrollPane>

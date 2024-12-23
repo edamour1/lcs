@@ -100,8 +100,6 @@ public class ClientRegisterController implements Initializable {
 //            return;
 //        } else { clearError(phoneNumberTextField,phoneNumberErrorLabel); }
 //
-
-
         this.saveClient.setActive(true);
 
         this.lcsService.saveClient(this.saveClient,this.admin);
@@ -110,7 +108,7 @@ public class ClientRegisterController implements Initializable {
     }
 
     @FXML
-    private void goBack(ActionEvent event) throws  Exception{
+    private void goBack(ActionEvent event) throws  Exception {
         this.sceneController.setScene(this.CLIENT_MENU.getTitle(),this.CLIENT_MENU.getFxmlFilePath());
         this.sceneController.switchToScene(event);
     }
@@ -139,7 +137,8 @@ public class ClientRegisterController implements Initializable {
         errorLabel.setText(errorMessage);
     }
 
-    private void clearError(TextField textField,Label errorLabel) {
+    private void clearError(TextField textField,Label errorLabel)
+    {
         // Clear CSS style to indicate no error
         textField.getStyleClass().remove("invalid-text-field");
         textField.setPromptText(null);

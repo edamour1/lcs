@@ -91,6 +91,49 @@ public class LcsApplicationTest {
         this.business.setFaxPhoneNo("770-223-0988");
     }
 
+    @Test//means method is meant to be tested
+    public void deleteByIdAdmin() throws Exception {
+        this.admin.setId(1);
+        this.admin.setDeleted(false);
+
+        Admin after = this.lcsService.deleteByIdAdmin(this.admin.getId());
+
+        assertThat(after.isDeleted()).isTrue();
+    }
+
+    @Test//means method is meant to be tested
+    public void deleteTreatment() throws Exception {
+        this.treatment.setId(10);
+
+        List<AdditionalCostService> before = this.lcsService.getAllAdditionalCostServices();
+
+        List<Treatment> after = this.lcsService.deleteTreatment(this.treatment);
+
+        assertThat(before.size()).isGreaterThan(after.size());
+    }
+
+    @Test//means method is meant to be tested
+    public void deleteAdditionalCostServiceTest() throws Exception {
+        this.additionalCostService.setId(9);
+
+        List<AdditionalCostService> before = this.lcsService.getAllAdditionalCostServices();
+
+        List<AdditionalCostService> after = this.lcsService.deleteAdditionalCostService(this.additionalCostService);
+
+        assertThat(before.size()).isGreaterThan(after.size());
+    }
+
+//    @Test//means method is meant to be tested
+//    public void deleteAddressTest() throws Exception {
+//        this.treatment.setId(15);
+//
+//        List<Treatment> before = this.lcsService.getAllTreatments();
+//
+//        List<Treatment> after = this.lcsService.deleteTreatment(this.treatment);
+//
+//        assertThat(before.size()).isGreaterThan(after.size());
+//    }
+
 //    @Test//means method is meant to be tested
 //    public void deleteAddressTest() throws Exception {
 //        this.address.setId(11);

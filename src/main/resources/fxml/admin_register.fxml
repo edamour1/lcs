@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.warner.lcs.app.controller.AdminRegisterController">
+    <AnchorPane fx:id="anchorPane">
+        <Label text="Username:" layoutX="40" layoutY="80" />
+        <TextField fx:id="username" layoutX="40" layoutY="100" />
+        <Label fx:id="usernameErrorLabel" text="Please enter  username:" layoutX="40" layoutY="125" textFill="red" />
+
+        <Label text="Password:" layoutX="40" layoutY="140" />
+        <TextField fx:id="password" layoutX="40" layoutY="160"/>
+        <Label fx:id="passwordErrorLabel" text="Please enter password:" layoutX="40" layoutY="185" textFill="red" />
+
+        <Label text="Role:" layoutX="40" layoutY="200" />
+        <TextField fx:id="role" layoutX="40" layoutY="220" />
+        <Label fx:id="roleErrorLabel" text="Please enter role" layoutX="40" layoutY="245" textFill="red" />
+
+        <Label text="Hint:" layoutX="40" layoutY="270" />
+        <TextField fx:id="hint" layoutX="40" layoutY="290" />
+        <Label fx:id="hintErrorLabel" text="Please enter hint" layoutX="40" layoutY="315" textFill="red" />
+
+        <Button text="Submit" layoutX="40" layoutY="350" onAction="#handleSubmit" />
+        <Button text="Back" layoutX="120" layoutY="350" onAction="#handleBack" />
+    </AnchorPane>
+</ScrollPane>

@@ -61,6 +61,8 @@ public class AddressDeleteController implements Initializable {
     @FXML
     private Text zipcodeParagraph;
 
+    @FXML
+
 
     private FxmlView CLIENT_MENU, CLIENT_VIEW;
 

@@ -241,7 +241,139 @@ public enum FxmlView {
         public String getFxmlFilePath() {
             return "src/main/resources/fxml/treatment_view.fxml";
         }
+    },
+
+    ADDITIONAL_COST_SERVICES_MENU {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("additional_cost_services.menu.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/additional_cost_services_menu.fxml";
+        }
+    },
+
+    ADDITIONAL_COST_SERVICES_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("additional_cost_services.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/additional_cost_services_register.fxml";
+        }
+    },
+
+    ADDITIONAL_COST_SERVICES_UPDATE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("additional_cost_services.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/additional_cost_services_update.fxml";
+        }
+    },
+
+    ADDITIONAL_COST_SERVICES_DELETE {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("additional_cost_services.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/additional_cost_services_delete.fxml";
+        }
+    },
+
+    ADDITIONAL_COST_SERVICES_VIEW {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("additional_cost_services.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/additional_cost_services_view.fxml";
+        }
+    },
+
+    ADMIN_REGISTER  {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("admin.register.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/admin_register.fxml";
+        }
+
+    },
+
+
+    ADMIN_UPDATE {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("admin.update.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/admin_update.fxml";
+        }
+    },
+
+    ADMIN_DELETE {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("admin.delete.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/admin_delete.fxml";
+        }
+    },
+
+    ADMIN_VIEW {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("admin.view.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/admin_view.fxml";
+        }
+    },
+
+    ADMIN_MENU {
+
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("admin.menu.title");
+        }
+
+        @Override
+        public String getFxmlFilePath() {
+            return "src/main/resources/fxml/admin_menu.fxml";
+        }
     };
+
+
+
+
 
     public abstract String getTitle();
     public abstract String getFxmlFilePath();

@@ -18,6 +18,7 @@ CREATE TABLE `ADMIN`(
     `password` VARCHAR(255) NULL,
     `role` VARCHAR(255) NULL,
     `hint` VARCHAR(255) NULL,
+	`is_deleted` BOOLEAN DEFAULT FALSE,
      PRIMARY KEY (`id`)
 );
 

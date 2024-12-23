@@ -358,6 +358,7 @@ INNER JOIN addresses a ON b.address_id = a.id
     <getAllTreatments>
         <![CDATA[
             SELECT * FROM treatments
+                WHERE is_active = 1
         ]]>
     </getAllTreatments>
 
@@ -390,6 +391,14 @@ INNER JOIN addresses a ON b.address_id = a.id
             VALUES(?,?,?,?,NOW())
         ]]>
     </saveTreatment>
+
+    <deleteTreatment>
+        <![CDATA[
+            UPDATE 	treatments
+                SET is_active = 0
+                    WHERE id = ?
+        ]]>
+    </deleteTreatment>
 
     <removeTreatmentFromList>
         <![CDATA[
@@ -438,7 +447,8 @@ INNER JOIN addresses a ON b.address_id = a.id
 <!--*************************************************************Additional Cost Services*****************************************************************-->
     <getAllAdditionalCostServices>
         <![CDATA[
-            SELECT * FROM ADDITIONAL_SERVICES
+            SELECT * FROM additional_services
+            WHERE is_active = 1
         ]]>
     </getAllAdditionalCostServices>..........
 
@@ -462,8 +472,8 @@ INNER JOIN addresses a ON b.address_id = a.id
 
     <saveAdditionalCostService>
         <![CDATA[
-            INSERT INTO `ADDITIONAL_SERVICES` (`treatment_name`, `treatment_description`, `price`,`lm_user_id`,`lm_date`)
-            VALUES(?,?,?,?,NOW())
+            INSERT INTO `ADDITIONAL_SERVICES` (`treatment_name`, `treatment_description`, `price`,`lm_user_id`,`lm_date`, is_active)
+            VALUES(?,?,?,?,NOW(),1)
         ]]>
     </saveAdditionalCostService>
 
@@ -486,10 +496,19 @@ INNER JOIN addresses a ON b.address_id = a.id
             AND additional_service_id = ?
         ]]>
     </removeAdditionalCostServiceFromList>
+
+    <deleteAdditionalCostService>
+        <![CDATA[
+            UPDATE 	additional_services
+                SET is_active = 0
+                    WHERE id = ?
+        ]]>
+    </deleteAdditionalCostService>
     <!--******************************************************************************Admin*******************************************************************-->
     <getAllAdmin>
         <![CDATA[
             SELECT * FROM admin
+                WHERE is_deleted = 0
         ]]>
     </getAllAdmin>
 
@@ -525,6 +544,13 @@ INNER JOIN addresses a ON b.address_id = a.id
                     WHERE id = ?
         ]]>
     </updateAdmin>
+    <deleteByIdAdmin>
+        <![CDATA[
+            update admin
+                set  is_deleted = 1
+                        WHERE id = ?
+        ]]>
+    </deleteByIdAdmin>
 
     <!--**************************************************************Client***********************************************************************-->
     <saveClient>

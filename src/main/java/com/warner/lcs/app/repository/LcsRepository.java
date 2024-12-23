@@ -255,6 +255,16 @@ public interface LcsRepository {
     public AdditionalCostService getAdditionalCostServicesById(int id) throws Exception;
 
     /**
+     * Delete AdditionalCostService from the database
+     *
+     * This method uses the jdbc template to additional cost service's data from the database.
+     *
+     * @return All AdditionalCostService objects from th database.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<AdditionalCostService> deleteAdditionalCostService(AdditionalCostService additionalCostService) throws Exception;
+
+    /**
      * Updates an address in the database
      *
      * This method uses jdbc template to update an Address object in the database.
@@ -438,6 +448,16 @@ public interface LcsRepository {
     public List<Treatment> getAllTreatments() throws Exception;
 
     /**
+     * Delete Treatment from the database
+     *
+     * This method uses the jdbc template to treatment's data from the database.
+     *
+     * @return All Treatment objects from th database.
+     * @throws Exception If error occurs in the repo layer.
+     */
+    public List<Treatment> deleteTreatment(Treatment treatment) throws Exception;
+
+    /**
      * Returns a desired state from the database
      *
      * This method uses the jdbc template to fetch the state data by name from the database.
@@ -517,6 +537,15 @@ public interface LcsRepository {
      * @throws Exception If error occurs in the repo layer.
      */
     public Admin getAdminById(int id) throws Exception;
+
+    /**
+     * Returns an updated admin from the database based on provided id which is marked as deleted
+     * This method uses the jdbc template to mark the admin data by id to deleted in the database.
+     * @param id is going to be used to get the specific admin.
+     * @return Admin object that contains data that was fetched.
+     * @throws Exception If error occurs in the repo layer.
+     * */
+    public Admin deleteByIdAdmin(int id) throws Exception;
 
     /**
      * Get a List of all administrators from the database
@@ -610,6 +639,5 @@ public interface LcsRepository {
      * @throws Exception If error occurs during query.
      */
     public void disableOrEnableForeignKeyChecks(boolean disableOrEnable) throws Exception;
-
 
 }

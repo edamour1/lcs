@@ -10,6 +10,7 @@ public class Admin {
     private String password;
     private String role;
     private String hint;
+    private boolean isDeleted;
 
     public Admin()  {}
 
@@ -19,6 +20,8 @@ public class Admin {
         this.password = resultSet.getString("password");
         this.role = resultSet.getString("role");
         this.hint = resultSet.getString("hint");
+        int isDeletedIntValue = resultSet.getInt("is_deleted");
+        this.isDeleted = isDeletedIntValue == 0 ? false : true;
     }
 
     public int getId() { return id; }
@@ -57,5 +60,12 @@ public class Admin {
 
     public void setHint(String hint) {
         this.hint = hint;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
